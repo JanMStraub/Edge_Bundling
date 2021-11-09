@@ -1,0 +1,7 @@
+NAME
+  Test
+DEPENDS
+  VTK::FiltersFlowPaths
+PRIVATE_DEPENDS
+  VTK::CommonCore
+  VTK::CommonDataModel
