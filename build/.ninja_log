@@ -1,0 +1,5 @@
+# ninja log v5
+960	1046	1637068826965207898	vtkVectorToScalar.app/Contents/MacOS/vtkVectorToScalar	c63d3e003834e850
+0	960	1637068826876992668	CMakeFiles/vtkVectorToScalar.dir/vtkVectorToScalar.cxx.o	b8f12288df4d0340
+2	975	1637068712537412961	CMakeFiles/vtkFileReader.dir/vtkFileReader.cxx.o	e2ecf5971c8edd27
+975	1055	1637068712620093829	vtkFileReader.app/Contents/MacOS/vtkFileReader	764853383d04ad8e

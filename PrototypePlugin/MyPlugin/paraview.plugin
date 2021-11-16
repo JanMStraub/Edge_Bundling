@@ -1,6 +1,0 @@
-NAME
-  Prototype
-DESCRIPTION
-  Prototype for streamlines
-REQUIRES_MODULES
-  VTK::CommonCore
