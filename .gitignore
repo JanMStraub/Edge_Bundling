@@ -33,3 +33,7 @@
 
 # MacOS
 *.DS_Store
+
+#vtk
+*.ninja_deps
+*.ninja_log
