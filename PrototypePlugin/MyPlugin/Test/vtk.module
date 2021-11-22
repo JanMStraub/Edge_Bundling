@@ -1,5 +1,5 @@
 NAME
-  Test
+  LagrangianExample
 DEPENDS
   VTK::FiltersFlowPaths
 PRIVATE_DEPENDS

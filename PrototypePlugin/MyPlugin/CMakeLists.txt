@@ -1,4 +1,4 @@
-paraview_add_plugin(MyPlugin
-    VERSION "0.1"
-    MODULES Test
-    SERVER_MANAGER_XML "MyPlugin.xml")
+paraview_add_plugin(LagrangianIntegrationModel
+  VERSION "1.0"
+  MODULES LagrangianExample
+  MODULE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/LagrangianExample/vtk.module")
