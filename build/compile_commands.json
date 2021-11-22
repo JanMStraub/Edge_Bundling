@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/jan/Google Drive/Programmieren/bachelor_thesis/build",
-  "command": "/usr/bin/clang++ -Dkiss_fft_scalar=double -DvtkRenderingContext2D_AUTOINIT_INCLUDE=\"\\\"/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/vtkModuleAutoInit_04d683062bbc5774e34e8c62b13e1a5a.h\\\"\" -DvtkRenderingCore_AUTOINIT_INCLUDE=\"\\\"/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/vtkModuleAutoInit_04d683062bbc5774e34e8c62b13e1a5a.h\\\"\" -DvtkRenderingOpenGL2_AUTOINIT_INCLUDE=\"\\\"/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/vtkModuleAutoInit_04d683062bbc5774e34e8c62b13e1a5a.h\\\"\" -isystem /opt/homebrew/include/vtk-9.1 -isystem /opt/homebrew/include -isystem /opt/homebrew/include/vtk-9.1/vtkfreetype/include -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.0.sdk -std=gnu++11 -o CMakeFiles/vtkVectorToScalar.dir/vtkVectorToScalar.cxx.o -c \"/Users/jan/Google Drive/Programmieren/bachelor_thesis/vtkPrototype/reader/vtkVectorToScalar.cxx\"",
-  "file": "/Users/jan/Google Drive/Programmieren/bachelor_thesis/vtkPrototype/reader/vtkVectorToScalar.cxx"
-}
-]

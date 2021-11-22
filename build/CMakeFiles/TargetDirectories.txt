@@ -1,3 +1,0 @@
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/rebuild_cache.dir
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/edit_cache.dir
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/build/CMakeFiles/vtkVectorToScalar.dir

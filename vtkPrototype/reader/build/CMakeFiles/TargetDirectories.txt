@@ -1,3 +1,0 @@
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/vtkPrototype/reader/build/CMakeFiles/rebuild_cache.dir
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/vtkPrototype/reader/build/CMakeFiles/edit_cache.dir
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/vtkPrototype/reader/build/CMakeFiles/vtkFileReader.dir
