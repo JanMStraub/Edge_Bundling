@@ -1,0 +1,31 @@
+<ServerManagerConfiguration>
+	<ProxyGroup name="filters">
+		<SourceProxy name="CPPFilter" class="vtkCPPFilter" label="CPPFilter">
+		<InputProperty name="Input" command="SetInputConnection">
+			<ProxyGroupDomain name="groups">
+			<Group name="sources"/>
+			<Group name="filters"/>
+			</ProxyGroupDomain>
+			<DataTypeDomain name="input_type">
+			<DataType value="vtkDataSet"/>
+			</DataTypeDomain>
+		</InputProperty>
+	  
+		<IntVectorProperty name="OutputDataSetType" command="SetOutputDataSetType" 
+							number_of_elements="1" default_values="0"> 
+        </IntVectorProperty>
+
+		<StringVectorProperty name="Script" command="SetScript" number_of_elements="1"
+							default_values="print 'Sizz value is: %s' % (sizz)">
+			<Hints> <Widget type="multi_line"/> </Hints>
+		</StringVectorProperty>
+
+		<!-- Sizz is the name of the variable that we will set in our plugin
+		     using the value of the GUI. This name here can be anything, but
+			 the "SetSizz" method should exist in the C++ class -->
+		<DoubleVectorProperty name="Sizz" command="SetSizz" number_of_elements="1"
+							default_values="245">
+		</DoubleVectorProperty>
+   </SourceProxy>
+ </ProxyGroup>
+</ServerManagerConfiguration>
