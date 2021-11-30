@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../lib/paraview-5.10/plugins/ElevationFilter/libElevationFilters.a CMakeFiles/ElevationFilters.dir/vtkMyElevationFilter.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../lib/paraview-5.10/plugins/ElevationFilter/libElevationFilters.a
