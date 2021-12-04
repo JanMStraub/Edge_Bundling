@@ -37,3 +37,6 @@
 #vtk
 *.ninja_deps
 *.ninja_log
+
+#data
+*.nc
