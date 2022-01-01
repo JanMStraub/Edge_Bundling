@@ -1,0 +1,27 @@
+<ServerManagerConfiguration>
+  <!-- This is the server manager configuration XML. It defines the interface to
+       our new filter. As a rule of thumb, try to locate the configuration for
+       a filter already in ParaView (in Servers/ServerManager/Resources/*.xml)
+       that matches your filter and then model your xml on it -->
+  <ProxyGroup name="filters">
+   <SourceProxy name="MyStreamTracerFilter" class="vtkMyStreamTracerFilter" label="MyStreamTracer">
+     <Documentation
+        long_help="StreamTracer is a filter that integrates a vector field to generate streamlines. The integration is performed using a specified integrator, by default Runge-Kutta2."
+        short_help="StreamTracer is a filter that integrates a vector field to generate streamlines.">
+     </Documentation>
+     <InputProperty
+        name="Input"
+        command="SetInputConnection">
+           <ProxyGroupDomain name="groups">
+             <Group name="sources"/>
+             <Group name="filters"/>
+           </ProxyGroupDomain>
+           <DataTypeDomain name="input_type">
+             <DataType value="vtkDataSet"/>
+           </DataTypeDomain>
+      </InputProperty>
+
+   <!-- End MyStreamTracerFilter -->
+   </SourceProxy>
+ </ProxyGroup>
+</ServerManagerConfiguration>
