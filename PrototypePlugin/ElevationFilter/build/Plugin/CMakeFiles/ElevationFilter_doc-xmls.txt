@@ -1,1 +1,0 @@
-/Users/jan/Google Drive/Programmieren/bachelor_thesis/PrototypePlugin/ElevationFilter/Plugin/ElevationFilters/MyElevationFilter.xml

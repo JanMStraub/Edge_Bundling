@@ -1,9 +1,0 @@
-NAME
-  StreamTracerFilter
-DESCRIPTION
-  StreamTracer is a filter that integrates a vector field to generate 
-  streamlines. The integration is performed using a specified integrator, 
-  by default Runge-Kutta2.
-REQUIRES_MODULES
-  VTK::CommonCore
-  VTK::FiltersCore

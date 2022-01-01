@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc ../lib/libElevationFiltersCS.a CMakeFiles/ElevationFiltersCS.dir/CMakeFiles/ElevationFiltersCS/vtkMyElevationFilterClientServer.cxx.o CMakeFiles/ElevationFiltersCS.dir/CMakeFiles/ElevationFiltersCS/ElevationFiltersModuleClientServer.cxx.o CMakeFiles/ElevationFiltersCS.dir/CMakeFiles/ElevationFiltersCSInit.cxx.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib ../lib/libElevationFiltersCS.a
