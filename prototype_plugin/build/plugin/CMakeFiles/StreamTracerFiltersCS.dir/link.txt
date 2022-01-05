@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../lib/libStreamTracerFiltersCS.a CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.o CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.o CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCSInit.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../lib/libStreamTracerFiltersCS.a

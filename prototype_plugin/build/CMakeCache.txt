@@ -264,7 +264,10 @@ OPENGL_gl_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.s
 //GLU library for OS X (usually same as OpenGL library)
 OPENGL_glu_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/OpenGL.framework
 
-//Enable the StreamTracerFilter plugin. Traces streams of air.
+//Enable the StreamTracerFilter plugin. StreamTracer is a filter
+// that integrates a vector field to generate streamlines. The
+// integration is performed using a specified integrator, by default
+// Runge-Kutta2.
 PARAVIEW_PLUGIN_ENABLE_StreamTracerFilter:BOOL=ON
 
 //The directory containing a CMake configuration file for ParaView.

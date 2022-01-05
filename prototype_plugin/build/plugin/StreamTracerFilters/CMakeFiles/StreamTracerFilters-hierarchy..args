@@ -1,0 +1,18 @@
+
+-D'kiss_fft_scalar=double'
+
+
+-I'/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/StreamTracerFilters'
+-I'/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/plugin/StreamTracerFilters'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10/'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10/'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10/'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10'
+-I'/Applications/ParaView/include/paraview-5.10'

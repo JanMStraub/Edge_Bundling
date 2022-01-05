@@ -79,7 +79,7 @@ public:
    * Returns a description of this plugin.
    */
   const char* GetDescription() override
-    { return "Traces streams of air."; }
+    { return "StreamTracer is a filter that integrates a vector field to generate streamlines. The integration is performed using a specified integrator, by default Runge-Kutta2."; }
 
   /**
    * Returns EULA for the plugin, if any. If none, this will return nullptr.
