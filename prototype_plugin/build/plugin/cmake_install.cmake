@@ -38,35 +38,35 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdevelopmentx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/libStreamTracerFiltersCS.a")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libStreamTracerFiltersCS.a" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libStreamTracerFiltersCS.a")
-    execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/ranlib" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libStreamTracerFiltersCS.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/libTracerFiltersCS.a")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libTracerFiltersCS.a" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libTracerFiltersCS.a")
+    execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/ranlib" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libTracerFiltersCS.a")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter" TYPE MODULE FILES "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/StreamTracerFilter/StreamTracerFilter.so")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter/StreamTracerFilter.so" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter/StreamTracerFilter.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/TracerFilter" TYPE MODULE FILES "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/TracerFilter/TracerFilter.so")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/TracerFilter/TracerFilter.so" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/TracerFilter/TracerFilter.so")
     execute_process(COMMAND "/usr/bin/install_name_tool"
-      -change "@rpath/libStreamTracerFilters.dylib" "@loader_path/libStreamTracerFilters.dylib"
-      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter/StreamTracerFilter.so")
+      -change "@rpath/libTracerFilters.dylib" "@loader_path/libTracerFilters.dylib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/TracerFilter/TracerFilter.so")
     execute_process(COMMAND /usr/bin/install_name_tool
       -delete_rpath "/Applications/ParaView/lib"
-      -delete_rpath "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/StreamTracerFilter"
+      -delete_rpath "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/lib/TracerFilter"
       -add_rpath "@loader_path"
       -add_rpath "@loader_path/../"
-      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter/StreamTracerFilter.so")
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/TracerFilter/TracerFilter.so")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/strip" -x "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/StreamTracerFilter/StreamTracerFilter.so")
+      execute_process(COMMAND "/Library/Developer/CommandLineTools/usr/bin/strip" -x "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/TracerFilter/TracerFilter.so")
     endif()
   endif()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/StreamTracerFilters/cmake_install.cmake")
+  include("/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/TracerFilters/cmake_install.cmake")
 
 endif()
 

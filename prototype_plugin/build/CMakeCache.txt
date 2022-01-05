@@ -191,7 +191,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=StreamTracerFilter
+CMAKE_PROJECT_NAME:STATIC=TracerFilter
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/ranlib
@@ -270,6 +270,10 @@ OPENGL_glu_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.
 // Runge-Kutta2.
 PARAVIEW_PLUGIN_ENABLE_StreamTracerFilter:BOOL=ON
 
+//Enable the TracerFilter plugin. Tracer is a filter that integrates
+// a vector field to generate streamlines and pathlines.
+PARAVIEW_PLUGIN_ENABLE_TracerFilter:BOOL=ON
+
 //The directory containing a CMake configuration file for ParaView.
 ParaView_DIR:PATH=/Applications/ParaView/lib/cmake/paraview-5.10
 
@@ -317,6 +321,21 @@ StreamTracerFilter_SOURCE_DIR:STATIC=/Users/jan/Google Drive/Programmieren/bache
 
 //Dependencies for the target
 StreamTracerFiltersCS_LIB_DEPENDS:STATIC=general;StreamTracerFilters;general;ParaView::RemotingClientServerStream;general;VTK::CommonCore;
+
+//Value Computed by CMake
+TracerFilter_BINARY_DIR:STATIC=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build
+
+//Value Computed by CMake
+TracerFilter_IS_TOP_LEVEL:STATIC=ON
+
+//Dependencies for the target
+TracerFilter_LIB_DEPENDS:STATIC=general;ParaView::RemotingCore;general;TracerFilters;
+
+//Value Computed by CMake
+TracerFilter_SOURCE_DIR:STATIC=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin
+
+//Dependencies for the target
+TracerFiltersCS_LIB_DEPENDS:STATIC=general;TracerFilters;general;ParaView::RemotingClientServerStream;general;VTK::CommonCore;
 
 //The directory containing a CMake configuration file for VTK.
 VTK_DIR:PATH=/Applications/ParaView/lib/cmake/paraview-5.10/vtk
@@ -528,12 +547,10 @@ OPENGL_gl_LIBRARY-ADVANCED:INTERNAL=1
 OPENGL_glu_LIBRARY-ADVANCED:INTERNAL=1
 //MODIFIED property for variable: Qt5_DIR
 Qt5_DIR-MODIFIED:INTERNAL=ON
-//ADVANCED property for variable: VTK_MODULE_ENABLE_StreamTracerFilters
-VTK_MODULE_ENABLE_StreamTracerFilters-ADVANCED:INTERNAL=1
-//STRINGS property for variable: VTK_MODULE_ENABLE_StreamTracerFilters
-VTK_MODULE_ENABLE_StreamTracerFilters-STRINGS:INTERNAL=YES;WANT;DONT_WANT;NO;DEFAULT
 //Enable the StreamTracerFilters module. 
 VTK_MODULE_ENABLE_StreamTracerFilters:INTERNAL=DEFAULT
+//Enable the TracerFilters module. 
+VTK_MODULE_ENABLE_TracerFilters:INTERNAL=DEFAULT
 //Number of processors available to run parallel tests.
 VTK_MPI_NUMPROCS:INTERNAL=2
 //CMAKE_INSTALL_PREFIX during last run

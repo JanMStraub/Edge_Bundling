@@ -162,170 +162,170 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-plugin/CMakeFiles/StreamTracerFiltersCS.dir/rule:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/StreamTracerFiltersCS.dir/rule
-.PHONY : plugin/CMakeFiles/StreamTracerFiltersCS.dir/rule
+plugin/CMakeFiles/TracerFiltersCS.dir/rule:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/TracerFiltersCS.dir/rule
+.PHONY : plugin/CMakeFiles/TracerFiltersCS.dir/rule
 
 # Convenience name for target.
-StreamTracerFiltersCS: plugin/CMakeFiles/StreamTracerFiltersCS.dir/rule
-.PHONY : StreamTracerFiltersCS
+TracerFiltersCS: plugin/CMakeFiles/TracerFiltersCS.dir/rule
+.PHONY : TracerFiltersCS
 
 # fast build rule for target.
-StreamTracerFiltersCS/fast:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/build
-.PHONY : StreamTracerFiltersCS/fast
+TracerFiltersCS/fast:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/build
+.PHONY : TracerFiltersCS/fast
 
 # Convenience name for target.
-plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/rule:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/rule
-.PHONY : plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/rule
+plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/rule:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/rule
+.PHONY : plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/rule
 
 # Convenience name for target.
-StreamTracerFilter_server_manager_modules_xml_content: plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/rule
-.PHONY : StreamTracerFilter_server_manager_modules_xml_content
+TracerFilter_server_manager_modules_xml_content: plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/rule
+.PHONY : TracerFilter_server_manager_modules_xml_content
 
 # fast build rule for target.
-StreamTracerFilter_server_manager_modules_xml_content/fast:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/build.make plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/build
-.PHONY : StreamTracerFilter_server_manager_modules_xml_content/fast
+TracerFilter_server_manager_modules_xml_content/fast:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/build.make plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/build
+.PHONY : TracerFilter_server_manager_modules_xml_content/fast
 
 # Convenience name for target.
-plugin/CMakeFiles/StreamTracerFilter_doc.dir/rule:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/StreamTracerFilter_doc.dir/rule
-.PHONY : plugin/CMakeFiles/StreamTracerFilter_doc.dir/rule
+plugin/CMakeFiles/TracerFilter_doc.dir/rule:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/TracerFilter_doc.dir/rule
+.PHONY : plugin/CMakeFiles/TracerFilter_doc.dir/rule
 
 # Convenience name for target.
-StreamTracerFilter_doc: plugin/CMakeFiles/StreamTracerFilter_doc.dir/rule
-.PHONY : StreamTracerFilter_doc
+TracerFilter_doc: plugin/CMakeFiles/TracerFilter_doc.dir/rule
+.PHONY : TracerFilter_doc
 
 # fast build rule for target.
-StreamTracerFilter_doc/fast:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_doc.dir/build.make plugin/CMakeFiles/StreamTracerFilter_doc.dir/build
-.PHONY : StreamTracerFilter_doc/fast
+TracerFilter_doc/fast:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_doc.dir/build.make plugin/CMakeFiles/TracerFilter_doc.dir/build
+.PHONY : TracerFilter_doc/fast
 
 # Convenience name for target.
-plugin/CMakeFiles/StreamTracerFilter_qch.dir/rule:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/StreamTracerFilter_qch.dir/rule
-.PHONY : plugin/CMakeFiles/StreamTracerFilter_qch.dir/rule
+plugin/CMakeFiles/TracerFilter_qch.dir/rule:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/TracerFilter_qch.dir/rule
+.PHONY : plugin/CMakeFiles/TracerFilter_qch.dir/rule
 
 # Convenience name for target.
-StreamTracerFilter_qch: plugin/CMakeFiles/StreamTracerFilter_qch.dir/rule
-.PHONY : StreamTracerFilter_qch
+TracerFilter_qch: plugin/CMakeFiles/TracerFilter_qch.dir/rule
+.PHONY : TracerFilter_qch
 
 # fast build rule for target.
-StreamTracerFilter_qch/fast:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_qch.dir/build.make plugin/CMakeFiles/StreamTracerFilter_qch.dir/build
-.PHONY : StreamTracerFilter_qch/fast
+TracerFilter_qch/fast:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_qch.dir/build.make plugin/CMakeFiles/TracerFilter_qch.dir/build
+.PHONY : TracerFilter_qch/fast
 
 # Convenience name for target.
-plugin/CMakeFiles/StreamTracerFilter.dir/rule:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/StreamTracerFilter.dir/rule
-.PHONY : plugin/CMakeFiles/StreamTracerFilter.dir/rule
+plugin/CMakeFiles/TracerFilter.dir/rule:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 plugin/CMakeFiles/TracerFilter.dir/rule
+.PHONY : plugin/CMakeFiles/TracerFilter.dir/rule
 
 # Convenience name for target.
-StreamTracerFilter: plugin/CMakeFiles/StreamTracerFilter.dir/rule
-.PHONY : StreamTracerFilter
+TracerFilter: plugin/CMakeFiles/TracerFilter.dir/rule
+.PHONY : TracerFilter
 
 # fast build rule for target.
-StreamTracerFilter/fast:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter.dir/build.make plugin/CMakeFiles/StreamTracerFilter.dir/build
-.PHONY : StreamTracerFilter/fast
+TracerFilter/fast:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter.dir/build.make plugin/CMakeFiles/TracerFilter.dir/build
+.PHONY : TracerFilter/fast
 
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.o: CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.o
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.o: CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.o
 
 # target to build an object file
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.o:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.o
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.o:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.o
 
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.i: CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.i
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.i: CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.i
 
 # target to preprocess a source file
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.i:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.i
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.i:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.i
 
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.s: CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.s
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.s: CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.s
 
 # target to generate assembly for a file
-CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.s:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.cxx.s
+CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.s:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.s
 
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.o: CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.o
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.o: CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.o
 
 # target to build an object file
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.o:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.o
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.o:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.o
 
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.i: CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.i
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.i: CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.i
 
 # target to preprocess a source file
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.i:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.i
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.i:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.i
 
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.s: CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.s
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.s: CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.s
 
 # target to generate assembly for a file
-CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.s:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.cxx.s
+CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.s:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.s
 
-CMakeFiles/StreamTracerFiltersCSInit.o: CMakeFiles/StreamTracerFiltersCSInit.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.o
+CMakeFiles/TracerFiltersCSInit.o: CMakeFiles/TracerFiltersCSInit.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCSInit.o
 
 # target to build an object file
-CMakeFiles/StreamTracerFiltersCSInit.cxx.o:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCSInit.cxx.o
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.cxx.o
+CMakeFiles/TracerFiltersCSInit.cxx.o:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCSInit.cxx.o
+.PHONY : CMakeFiles/TracerFiltersCSInit.cxx.o
 
-CMakeFiles/StreamTracerFiltersCSInit.i: CMakeFiles/StreamTracerFiltersCSInit.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.i
+CMakeFiles/TracerFiltersCSInit.i: CMakeFiles/TracerFiltersCSInit.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCSInit.i
 
 # target to preprocess a source file
-CMakeFiles/StreamTracerFiltersCSInit.cxx.i:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCSInit.cxx.i
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.cxx.i
+CMakeFiles/TracerFiltersCSInit.cxx.i:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCSInit.cxx.i
+.PHONY : CMakeFiles/TracerFiltersCSInit.cxx.i
 
-CMakeFiles/StreamTracerFiltersCSInit.s: CMakeFiles/StreamTracerFiltersCSInit.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.s
+CMakeFiles/TracerFiltersCSInit.s: CMakeFiles/TracerFiltersCSInit.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCSInit.s
 
 # target to generate assembly for a file
-CMakeFiles/StreamTracerFiltersCSInit.cxx.s:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/CMakeFiles/StreamTracerFiltersCSInit.cxx.s
-.PHONY : CMakeFiles/StreamTracerFiltersCSInit.cxx.s
+CMakeFiles/TracerFiltersCSInit.cxx.s:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCSInit.cxx.s
+.PHONY : CMakeFiles/TracerFiltersCSInit.cxx.s
 
-StreamTracerFilterPlugin.o: StreamTracerFilterPlugin.cxx.o
-.PHONY : StreamTracerFilterPlugin.o
+TracerFilterPlugin.o: TracerFilterPlugin.cxx.o
+.PHONY : TracerFilterPlugin.o
 
 # target to build an object file
-StreamTracerFilterPlugin.cxx.o:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter.dir/build.make plugin/CMakeFiles/StreamTracerFilter.dir/StreamTracerFilterPlugin.cxx.o
-.PHONY : StreamTracerFilterPlugin.cxx.o
+TracerFilterPlugin.cxx.o:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter.dir/build.make plugin/CMakeFiles/TracerFilter.dir/TracerFilterPlugin.cxx.o
+.PHONY : TracerFilterPlugin.cxx.o
 
-StreamTracerFilterPlugin.i: StreamTracerFilterPlugin.cxx.i
-.PHONY : StreamTracerFilterPlugin.i
+TracerFilterPlugin.i: TracerFilterPlugin.cxx.i
+.PHONY : TracerFilterPlugin.i
 
 # target to preprocess a source file
-StreamTracerFilterPlugin.cxx.i:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter.dir/build.make plugin/CMakeFiles/StreamTracerFilter.dir/StreamTracerFilterPlugin.cxx.i
-.PHONY : StreamTracerFilterPlugin.cxx.i
+TracerFilterPlugin.cxx.i:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter.dir/build.make plugin/CMakeFiles/TracerFilter.dir/TracerFilterPlugin.cxx.i
+.PHONY : TracerFilterPlugin.cxx.i
 
-StreamTracerFilterPlugin.s: StreamTracerFilterPlugin.cxx.s
-.PHONY : StreamTracerFilterPlugin.s
+TracerFilterPlugin.s: TracerFilterPlugin.cxx.s
+.PHONY : TracerFilterPlugin.s
 
 # target to generate assembly for a file
-StreamTracerFilterPlugin.cxx.s:
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter.dir/build.make plugin/CMakeFiles/StreamTracerFilter.dir/StreamTracerFilterPlugin.cxx.s
-.PHONY : StreamTracerFilterPlugin.cxx.s
+TracerFilterPlugin.cxx.s:
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build" && $(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter.dir/build.make plugin/CMakeFiles/TracerFilter.dir/TracerFilterPlugin.cxx.s
+.PHONY : TracerFilterPlugin.cxx.s
 
 # Help Target
 help:
@@ -339,23 +339,23 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... StreamTracerFilter_doc"
-	@echo "... StreamTracerFilter_qch"
-	@echo "... StreamTracerFilter_server_manager_modules_xml_content"
-	@echo "... StreamTracerFilter"
-	@echo "... StreamTracerFiltersCS"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.o"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.i"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/StreamTracerFiltersModuleClientServer.s"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.o"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.i"
-	@echo "... CMakeFiles/StreamTracerFiltersCS/vtkMyStreamTracerFilterClientServer.s"
-	@echo "... CMakeFiles/StreamTracerFiltersCSInit.o"
-	@echo "... CMakeFiles/StreamTracerFiltersCSInit.i"
-	@echo "... CMakeFiles/StreamTracerFiltersCSInit.s"
-	@echo "... StreamTracerFilterPlugin.o"
-	@echo "... StreamTracerFilterPlugin.i"
-	@echo "... StreamTracerFilterPlugin.s"
+	@echo "... TracerFilter_doc"
+	@echo "... TracerFilter_qch"
+	@echo "... TracerFilter_server_manager_modules_xml_content"
+	@echo "... TracerFilter"
+	@echo "... TracerFiltersCS"
+	@echo "... CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.o"
+	@echo "... CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.i"
+	@echo "... CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.s"
+	@echo "... CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.o"
+	@echo "... CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.i"
+	@echo "... CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.s"
+	@echo "... CMakeFiles/TracerFiltersCSInit.o"
+	@echo "... CMakeFiles/TracerFiltersCSInit.i"
+	@echo "... CMakeFiles/TracerFiltersCSInit.s"
+	@echo "... TracerFilterPlugin.o"
+	@echo "... TracerFilterPlugin.i"
+	@echo "... TracerFilterPlugin.s"
 .PHONY : help
 
 

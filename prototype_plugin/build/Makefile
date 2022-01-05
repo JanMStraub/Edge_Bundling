@@ -162,95 +162,95 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named StreamTracerFiltersCS
+# Target rules for targets named TracerFiltersCS
 
 # Build rule for target.
-StreamTracerFiltersCS: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFiltersCS
-.PHONY : StreamTracerFiltersCS
+TracerFiltersCS: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFiltersCS
+.PHONY : TracerFiltersCS
 
 # fast build rule for target.
-StreamTracerFiltersCS/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFiltersCS.dir/build.make plugin/CMakeFiles/StreamTracerFiltersCS.dir/build
-.PHONY : StreamTracerFiltersCS/fast
+TracerFiltersCS/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFiltersCS.dir/build.make plugin/CMakeFiles/TracerFiltersCS.dir/build
+.PHONY : TracerFiltersCS/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilter_server_manager_modules_xml_content
+# Target rules for targets named TracerFilter_server_manager_modules_xml_content
 
 # Build rule for target.
-StreamTracerFilter_server_manager_modules_xml_content: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilter_server_manager_modules_xml_content
-.PHONY : StreamTracerFilter_server_manager_modules_xml_content
+TracerFilter_server_manager_modules_xml_content: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilter_server_manager_modules_xml_content
+.PHONY : TracerFilter_server_manager_modules_xml_content
 
 # fast build rule for target.
-StreamTracerFilter_server_manager_modules_xml_content/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/build.make plugin/CMakeFiles/StreamTracerFilter_server_manager_modules_xml_content.dir/build
-.PHONY : StreamTracerFilter_server_manager_modules_xml_content/fast
+TracerFilter_server_manager_modules_xml_content/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/build.make plugin/CMakeFiles/TracerFilter_server_manager_modules_xml_content.dir/build
+.PHONY : TracerFilter_server_manager_modules_xml_content/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilter_doc
+# Target rules for targets named TracerFilter_doc
 
 # Build rule for target.
-StreamTracerFilter_doc: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilter_doc
-.PHONY : StreamTracerFilter_doc
+TracerFilter_doc: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilter_doc
+.PHONY : TracerFilter_doc
 
 # fast build rule for target.
-StreamTracerFilter_doc/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_doc.dir/build.make plugin/CMakeFiles/StreamTracerFilter_doc.dir/build
-.PHONY : StreamTracerFilter_doc/fast
+TracerFilter_doc/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_doc.dir/build.make plugin/CMakeFiles/TracerFilter_doc.dir/build
+.PHONY : TracerFilter_doc/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilter_qch
+# Target rules for targets named TracerFilter_qch
 
 # Build rule for target.
-StreamTracerFilter_qch: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilter_qch
-.PHONY : StreamTracerFilter_qch
+TracerFilter_qch: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilter_qch
+.PHONY : TracerFilter_qch
 
 # fast build rule for target.
-StreamTracerFilter_qch/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter_qch.dir/build.make plugin/CMakeFiles/StreamTracerFilter_qch.dir/build
-.PHONY : StreamTracerFilter_qch/fast
+TracerFilter_qch/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter_qch.dir/build.make plugin/CMakeFiles/TracerFilter_qch.dir/build
+.PHONY : TracerFilter_qch/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilter
+# Target rules for targets named TracerFilter
 
 # Build rule for target.
-StreamTracerFilter: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilter
-.PHONY : StreamTracerFilter
+TracerFilter: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilter
+.PHONY : TracerFilter
 
 # fast build rule for target.
-StreamTracerFilter/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/StreamTracerFilter.dir/build.make plugin/CMakeFiles/StreamTracerFilter.dir/build
-.PHONY : StreamTracerFilter/fast
+TracerFilter/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/CMakeFiles/TracerFilter.dir/build.make plugin/CMakeFiles/TracerFilter.dir/build
+.PHONY : TracerFilter/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilters
+# Target rules for targets named TracerFilters
 
 # Build rule for target.
-StreamTracerFilters: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilters
-.PHONY : StreamTracerFilters
+TracerFilters: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilters
+.PHONY : TracerFilters
 
 # fast build rule for target.
-StreamTracerFilters/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/StreamTracerFilters/CMakeFiles/StreamTracerFilters.dir/build.make plugin/StreamTracerFilters/CMakeFiles/StreamTracerFilters.dir/build
-.PHONY : StreamTracerFilters/fast
+TracerFilters/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/TracerFilters/CMakeFiles/TracerFilters.dir/build.make plugin/TracerFilters/CMakeFiles/TracerFilters.dir/build
+.PHONY : TracerFilters/fast
 
 #=============================================================================
-# Target rules for targets named StreamTracerFilters-hierarchy
+# Target rules for targets named TracerFilters-hierarchy
 
 # Build rule for target.
-StreamTracerFilters-hierarchy: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 StreamTracerFilters-hierarchy
-.PHONY : StreamTracerFilters-hierarchy
+TracerFilters-hierarchy: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TracerFilters-hierarchy
+.PHONY : TracerFilters-hierarchy
 
 # fast build rule for target.
-StreamTracerFilters-hierarchy/fast:
-	$(MAKE) $(MAKESILENT) -f plugin/StreamTracerFilters/CMakeFiles/StreamTracerFilters-hierarchy.dir/build.make plugin/StreamTracerFilters/CMakeFiles/StreamTracerFilters-hierarchy.dir/build
-.PHONY : StreamTracerFilters-hierarchy/fast
+TracerFilters-hierarchy/fast:
+	$(MAKE) $(MAKESILENT) -f plugin/TracerFilters/CMakeFiles/TracerFilters-hierarchy.dir/build.make plugin/TracerFilters/CMakeFiles/TracerFilters-hierarchy.dir/build
+.PHONY : TracerFilters-hierarchy/fast
 
 # Help Target
 help:
@@ -264,13 +264,13 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... StreamTracerFilter_doc"
-	@echo "... StreamTracerFilter_qch"
-	@echo "... StreamTracerFilter_server_manager_modules_xml_content"
-	@echo "... StreamTracerFilters-hierarchy"
-	@echo "... StreamTracerFilter"
-	@echo "... StreamTracerFilters"
-	@echo "... StreamTracerFiltersCS"
+	@echo "... TracerFilter_doc"
+	@echo "... TracerFilter_qch"
+	@echo "... TracerFilter_server_manager_modules_xml_content"
+	@echo "... TracerFilters-hierarchy"
+	@echo "... TracerFilter"
+	@echo "... TracerFilters"
+	@echo "... TracerFiltersCS"
 .PHONY : help
 
 
