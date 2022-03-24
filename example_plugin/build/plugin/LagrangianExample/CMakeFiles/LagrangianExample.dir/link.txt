@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../lib/paraview-5.10/plugins/LagrangianIntegrationModel/libLagrangianExample.a CMakeFiles/LagrangianExample.dir/vtkLagrangianIntegrationModelExample.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../lib/paraview-5.10/plugins/LagrangianIntegrationModel/libLagrangianExample.a

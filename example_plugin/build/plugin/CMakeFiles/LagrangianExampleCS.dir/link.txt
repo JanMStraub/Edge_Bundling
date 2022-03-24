@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../lib/libLagrangianExampleCS.a CMakeFiles/LagrangianExampleCS.dir/CMakeFiles/LagrangianExampleCS/vtkLagrangianIntegrationModelExampleClientServer.cxx.o CMakeFiles/LagrangianExampleCS.dir/CMakeFiles/LagrangianExampleCS/LagrangianExampleModuleClientServer.cxx.o CMakeFiles/LagrangianExampleCS.dir/CMakeFiles/LagrangianExampleCSInit.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../lib/libLagrangianExampleCS.a
