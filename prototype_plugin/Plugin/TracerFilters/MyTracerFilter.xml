@@ -1,32 +1,28 @@
 <ServerManagerConfiguration>
-  <!-- This is the server manager configuration XML. It defines the interface to
-       our new filter. As a rule of thumb, try to locate the configuration for
-       a filter already in ParaView (in Servers/ServerManager/Resources/*.xml)
-       that matches your filter and then model your xml on it -->
-  <ProxyGroup name="filters">
-   <SourceProxy name="MyStreamTracerFilter" class="vtkMyStreamTracerFilter" label="MyStreamTracer">
-     <Documentation
-        long_help="Create point attribute array by projecting points onto an StreamTracer vector."
-        short_help="Create a point array representing StreamTracer.">
-     </Documentation>
-     <InputProperty
-        name="Input"
-        command="SetInputConnection">
-           <ProxyGroupDomain name="groups">
-             <Group name="sources"/>
-             <Group name="filters"/>
-           </ProxyGroupDomain>
-           <DataTypeDomain name="input_type">
-             <DataType value="vtkDataSet"/>
-           </DataTypeDomain>
-      </InputProperty>
-
-      <PropertyGroup panel_widget="InteractiveLine">
-        <Property function="Point1WorldPosition" name="LowPoint" />
-        <Property function="Point2WorldPosition" name="HighPoint" />
-        <Property function="Input" name="Input" />
-      </PropertyGroup>
-   <!-- End MyStreamTracerFilter -->
-   </SourceProxy>
+  <ProxyGroup name="lagrangian_integration_models">
+    <Proxy base_proxygroup="lagrangian_integration_models_abstract"
+           base_proxyname="BasicIntegrationModel"
+           class="vtkLagrangianIntegrationModelExample"
+           name="LagrangianIntegrationModelExample"
+           label="Integration Model Example">
+      <StringVectorProperty animateable="0"
+                            command="SetInputArrayToProcess"
+                            default_values_delimiter=";"
+                            default_values="3;0;0;3;FlowVelocity"
+                            element_types="0 0 0 0 2"
+                            label="Flow Velocity"
+                            name="FlowVelocity"
+                            number_of_elements="5">
+        <ArrayListDomain name="array_list"
+                         attribute_type="Vectors"
+                         input_domain_name="input_array_3">
+          <RequiredProperties>
+            <Property function="Input"
+                      name="DummyInput" />
+          </RequiredProperties>
+        </ArrayListDomain>
+        <Documentation>This property contains the name of the array to use as flow velocity.</Documentation>
+      </StringVectorProperty>
+    </Proxy>
  </ProxyGroup>
 </ServerManagerConfiguration>

@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake
 
 # The command to remove a file.
-RM = /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake -E rm -f
+RM = /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -70,8 +70,8 @@ plugin/CMakeFiles/TracerFilter_qch: plugin/paraview_help/TracerFilter.qch
 
 plugin/paraview_help/TracerFilter.qch: /Applications/ParaView/lib/cmake/paraview-5.10/ParaViewClient.cmake
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir="/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Compiling Qt help for TracerFilter"
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake "-Doutput_dir=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" "-Doutput_file=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qhp" -Dnamespace=TracerFilter.org -Dfolder=TracerFilter -Dname=TracerFilter -Dtoc= "-Dpatterns=*.html_s*.css_s*.png_s*.jpg_s*.js" -D_paraview_generate_help_run=ON -P /Applications/ParaView/lib/cmake/paraview-5.10/ParaViewClient.cmake
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/qt@5/5.15.2_1/bin/qhelpgenerator "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qhp" -s -o "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qch"
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake "-Doutput_dir=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" "-Doutput_file=/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qhp" -Dnamespace=TracerFilter.org -Dfolder=TracerFilter -Dname=TracerFilter -Dtoc= "-Dpatterns=*.html_s*.css_s*.png_s*.jpg_s*.js" -D_paraview_generate_help_run=ON -P /Applications/ParaView/lib/cmake/paraview-5.10/ParaViewClient.cmake
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/qt@5/5.15.2_2/bin/qhelpgenerator "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qhp" -s -o "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter.qch"
 
 TracerFilter_qch: plugin/CMakeFiles/TracerFilter_qch
 TracerFilter_qch: plugin/paraview_help/TracerFilter.qch

@@ -44,10 +44,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake
+CMAKE_COMMAND = /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake
 
 # The command to remove a file.
-RM = /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake -E rm -f
+RM = /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -75,7 +75,7 @@ plugin/paraview_help/TracerFilter_doc.xslt: /Applications/ParaView/lib/cmake/par
 plugin/paraview_help/TracerFilter_doc.xslt: /Applications/ParaView/lib/cmake/paraview-5.10/paraview_servermanager_convert_html.xsl
 plugin/paraview_help/TracerFilter_doc.xslt: /Applications/ParaView/lib/cmake/paraview-5.10/paraview_servermanager_convert_wiki.xsl.in
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir="/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Generating documentation for TracerFilter_doc"
-	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/cmake/3.22.0/bin/cmake -Dxmlpatterns=/opt/homebrew/Cellar/qt@5/5.15.2_1/bin/xmlpatterns -Doutput_dir=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help -Doutput_file=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter_doc.xslt -Dxmls_file=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/CMakeFiles/TracerFilter_doc-xmls.txt -D_paraview_generate_proxy_documentation_run=ON -P /Applications/ParaView/lib/cmake/paraview-5.10/ParaViewClient.cmake
+	cd "/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help" && /opt/homebrew/Cellar/cmake/3.22.3/bin/cmake -Dxmlpatterns=/opt/homebrew/Cellar/qt@5/5.15.2_2/bin/xmlpatterns -Doutput_dir=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help -Doutput_file=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/paraview_help/TracerFilter_doc.xslt -Dxmls_file=/Users/jan/Google\ Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/CMakeFiles/TracerFilter_doc-xmls.txt -D_paraview_generate_proxy_documentation_run=ON -P /Applications/ParaView/lib/cmake/paraview-5.10/ParaViewClient.cmake
 
 TracerFilter_doc: plugin/CMakeFiles/TracerFilter_doc
 TracerFilter_doc: plugin/paraview_help/TracerFilter_doc.xslt

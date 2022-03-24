@@ -6,7 +6,7 @@ CXX_DEFINES = -Dkiss_fft_scalar=double
 
 CXX_INCLUDES = -I"/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/build/plugin/TracerFilters" -I"/Users/jan/Google Drive/Programmieren/bachelor_thesis/prototype_plugin/plugin/TracerFilters" -isystem /Applications/ParaView/include/paraview-5.10
 
-CXX_FLAGSarm64 =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -fPIC -std=gnu++11
+CXX_FLAGSarm64 =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fPIC -std=gnu++11
 
-CXX_FLAGS =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -fPIC -std=gnu++11
+CXX_FLAGS =  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -fPIC -std=gnu++11
 
