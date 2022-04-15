@@ -1,7 +1,0 @@
-NAME
-  TracerFilter
-DESCRIPTION
-  Tracer is a filter that integrates a vector field to generate streamlines and pathlines.
-REQUIRES_MODULES
-  VTK::CommonCore
-  VTK::FiltersCore

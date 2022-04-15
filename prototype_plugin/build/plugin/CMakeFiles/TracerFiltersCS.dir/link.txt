@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc ../lib/libTracerFiltersCS.a CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/vtkMyTracerFilterClientServer.cxx.o CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCS/TracerFiltersModuleClientServer.cxx.o CMakeFiles/TracerFiltersCS.dir/CMakeFiles/TracerFiltersCSInit.cxx.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib ../lib/libTracerFiltersCS.a
