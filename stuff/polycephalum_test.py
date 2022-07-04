@@ -39,20 +39,23 @@ class Environment:
                 self.agents.append(agent)
                 self.dataMap[randomN, randomM] = 1
                 
-      
-    ######
-    ### Insert graph nodes here
-    ######      
-    def spawnFood(self, position, strength = 3, rad = 6):
-        
+   
+    def spawnNodes(self, position, strength = 3, radius = 3):
         n, m = position
         y, x = np.ogrid[-n : self.N - n, -m : self.M - m] ### Check ##
-        mask = x ** 2 + y ** 2 <= rad ** 2
+        mask = x ** 2 + y ** 2 <= radius ** 2
         self.trailMap[mask] = strength  
         
+    
+    def spawnEdges(self, position, strength = 1, radius = 1):
+        n, m = position
+        y, x = np.ogrid[-n : self.N - n, -m : self.M - m] ### Check ##
+        mask = x ** 2 + y ** 2 <= radius ** 2
+        self.trailMap[mask] = strength 
         
-    def diffusionOperator(self, const = 0.6, sigma = 2):
-        self.trailMap = const * gaussian_filter(self.trailMap, sigma)
+        
+    def diffusionOperator(self, decayRate = 0.6, sigma = 2):
+        self.trailMap = decayRate * gaussian_filter(self.trailMap, sigma)
     
     
     def checkSurroundings(self, pixel, angle):
@@ -61,10 +64,12 @@ class Environment:
         y = np.sin(angle)
         
         # Pixel unoccupied
-        if (self.dataMap[(n - round(x)) % self.N, (m + round(y)) % self.M] == 0):
+        if (self.dataMap[(n - round(x)) % self.N, (m + round(y)) 
+                         % self.M] == 0):
             return ((n - round(x)) % self.N, (m + round(y)) % self.M)
         # Pixel occupied
-        elif (self.dataMap[(n - round(x)) % self.N, (m + round(y)) % self.M] == 1):
+        elif (self.dataMap[(n - round(x)) % self.N, (m + round(y)) 
+                           % self.M] == 1):
             return pixel
        
        
@@ -169,23 +174,26 @@ class Agent:
 ################################################################################
 
 def main():
-    
     N = 200
     M = 200
-    populationPercentage = 0.07
+    populationPercentage = 0.15
     sensorAngle = np.pi / 8
     rotationAngle = np.pi / 4
     sensorOffset = 9
     decayRate = 0.85
     sigma = 0.65
-    steps = 500
+    steps = 1000
     intervals = 8
     
-    ### Change if you want a gif ###
+    ### Change to False if you want a gif ###
     plot = False
     
     environment = Environment(N, M, populationPercentage)
     environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
+    environment.spawnNodes((50, 50))
+    environment.spawnNodes((50, 150))
+    environment.spawnNodes((150, 50))
+    environment.spawnNodes((150, 150))
     
     if (plot):
         dt = int(steps / intervals)
@@ -193,14 +201,27 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)
+            environment.spawnNodes((50, 50))
+            environment.spawnNodes((50, 150))
+            environment.spawnNodes((150, 50))
+            environment.spawnNodes((150, 150))
+            
+            
+            for j in range(50, 150):
+                environment.spawnEdges((j, j))
+                environment.spawnEdges((150, j))
+                environment.spawnEdges((j, 150))
+            
+            
             environment.motorStage()
             environment.sensoryStage()
+            print("Iteration: {}".format(i))
             
-            if i in samples:
+            if i == steps - 1:
                 fig = plt.figure(figsize = (8, 8), dpi = 200)
                 ax = fig.add_subplot(111)
                 ax.imshow(environment.trailMap)
-                ax.set_title("Polycephalum Test, step = {}".format(i))
+                ax.set_title("Polycephalum Test, step = {}".format(i + 1))
                 ax.text(0, -10, "Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {:.0f}%".format(np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), populationPercentage * 100))
                 plt.savefig("simulation_t{}.png".format(i))
                 plt.clf()
@@ -211,8 +232,20 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)
+            environment.spawnNodes((50, 50))
+            environment.spawnNodes((50, 150))
+            environment.spawnNodes((150, 50))
+            environment.spawnNodes((150, 150))
+            
+            for j in range(50, 150):
+                environment.spawnEdges((j, j))
+                environment.spawnEdges((150, j))
+                environment.spawnEdges((j, 150))
+            
             environment.motorStage()
             environment.sensoryStage()
+            print("Iteration: {}".format(i))
+            
             txt = plt.text(0, -10, "iteration: {} Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {:.0f}%".format(i, np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), populationPercentage * 100))
             im = plt.imshow(environment.trailMap, animated = True)
             ims.append([im, txt])
