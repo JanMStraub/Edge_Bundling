@@ -34,10 +34,11 @@
 # MacOS
 *.DS_Store
 
-#vtk
+# Vtk
 *.ninja_deps
 *.ninja_log
 
-#data
+# Data
 *.nc
 *.gif
+*.png

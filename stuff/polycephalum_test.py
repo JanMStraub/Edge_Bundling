@@ -16,6 +16,7 @@ from scipy.ndimage import gaussian_filter
 import random
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import json
 
 
 class Environment:
@@ -27,6 +28,7 @@ class Environment:
         self.trailMap = np.zeros(shape=(N, M)) # Continuum-based layer
         self.population = int(self.N * self.M * populationPercentage)
         self.agents = []
+        self.nodes = []
         
         
     def spawnAgents(self, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):
@@ -40,16 +42,19 @@ class Environment:
                 self.dataMap[randomN, randomM] = 1
                 
    
-    def spawnNodes(self, position, strength = 3, radius = 3):
+    def spawnNodes(self, id, position, strength = 3, radius = 3):
+        node = Node(id, position, strength, radius)
+        self.nodes.append(node)
+        
         n, m = position
-        y, x = np.ogrid[-n : self.N - n, -m : self.M - m] ### Check ##
+        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
         mask = x ** 2 + y ** 2 <= radius ** 2
         self.trailMap[mask] = strength  
         
     
     def spawnEdges(self, position, strength = 1, radius = 1):
         n, m = position
-        y, x = np.ogrid[-n : self.N - n, -m : self.M - m] ### Check ##
+        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
         mask = x ** 2 + y ** 2 <= radius ** 2
         self.trailMap[mask] = strength 
         
@@ -60,6 +65,7 @@ class Environment:
     
     def checkSurroundings(self, pixel, angle):
         n, m = pixel
+        # Check directions
         x = np.cos(angle)
         y = np.sin(angle)
         
@@ -91,6 +97,7 @@ class Environment:
                 randomSampleOrder[i].depositPhermoneTrail(self.trailMap)
     
     
+    # Look for trails
     def sensoryStage(self):
         randomSampleOrder = random.sample(self.agents, len(self.agents))
         
@@ -103,12 +110,10 @@ class Agent:
     
     def __init__(self, position, sensorAngle = np.pi / 8, rotationAngle = np.pi / 4, sensorOffset = 3):
         self.position = position
-        self.phi = 2 * np.pi * np.random.random()
+        self.phi = 2 * np.pi * np.random.random() # Looking direction
         self.sensorAngle = sensorAngle
         self.rotationAngle = rotationAngle
         self.sensorOffset = sensorOffset
-        # self.sensorWidth = sensorWidth
-        # self.stepSize = stepSize
         
         # Sensor initialization
         self.left = self.phi - sensorAngle
@@ -120,13 +125,14 @@ class Agent:
         n, m = self.position
         arr[n, m] = strength
         
-        
+
+    # Update sensor to new position
     def updateSensors(self):
         self.left = self.phi - self.sensorAngle
         self.center = self.phi              
         self.right = self.phi + self.sensorAngle
         
-        
+          
     def getSensorValues(self, arr):
         n, m = self.position
         row, column = arr.shape
@@ -146,7 +152,7 @@ class Agent:
 
         return (valueLeft, valueCenter, valueRight)
     
-    
+
     def sense(self, arr):
         left, center, right = self.getSensorValues(arr)
 
@@ -173,7 +179,37 @@ class Agent:
             
 ################################################################################
 
+class Node:
+    
+    def __init__(self, id, position, strength, radius):
+        self.id = id
+        self.position = position
+        self.strength = strength
+        self.radius = radius
+        self.connections = 0
+        self.neighbours = []
+        
+            
+################################################################################
+
+def readGraphData(path):
+    
+    # read graph data from JSON
+    file = open(path)
+    data = json.load(file)
+    file.close()
+    
+    # Read relevant data
+    numberOfNodes = data["graph"]["nodesNumber"]
+    numberOfEdges = data["graph"]["edgesNumber"]
+    edges = data["graph"]["edges"]
+    nodes = data["graph"]["properties"]["viewLayout"]["nodesValues"]
+      
+    return edges, nodes, numberOfEdges, numberOfNodes
+
+
 def main():
+    jsonFile = "code/data/simple_graph.json"
     N = 200
     M = 200
     populationPercentage = 0.15
@@ -182,36 +218,29 @@ def main():
     sensorOffset = 9
     decayRate = 0.85
     sigma = 0.65
-    steps = 1000
+    steps = 1
     intervals = 8
     
     ### Change to False if you want a gif ###
-    plot = False
+    plot = True
+    
+    edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
+    
+    # Convert node to tupel
+    for i in range(0, len(nodes)):
+        node = Node(i, tuple(map(int, nodes["0"].strip("()").split(','))), 3, 3)
     
     environment = Environment(N, M, populationPercentage)
     environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
-    environment.spawnNodes((50, 50))
-    environment.spawnNodes((50, 150))
-    environment.spawnNodes((150, 50))
-    environment.spawnNodes((150, 150))
+    #environment.spawnNodes()
     
     if (plot):
         dt = int(steps / intervals)
         samples = np.linspace(0, dt * intervals, intervals + 1)
         
         for i in range(steps):
-            environment.diffusionOperator(decayRate, sigma)
-            environment.spawnNodes((50, 50))
-            environment.spawnNodes((50, 150))
-            environment.spawnNodes((150, 50))
-            environment.spawnNodes((150, 150))
-            
-            
-            for j in range(50, 150):
-                environment.spawnEdges((j, j))
-                environment.spawnEdges((150, j))
-                environment.spawnEdges((j, 150))
-            
+            environment.diffusionOperator(decayRate, sigma)   
+            # environment.spawnNodes(nodes[])    
             
             environment.motorStage()
             environment.sensoryStage()
@@ -232,15 +261,6 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)
-            environment.spawnNodes((50, 50))
-            environment.spawnNodes((50, 150))
-            environment.spawnNodes((150, 50))
-            environment.spawnNodes((150, 150))
-            
-            for j in range(50, 150):
-                environment.spawnEdges((j, j))
-                environment.spawnEdges((150, j))
-                environment.spawnEdges((j, 150))
             
             environment.motorStage()
             environment.sensoryStage()
@@ -257,4 +277,5 @@ def main():
     return
     
 if __name__ == "__main__":
+    
     main()
