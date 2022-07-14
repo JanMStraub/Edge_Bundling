@@ -8,6 +8,14 @@ import random
 from agent import Agent
 from helper import calculateEdges
 
+"""_summary_
+Class used to create the environment for the graph and the agents to operate upon
+Returns:
+    _type_: _description_
+    environment: Object which serves as a controller for the algorithm
+    dataMap: Agent-based layer
+    trailMap: Continuum-based layer (Nodes)
+"""
 class Environment:
     
     def __init__(self, N = 200, M = 200, populationPercentage = 0.15):
@@ -19,25 +27,20 @@ class Environment:
         self.agents = []
         self.nodes = []
         self.edges = []
-        
-        
-    def spawnAgents(self, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):
-        while (np.sum(self.dataMap) < self.population):
-            randomN = np.random.randint(self.N)
-            randomM = np.random.randint(self.M)
-            
-            if (self.dataMap[randomN, randomM] == 0): # Check if pixel empty
-                agent = Agent((randomN, randomM), sensorAngle, rotationAngle, sensorOffset)
-                self.agents.append(agent)
-                self.dataMap[randomN, randomM] = 1
                 
-   
+                
+    """_summary_
+    Method uses to create node objects and save them in the nodes list for easy access
+    """
     def createNodes(self, nodes, strength = 3, radius = 3):
         for i in range(0, len(nodes)):
             node = Node(i, nodes[i], strength, radius)            
             self.nodes.append(node)
             
     
+    """_summary_
+    Spawn the created nodes on the trail map as "food" for the agents
+    """
     def spawnNodes(self, scale):
         for entry in self.nodes:
             a, b, c = entry.position
@@ -49,9 +52,11 @@ class Environment:
             mask = x ** 2 + y ** 2 <= entry.radius ** 2
             self.trailMap[mask] = entry.strength  
          
-            
+    
+    """_summary_
+    Create the edges between the nodes as a way to allow agents to spawn on them
+    """
     def createEdges(self, edges, strength = 3):  
-        
         for i in range(0, len(self.nodes)):
             for j in range(0, len(edges)):
                 if self.nodes[i].id == edges[j][0]:
@@ -60,24 +65,34 @@ class Environment:
                     self.edges.append(edge)
                     self.nodes[i].connections += 1
         
-        
-    def spawnEdges(self, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):        
+    
+    """_summary_
+    Spawn agents on the line connection the nodes
+    """
+    def spawnEdges(self, scale, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):        
         for entry in self.edges:
             for point in entry.points:
-                N = point[0] * 3
-                M = point[1] * 3
+                N = point[0] * scale
+                M = point[1] * scale
                 if (self.dataMap[N, M] == 0): # Check if pixel empty
                     agent = Agent((N, M), sensorAngle, rotationAngle, sensorOffset)
                     self.agents.append(agent)
                     self.dataMap[N, M] = 1
         
-        
+    
+    """_summary_
+    Used to diffuse the values on the trailMap to mimic natural diffusion of pheromones
+    """
     def diffusionOperator(self, decayRate = 0.6, sigma = 2):
         self.trailMap = decayRate * gaussian_filter(self.trailMap, sigma)
     
     
+    """_summary_
+    Check if the destination of the agent is occupied
+    """
     def checkSurroundings(self, pixel, angle):
         n, m = pixel
+        
         # Check directions
         x = np.cos(angle)
         y = np.sin(angle)
@@ -91,7 +106,10 @@ class Environment:
                            % self.M] == 1):
             return pixel
        
-       
+    
+    """_summary_
+    Move the agent to the new position if the dataMap allows it
+    """
     def motorStage(self):
         randomSampleOrder = random.sample(self.agents, len(self.agents))
         
@@ -107,10 +125,12 @@ class Environment:
                 randomSampleOrder[i].updateSensors()
                 self.dataMap[oldX,oldY] = 0
                 self.dataMap[newX,newY] = 1
-                randomSampleOrder[i].depositPhermoneTrail(self.trailMap)
+                randomSampleOrder[i].depositPheromoneTrail(self.trailMap)
     
-    
-    # Look for trails
+
+    """_summary_
+    Look for trails in the trailMap by using the sense() function of each agent
+    """
     def sensoryStage(self):
         randomSampleOrder = random.sample(self.agents, len(self.agents))
         
@@ -119,6 +139,12 @@ class Environment:
             
 ################################################################################
 
+"""_summary_
+Creates node object
+Returns:
+    _type_: _description_
+    node: Graph node
+"""
 class Node:
     
     def __init__(self, id, position, strength, radius):
@@ -133,6 +159,12 @@ class Node:
             
 ################################################################################
 
+"""_summary_
+Creates edge object
+Returns:
+    _type_: _description_
+    Edge: Graph edge
+"""
 class Edge:
     
     def __init__(self, id, points, strength):
@@ -140,3 +172,4 @@ class Edge:
         self.points = points
         self.strength = strength
         
+################################################################################

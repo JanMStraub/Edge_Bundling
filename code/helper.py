@@ -3,6 +3,10 @@
 # Imports
 import json
 
+
+"""_summary_
+Function for reading JSON file and converting string data to tupel
+"""
 def readGraphData(path):
     
     # read graph data from JSON
@@ -25,6 +29,10 @@ def readGraphData(path):
     return edges, nodeList, numberOfEdges, numberOfNodes
 
 
+"""_summary_
+Calculate points between edges
+Code from: https://stackoverflow.com/questions/25837544/get-all-points-of-a-straight-line-in-python
+"""
 def calculateEdges(node1, node2):
     
     points = []
@@ -66,4 +74,5 @@ def calculateEdges(node1, node2):
     # Reverse the list if the coordinates were reversed
     if rev:
         points.reverse()
+        
     return points

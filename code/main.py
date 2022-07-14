@@ -15,13 +15,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-from environment import Environment, Node
+from environment import Environment
 from helper import readGraphData
 
 
 def main():
+    
+    # Setup parameter
     jsonFile = "code/data/simple_graph.json"
-    N = 200
+    N = 200 
     M = 200
     populationPercentage = 0.15
     sensorAngle = np.pi / 8
@@ -32,19 +34,20 @@ def main():
     steps = 1
     intervals = 8
     scale = 3
+    plot = True # Change to False if you want a gif
     
-    ### Change to False if you want a gif ###
-    plot = True
+    # Import graph information from JSON
+    edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
     
-    edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
-    
+    # Setup environment
     environment = Environment(N, M, populationPercentage)
-    #environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
+    # environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
     environment.createNodes(nodes)
     environment.createEdges(edges)
     environment.spawnNodes(scale)
-    environment.spawnEdges(sensorAngle, rotationAngle, sensorOffset)
-    print(len(environment.agents))
+    environment.spawnEdges(scale, sensorAngle, rotationAngle, sensorOffset)
+    
+    print("Graph contains {} agents.".format(len(environment.agents)))
     
     if (plot):
         dt = int(steps / intervals)
@@ -52,7 +55,7 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)   
-            environment.spawnNodes(scale)
+            environment.spawnNodes(scale) # Nodes have to spawn each iteration because of decay #TODO change that
             
             environment.motorStage()
             environment.sensoryStage()
@@ -85,9 +88,10 @@ def main():
         fig.suptitle("Polycephalum Test")
         ani = animation.ArtistAnimation(fig, ims, interval = 50, blit = True, repeat_delay = 1000)
         ani.save("simulation.gif")
-            
+        
     return
-    
+
+
 if __name__ == "__main__":
     
     main()

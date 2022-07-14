@@ -3,6 +3,12 @@
 # Imports
 import numpy as np
 
+"""_summary_
+Class used to create agent object that deposits pheromone trail and can sense other pheromone trails left behind by other agents
+Returns:
+    _type_: _description_
+    agent: Agent object with sensor functionality
+"""
 class Agent:
     
     def __init__(self, position, sensorAngle = np.pi / 8, rotationAngle = np.pi / 4, sensorOffset = 3):
@@ -17,19 +23,27 @@ class Agent:
         self.center = self.phi
         self.right = self.phi + sensorAngle
         
-        
-    def depositPhermoneTrail(self, arr, strength = 1):
+    
+    """_summary_
+    Function used to create pheromone trail after each iteration
+    """
+    def depositPheromoneTrail(self, arr, strength = 1):
         n, m = self.position
         arr[n, m] = strength
         
 
-    # Update sensor to new position
+    """_summary_
+    Update sensor to new position
+    """
     def updateSensors(self):
         self.left = self.phi - self.sensorAngle
         self.center = self.phi              
         self.right = self.phi + self.sensorAngle
         
-          
+
+    """_summary_
+    Checks pheromone values in front, to the left and to the right of the agent
+    """
     def getSensorValues(self, arr):
         n, m = self.position
         row, column = arr.shape
@@ -50,6 +64,9 @@ class Agent:
         return (valueLeft, valueCenter, valueRight)
     
 
+    """_summary_
+    Uses values obtained by the getSensorValues() function to decide the direction for the next step
+    """
     def sense(self, arr):
         left, center, right = self.getSensorValues(arr)
 
