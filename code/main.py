@@ -14,25 +14,9 @@ Based on the work of:
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import json
 
 from environment import Environment, Node
-
-
-def readGraphData(path):
-    
-    # read graph data from JSON
-    file = open(path)
-    data = json.load(file)
-    file.close()
-    
-    # Read relevant data
-    numberOfNodes = data["graph"]["nodesNumber"]
-    numberOfEdges = data["graph"]["edgesNumber"]
-    edges = data["graph"]["edges"]
-    nodes = data["graph"]["properties"]["viewLayout"]["nodesValues"]
-      
-    return edges, nodes, numberOfEdges, numberOfNodes
+from helper import readGraphData
 
 
 def main():
@@ -47,19 +31,20 @@ def main():
     sigma = 0.65
     steps = 1
     intervals = 8
+    scale = 3
     
     ### Change to False if you want a gif ###
     plot = True
     
     edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
-    # Convert node to tupel
-    for i in range(0, len(nodes)):
-        node = Node(i, tuple(map(int, nodes["0"].strip("()").split(','))), 3, 3)
-    
     environment = Environment(N, M, populationPercentage)
-    environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
-    #environment.spawnNodes()
+    #environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
+    environment.createNodes(nodes)
+    environment.createEdges(edges)
+    environment.spawnNodes(scale)
+    environment.spawnEdges(sensorAngle, rotationAngle, sensorOffset)
+    print(len(environment.agents))
     
     if (plot):
         dt = int(steps / intervals)
@@ -67,7 +52,7 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)   
-            # environment.spawnNodes(nodes[])    
+            environment.spawnNodes(scale)
             
             environment.motorStage()
             environment.sensoryStage()

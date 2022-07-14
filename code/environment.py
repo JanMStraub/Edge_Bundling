@@ -6,6 +6,7 @@ from scipy.ndimage import gaussian_filter
 import random
 
 from agent import Agent
+from helper import calculateEdges
 
 class Environment:
     
@@ -17,6 +18,7 @@ class Environment:
         self.population = int(self.N * self.M * populationPercentage)
         self.agents = []
         self.nodes = []
+        self.edges = []
         
         
     def spawnAgents(self, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):
@@ -30,21 +32,44 @@ class Environment:
                 self.dataMap[randomN, randomM] = 1
                 
    
-    def spawnNodes(self, id, position, strength = 3, radius = 3):
-        node = Node(id, position, strength, radius)
-        self.nodes.append(node)
-        
-        n, m = position
-        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
-        mask = x ** 2 + y ** 2 <= radius ** 2
-        self.trailMap[mask] = strength  
-        
+    def createNodes(self, nodes, strength = 3, radius = 3):
+        for i in range(0, len(nodes)):
+            node = Node(i, nodes[i], strength, radius)            
+            self.nodes.append(node)
+            
     
-    def spawnEdges(self, position, strength = 1, radius = 1):
-        n, m = position
-        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
-        mask = x ** 2 + y ** 2 <= radius ** 2
-        self.trailMap[mask] = strength 
+    def spawnNodes(self, scale):
+        for entry in self.nodes:
+            a, b, c = entry.position
+            
+            # For testing
+            a *= scale
+            b *= scale
+            y, x = np.ogrid[-a : self.N - a, -b : self.M - b]
+            mask = x ** 2 + y ** 2 <= entry.radius ** 2
+            self.trailMap[mask] = entry.strength  
+         
+            
+    def createEdges(self, edges, strength = 3):  
+        
+        for i in range(0, len(self.nodes)):
+            for j in range(0, len(edges)):
+                if self.nodes[i].id == edges[j][0]:
+                    edge = Edge(i, calculateEdges(self.nodes[i], self.nodes[edges[j][1]]), strength)
+                    self.nodes[i].edges.append(edge)
+                    self.edges.append(edge)
+                    self.nodes[i].connections += 1
+        
+        
+    def spawnEdges(self, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):        
+        for entry in self.edges:
+            for point in entry.points:
+                N = point[0] * 3
+                M = point[1] * 3
+                if (self.dataMap[N, M] == 0): # Check if pixel empty
+                    agent = Agent((N, M), sensorAngle, rotationAngle, sensorOffset)
+                    self.agents.append(agent)
+                    self.dataMap[N, M] = 1
         
         
     def diffusionOperator(self, decayRate = 0.6, sigma = 2):
@@ -103,6 +128,15 @@ class Node:
         self.radius = radius
         self.connections = 0
         self.neighbours = []
+        self.edges = []
         
             
 ################################################################################
+
+class Edge:
+    
+    def __init__(self, id, points, strength):
+        self.id = id
+        self.points = points
+        self.strength = strength
+        
