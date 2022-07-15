@@ -1,2 +1,2 @@
-# bachelor_thesis
-Here's where i'd put my bachelor thesis, if I had one.
+# Local Iterative Optimization for Graph Bundling
+The goal of my thesis is to use a polycephalum algorithm to approximate a minimal Steiner tree on the graph
