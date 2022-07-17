@@ -18,12 +18,11 @@ Returns:
 """
 class Environment:
     
-    def __init__(self, N = 200, M = 200, populationPercentage = 0.15):
+    def __init__(self, N = 200, M = 200):
         self.N = N
         self.M = M
         self.dataMap = np.zeros(shape=(N, M)) # Agent-based layer
         self.trailMap = np.zeros(shape=(N, M)) # Continuum-based layer
-        self.population = int(self.N * self.M * populationPercentage)
         self.agents = []
         self.nodes = []
         self.edges = []
@@ -36,6 +35,15 @@ class Environment:
         for i in range(0, len(nodes)):
             node = Node(i, nodes[i], strength, radius)            
             self.nodes.append(node)
+            
+    """_summary_
+    This function is only for testing purposes
+    """     
+    def spawnNegativNode(self, position, strength = -3, radius = 5):
+        n, m = position
+        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
+        mask = x ** 2 + y ** 2 <= radius ** 2
+        self.trailMap[mask] = strength  
             
     
     """_summary_
@@ -84,6 +92,9 @@ class Environment:
     Used to diffuse the values on the trailMap to mimic natural diffusion of pheromones
     """
     def diffusionOperator(self, decayRate = 0.6, sigma = 2):
+        
+        #TODO exception for nodes
+        
         self.trailMap = decayRate * gaussian_filter(self.trailMap, sigma)
     
     

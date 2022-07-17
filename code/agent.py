@@ -69,11 +69,32 @@ class Agent:
     """
     def sense(self, arr):
         left, center, right = self.getSensorValues(arr)
-
-        if ((center > left) and (center > right)):
+        
+        #TODO check if trailMap has negativ value
+        
+        if ((left < 0) or (right < 0) or (center < 0)): # navigate out of nogo-zone
             self.phi += 0
             self.updateSensors()
-        elif ((left == right) and center < left):
+        elif ((center < 0) and ((left > 0) or (right > 0))): # avoid center
+            randomNumber = np.random.randint(2)
+            if randomNumber == 0:
+                self.phi += self.rotationAngle
+                self.updateSensors()
+            else:
+                self.phi -= self.rotationAngle
+                self.updateSensors()
+        elif ((left < 0) and (center > 0)): # avoid left
+            self.phi += self.rotationAngle
+            self.updateSensors()
+        elif ((right < 0) and (center > 0)): # avoid right
+            self.phi -= self.rotationAngle
+            self.updateSensors()
+            
+            
+        elif ((center > left) and (center > right)):
+            self.phi += 0
+            self.updateSensors()
+        elif ((left == right) and (center < left)):
             randomNumber = np.random.randint(2)
             if randomNumber == 0:
                 self.phi += self.rotationAngle

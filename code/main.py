@@ -25,33 +25,31 @@ def main():
     jsonFile = "code/data/simple_graph.json"
     N = 200 
     M = 200
-    populationPercentage = 0.15
-    sensorAngle = np.pi / 8
+    sensorAngle = np.pi / 4 # 22.5 or 45 angle
     rotationAngle = np.pi / 4
     sensorOffset = 9
     decayRate = 0.85
     sigma = 0.65
-    steps = 1
+    steps = 10
     intervals = 8
     scale = 3
-    plot = True # Change to False if you want a gif
+    plot = False # Change to False if you want a gif
     
     # Import graph information from JSON
     edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
     
     # Setup environment
-    environment = Environment(N, M, populationPercentage)
+    environment = Environment(N, M)
     # environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
     environment.createNodes(nodes)
     environment.createEdges(edges)
     environment.spawnNodes(scale)
     environment.spawnEdges(scale, sensorAngle, rotationAngle, sensorOffset)
     
-    print("Graph contains {} agents.".format(len(environment.agents)))
+    environment.spawnNegativNode((75, 75), strength = -5, radius = 15)
     
     if (plot):
         dt = int(steps / intervals)
-        samples = np.linspace(0, dt * intervals, intervals + 1)
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)   
@@ -66,7 +64,7 @@ def main():
                 ax = fig.add_subplot(111)
                 ax.imshow(environment.trailMap)
                 ax.set_title("Polycephalum Test, step = {}".format(i + 1))
-                ax.text(0, -10, "Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {:.0f}%".format(np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), populationPercentage * 100))
+                ax.text(0, -10, "Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {}".format(np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents)))
                 plt.savefig("simulation_t{}.png".format(i))
                 plt.clf()
     else:
@@ -76,12 +74,13 @@ def main():
         
         for i in range(steps):
             environment.diffusionOperator(decayRate, sigma)
+            environment.spawnNodes(scale)
             
             environment.motorStage()
             environment.sensoryStage()
             print("Iteration: {}".format(i))
             
-            txt = plt.text(0, -10, "iteration: {} Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {:.0f}%".format(i, np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), populationPercentage * 100))
+            txt = plt.text(0, -10, "iteration: {} Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {}".format(i, np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents)))
             im = plt.imshow(environment.trailMap, animated = True)
             ims.append([im, txt])
         
