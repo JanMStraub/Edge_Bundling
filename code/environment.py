@@ -84,7 +84,7 @@ class Environment:
             for point in entry.points:
                 N = point[0] * scale
                 M = point[1] * scale
-                if (self.dataMap[N, M] == 0 and self.controlMap[N, M] >= 0): # Check if pixel empty
+                if (self.dataMap[N, M] == 0 and self.controlMap[N, M] >= 0): # Check if pixel empty and not in offlimit area
                     agent = Agent((N, M), sensorAngle, rotationAngle, sensorOffset)
                     self.agents.append(agent)
                     self.dataMap[N, M] = 1

@@ -71,17 +71,27 @@ class Agent:
         leftT, centerT, rightT = self.getSensorValues(trailMap)
         leftC, centerC, rightC = self.getSensorValues(controlMap)
         
-        #TODO check if trailMap has negativ value
+        #TODO check if controlMap has negativ value
         #TODO what happens if agents spawn inside forbidden area
         
-        
-        """
-        if ((leftC < 0) and (rightC < 0) and (centerC < 0)): # navigate out of restricted zone
-            print("inside")
+        if ((leftC < 0) and (centerC < 0) and (rightC < 0)): # facing restricted zone
+            print("turn around")
+            self.phi += np.pi # 180 degree turn
+            self.updateSensors()
+        elif ((leftC < 0) and (centerC < 0) and (rightC >= 0)): # left blocked
+            print("avoid left")
+            self.phi += self.rotationAngle
+            self.updateSensors()
+        elif ((leftC >= 0) and (centerC < 0) and (rightC < 0)): # right blocked
+            print("avoid right")
+            self.phi -= self.rotationAngle
+            self.updateSensors()
+        elif ((leftC < 0) and (centerC >= 0) and (rightC < 0)): # left and right blocked
+            print("walk through")
             self.phi += 0
             self.updateSensors()
-        elif ((centerC < 0) and ((leftC > 0) or (rightC > 0))): # avoid center
-            print("front")
+        elif ((centerC < 0) and ((leftC >= 0) or (rightC >= 0))): # center blocked
+            print("left or right")
             randomNumber = np.random.randint(2)
             if randomNumber == 0:
                 self.phi += self.rotationAngle
@@ -89,35 +99,26 @@ class Agent:
             else:
                 self.phi -= self.rotationAngle
                 self.updateSensors()
-        elif ((leftC < 0) and (centerC > 0)): # avoid left
-            print("left")
-            self.phi += self.rotationAngle
-            self.updateSensors()
-        elif ((rightC < 0) and (centerC > 0)): # avoid right
-            print("right")
-            self.phi -= self.rotationAngle
-            self.updateSensors()
-        """
-            
-        if ((centerT > leftT) and (centerT > rightT)):
-            self.phi += 0
-            self.updateSensors()
-        elif ((leftT == rightT) and (centerT < leftT)):
-            randomNumber = np.random.randint(2)
-            if randomNumber == 0:
+        else:        
+            if ((centerT > leftT) and (centerT > rightT)):
+                self.phi += 0
+                self.updateSensors()
+            elif ((leftT == rightT) and (centerT < leftT)):
+                randomNumber = np.random.randint(2)
+                if randomNumber == 0:
+                    self.phi += self.rotationAngle
+                    self.updateSensors()
+                else:
+                    self.phi -= self.rotationAngle
+                    self.updateSensors()
+            elif (rightT > leftT):
                 self.phi += self.rotationAngle
                 self.updateSensors()
-            else:
+            elif (leftT > rightT):
                 self.phi -= self.rotationAngle
                 self.updateSensors()
-        elif (rightT > leftT):
-            self.phi += self.rotationAngle
-            self.updateSensors()
-        elif (leftT > rightT):
-            self.phi -= self.rotationAngle
-            self.updateSensors()
-        else:
-            self.phi += 0
-            self.updateSensors()
+            else:
+                self.phi += 0
+                self.updateSensors()
             
 ################################################################################
