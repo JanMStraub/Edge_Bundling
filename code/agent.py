@@ -67,15 +67,21 @@ class Agent:
     """_summary_
     Uses values obtained by the getSensorValues() function to decide the direction for the next step
     """
-    def sense(self, arr):
-        left, center, right = self.getSensorValues(arr)
+    def sense(self, trailMap, controlMap):
+        leftT, centerT, rightT = self.getSensorValues(trailMap)
+        leftC, centerC, rightC = self.getSensorValues(controlMap)
         
         #TODO check if trailMap has negativ value
+        #TODO what happens if agents spawn inside forbidden area
         
-        if ((left < 0) or (right < 0) or (center < 0)): # navigate out of nogo-zone
+        
+        """
+        if ((leftC < 0) and (rightC < 0) and (centerC < 0)): # navigate out of restricted zone
+            print("inside")
             self.phi += 0
             self.updateSensors()
-        elif ((center < 0) and ((left > 0) or (right > 0))): # avoid center
+        elif ((centerC < 0) and ((leftC > 0) or (rightC > 0))): # avoid center
+            print("front")
             randomNumber = np.random.randint(2)
             if randomNumber == 0:
                 self.phi += self.rotationAngle
@@ -83,18 +89,20 @@ class Agent:
             else:
                 self.phi -= self.rotationAngle
                 self.updateSensors()
-        elif ((left < 0) and (center > 0)): # avoid left
+        elif ((leftC < 0) and (centerC > 0)): # avoid left
+            print("left")
             self.phi += self.rotationAngle
             self.updateSensors()
-        elif ((right < 0) and (center > 0)): # avoid right
+        elif ((rightC < 0) and (centerC > 0)): # avoid right
+            print("right")
             self.phi -= self.rotationAngle
             self.updateSensors()
+        """
             
-            
-        elif ((center > left) and (center > right)):
+        if ((centerT > leftT) and (centerT > rightT)):
             self.phi += 0
             self.updateSensors()
-        elif ((left == right) and (center < left)):
+        elif ((leftT == rightT) and (centerT < leftT)):
             randomNumber = np.random.randint(2)
             if randomNumber == 0:
                 self.phi += self.rotationAngle
@@ -102,10 +110,10 @@ class Agent:
             else:
                 self.phi -= self.rotationAngle
                 self.updateSensors()
-        elif (right > left):
+        elif (rightT > leftT):
             self.phi += self.rotationAngle
             self.updateSensors()
-        elif (left > right):
+        elif (leftT > rightT):
             self.phi -= self.rotationAngle
             self.updateSensors()
         else:

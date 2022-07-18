@@ -23,17 +23,17 @@ def main():
     
     # Setup parameter
     jsonFile = "code/data/simple_graph.json"
-    N = 200 
+    N = 200
     M = 200
     sensorAngle = np.pi / 4 # 22.5 or 45 angle
     rotationAngle = np.pi / 4
     sensorOffset = 9
     decayRate = 0.85
     sigma = 0.65
-    steps = 10
+    steps = 250
     intervals = 8
     scale = 3
-    plot = False # Change to False if you want a gif
+    plot = True # Change to False if you want a gif
     
     # Import graph information from JSON
     edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
@@ -42,11 +42,12 @@ def main():
     environment = Environment(N, M)
     # environment.spawnAgents(sensorAngle, rotationAngle, sensorOffset)
     environment.createNodes(nodes)
+    # environment.spawnOffLimitNode((50, 50), strength = -1, radius = 15)
     environment.createEdges(edges)
     environment.spawnNodes(scale)
     environment.spawnEdges(scale, sensorAngle, rotationAngle, sensorOffset)
     
-    environment.spawnNegativNode((75, 75), strength = -5, radius = 15)
+
     
     if (plot):
         dt = int(steps / intervals)
@@ -60,12 +61,12 @@ def main():
             print("Iteration: {}".format(i))
             
             if i == steps - 1:
-                fig = plt.figure(figsize = (8, 8), dpi = 200)
+                fig = plt.figure(figsize = (10, 12), dpi = 200)
                 ax = fig.add_subplot(111)
                 ax.imshow(environment.trailMap)
                 ax.set_title("Polycephalum Test, step = {}".format(i + 1))
-                ax.text(0, -10, "Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {}".format(np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents)))
-                plt.savefig("simulation_t{}.png".format(i))
+                ax.text(0, -30, "Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {} Nodes: {} Edges: {}".format(np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents), numberOfNodes, numberOfEdges))
+                plt.savefig("simulation_t{}.png".format(i + 1))
                 plt.clf()
     else:
         ims = []
@@ -80,7 +81,7 @@ def main():
             environment.sensoryStage()
             print("Iteration: {}".format(i))
             
-            txt = plt.text(0, -10, "iteration: {} Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {}".format(i, np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents)))
+            txt = plt.text(0, -10, "iteration: {} Sensor Angle: {:.2f} Sensor Offset: {} Rotation Angle: {:.2f} Population: {} Nodes: {} Edges: {}".format(i, np.degrees(sensorAngle), sensorOffset, np.degrees(rotationAngle), len(environment.agents), numberOfNodes, numberOfEdges))
             im = plt.imshow(environment.trailMap, animated = True)
             ims.append([im, txt])
         
