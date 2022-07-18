@@ -30,10 +30,10 @@ def main():
     sensorOffset = 9
     decayRate = 0.85
     sigma = 0.65
-    steps = 10
+    steps = 250
     intervals = 8
     scale = 3
-    plot = False # Change to False if you want a gif
+    plot = True # Change to False if you want a gif
     
     # Import graph information from JSON
     edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
@@ -46,7 +46,7 @@ def main():
     environment.spawnNodes(scale)
     environment.spawnEdges(scale, sensorAngle, rotationAngle, sensorOffset)
     
-    environment.spawnNegativNode((75, 75), strength = -5, radius = 15)
+    # environment.spawnNegativNode((75, 75), strength = -5, radius = 15)
     
     if (plot):
         dt = int(steps / intervals)
