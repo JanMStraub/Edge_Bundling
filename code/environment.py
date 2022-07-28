@@ -15,6 +15,7 @@ Returns:
     environment: Object which serves as a controller for the algorithm
     dataMap: Agent-based layer
     trailMap: Continuum-based layer (Nodes)
+    controlMap: Map for managing the off limit areas for agents
 """
 class Environment:
     
@@ -23,6 +24,7 @@ class Environment:
         self.M = M
         self.dataMap = np.zeros(shape=(N, M)) # Agent-based layer
         self.trailMap = np.zeros(shape=(N, M)) # Continuum-based layer
+        self.controlMap = np.zeros(shape=(N, M)) # Graph-based layer
         self.agents = []
         self.nodes = []
         self.edges = []
@@ -39,11 +41,11 @@ class Environment:
     """_summary_
     This function is only for testing purposes
     """     
-    def spawnNegativNode(self, position, strength = -3, radius = 5):
+    def spawnOffLimitNode(self, position, strength = -1, radius = 5):
         n, m = position
         y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
         mask = x ** 2 + y ** 2 <= radius ** 2
-        self.trailMap[mask] = strength  
+        self.controlMap[mask] = strength  
             
     
     """_summary_
@@ -82,7 +84,7 @@ class Environment:
             for point in entry.points:
                 N = point[0] * scale
                 M = point[1] * scale
-                if (self.dataMap[N, M] == 0): # Check if pixel empty
+                if (self.dataMap[N, M] == 0 and self.controlMap[N, M] >= 0): # Check if pixel empty and not in offlimit area
                     agent = Agent((N, M), sensorAngle, rotationAngle, sensorOffset)
                     self.agents.append(agent)
                     self.dataMap[N, M] = 1
@@ -146,7 +148,7 @@ class Environment:
         randomSampleOrder = random.sample(self.agents, len(self.agents))
         
         for i in range(len(randomSampleOrder)):
-            randomSampleOrder[i].sense(self.trailMap)
+            randomSampleOrder[i].sense(self.trailMap, self.controlMap)
             
 ################################################################################
 
@@ -174,7 +176,7 @@ class Node:
 Creates edge object
 Returns:
     _type_: _description_
-    Edge: Graph edge
+    edge: Graph edge
 """
 class Edge:
     
