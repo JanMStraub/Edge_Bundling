@@ -7,7 +7,6 @@ Based on the work of:
 * Sage Jensen https://sagejenson.com/physarum
 * E. Carlbaum https://github.com/ecbaum/physarum/tree/8280cd131b68ed8dff2f0af58ca5685989b8cce7
 * Amitav Mitra https://github.com/ammitra/Physarum
-* Liang Liu https://www.researchgate.net/publication/272393174_Physarum_Optimization_A_Biology-Inspired_Algorithm_for_the_Steiner_Tree_Problem_in_Networks
 @author: Jan Straub
 """
 
