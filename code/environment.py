@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import numpy as np
-from scipy.ndimage import gaussian_filter
 import random
 
-from agent import Agent
-from helper import calculateEdges
+import numpy as np
+
+from helper import calculateEdgeLength, calculateEdges
+
+
 
 """_summary_
 Class used to create the environment for the graph and the agents to operate upon
@@ -20,135 +21,93 @@ Returns:
 class Environment:
     
     def __init__(self, N = 200, M = 200):
-        self.N = N
-        self.M = M
-        self.dataMap = np.zeros(shape=(N, M)) # Agent-based layer
-        self.trailMap = np.zeros(shape=(N, M)) # Continuum-based layer
-        self.controlMap = np.zeros(shape=(N, M)) # Graph-based layer
-        self.agents = []
-        self.nodes = []
-        self.edges = []
+        self._N = N
+        self._M = M
+        self._dataMap = np.zeros(shape = (N, M)) # Agent-based layer
+        self._trailMap = np.zeros(shape = (N, M)) # Continuum-based layer
+        self._controlMap = np.zeros(shape = (N, M)) # Graph-based layer
+        self._nodeList = []
+        self._edgeList = []
                 
                 
     """_summary_
     Method uses to create node objects and save them in the nodes list for easy access
     """
-    def createNodes(self, nodes, strength = 3, radius = 3):
+    def createNodes(self, nodes):
         for i in range(0, len(nodes)):
-            node = Node(i, nodes[i], strength, radius)            
-            self.nodes.append(node)
+            node = Node(i, nodes[i])      
+                  
+            self._nodeList.append(node)
+        
+        return
+    
+    
+    #TODO create Steiner point function
+            
             
     """_summary_
     This function is only for testing purposes
     """     
     def spawnOffLimitNode(self, position, strength = -1, radius = 5):
         n, m = position
-        y, x = np.ogrid[-n : self.N - n, -m : self.M - m]
+        y, x = np.ogrid[-n : self._N - n, -m : self._M - m]
         mask = x ** 2 + y ** 2 <= radius ** 2
-        self.controlMap[mask] = strength  
+        
+        self._controlMap[mask] = strength  
+
+        return
             
     
     """_summary_
     Spawn the created nodes on the trail map as "food" for the agents
     """
-    def spawnNodes(self, scale):
-        for entry in self.nodes:
-            a, b, c = entry.position
+    def spawnNodes(self, scale, radius = 3, strength = 2):
+        for entry in self._nodeList:
+            a, b, c = entry._position
             
             # For testing
             a *= scale
             b *= scale
-            y, x = np.ogrid[-a : self.N - a, -b : self.M - b]
-            mask = x ** 2 + y ** 2 <= entry.radius ** 2
-            self.trailMap[mask] = entry.strength  
+            y, x = np.ogrid[-a : self._N - a, -b : self._M - b]
+            mask = x ** 2 + y ** 2 <= radius ** 2
+            
+            self._trailMap[mask] = strength  
+            
+        return
          
     
     """_summary_
     Create the edges between the nodes as a way to allow agents to spawn on them
     """
-    def createEdges(self, edges, strength = 3):  
-        for i in range(0, len(self.nodes)):
-            for j in range(0, len(edges)):
-                if self.nodes[i].id == edges[j][0]:
-                    edge = Edge(i, calculateEdges(self.nodes[i], self.nodes[edges[j][1]]), strength)
-                    self.nodes[i].edges.append(edge)
-                    self.edges.append(edge)
-                    self.nodes[i].connections += 1
+    def createEdges(self, edges):  
+        for i in range(0, len(self._nodeList)): # 5
+            for j in range(0, len(edges)): # 10
+                if self._nodeList[i]._id == edges[j][0]:
+                    edge = Edge(j, calculateEdges(self._nodeList[i], self._nodeList[edges[j][1]]), calculateEdgeLength(self._nodeList[i], self._nodeList[edges[j][1]]), self._nodeList[i], self._nodeList[edges[j][1]])
+                    
+                    self._nodeList[i]._nodeEdgeList.append(edge)
+                    self._edgeList.append(edge)
+                    self._nodeList[i]._connections += 1
+                    
+                if self._nodeList[i]._id == edges[j][1]:
+                    self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
+                    self._nodeList[i]._connections += 1
         
-    
+        return
+        
+        
     """_summary_
     Spawn agents on the line connection the nodes
     """
     def spawnEdges(self, scale, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):        
-        for entry in self.edges:
+        for entry in self._edgeList:
             for point in entry.points:
                 N = point[0] * scale
                 M = point[1] * scale
-                if (self.dataMap[N, M] == 0 and self.controlMap[N, M] >= 0): # Check if pixel empty and not in offlimit area
-                    agent = Agent((N, M), sensorAngle, rotationAngle, sensorOffset)
-                    self.agents.append(agent)
-                    self.dataMap[N, M] = 1
+                if (self._dataMap[N, M] == 0 and self._controlMap[N, M] >= 0): # Check if pixel empty and not in offlimit area
+                    self._dataMap[N, M] = 1
         
-    
-    """_summary_
-    Used to diffuse the values on the trailMap to mimic natural diffusion of pheromones
-    """
-    def diffusionOperator(self, decayRate = 0.6, sigma = 2):
-        
-        #TODO exception for nodes
-        
-        self.trailMap = decayRate * gaussian_filter(self.trailMap, sigma)
-    
-    
-    """_summary_
-    Check if the destination of the agent is occupied
-    """
-    def checkSurroundings(self, pixel, angle):
-        n, m = pixel
-        
-        # Check directions
-        x = np.cos(angle)
-        y = np.sin(angle)
-        
-        # Pixel unoccupied
-        if (self.dataMap[(n - round(x)) % self.N, (m + round(y)) 
-                         % self.M] == 0):
-            return ((n - round(x)) % self.N, (m + round(y)) % self.M)
-        # Pixel occupied
-        elif (self.dataMap[(n - round(x)) % self.N, (m + round(y)) 
-                           % self.M] == 1):
-            return pixel
-       
-    
-    """_summary_
-    Move the agent to the new position if the dataMap allows it
-    """
-    def motorStage(self):
-        randomSampleOrder = random.sample(self.agents, len(self.agents))
-        
-        for i in range(len(randomSampleOrder)):
-            oldX, oldY = randomSampleOrder[i].position
-            newX, newY = self.checkSurroundings(randomSampleOrder[i].position, randomSampleOrder[i].phi)
-            
-            if ((newX,newY) == (oldX, oldY)):
-                randomSampleOrder[i].phi = 2 * np.pi * np.random.random()
-                randomSampleOrder[i].updateSensors()
-            else:
-                randomSampleOrder[i].position = (newX, newY)
-                randomSampleOrder[i].updateSensors()
-                self.dataMap[oldX,oldY] = 0
-                self.dataMap[newX,newY] = 1
-                randomSampleOrder[i].depositPheromoneTrail(self.trailMap)
-    
-
-    """_summary_
-    Look for trails in the trailMap by using the sense() function of each agent
-    """
-    def sensoryStage(self):
-        randomSampleOrder = random.sample(self.agents, len(self.agents))
-        
-        for i in range(len(randomSampleOrder)):
-            randomSampleOrder[i].sense(self.trailMap, self.controlMap)
+        return
             
 ################################################################################
 
@@ -160,15 +119,15 @@ Returns:
 """
 class Node:
     
-    def __init__(self, id, position, strength, radius):
-        self.id = id
-        self.position = position
-        self.strength = strength
-        self.radius = radius
-        self.connections = 0
-        self.neighbours = []
-        self.edges = []
-        
+    def __init__(self, id, position):
+        self._id = id
+        self._position = position
+        self._flux = 0
+        self._pressure = None
+        self._connections = 0
+        self._visited = False
+        self._sink = False
+        self._nodeEdgeList = []    
             
 ################################################################################
 
@@ -180,9 +139,15 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, points, strength):
-        self.id = id
-        self.points = points
-        self.strength = strength
+    def __init__(self, id, points, length, start, end, radius = 1):
+        self._id = id
+        self._points = points
+        self._length = length #TODO change it to edge cost once the algorithm works
+        self._radius = radius
+        self._start = start
+        self._end = end
+        self._conductivity = 0
+        self._flux = 0
+        self._flowRate = 0
         
 ################################################################################

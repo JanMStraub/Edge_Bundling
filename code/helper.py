@@ -2,6 +2,9 @@
 
 # Imports
 import json
+import math
+
+import numpy as np
 
 
 """_summary_
@@ -37,10 +40,9 @@ def calculateEdges(node1, node2):
     
     points = []
     ystep = None
-    rev = False
     
-    x1, y1, z1 = node1.position
-    x2, y2, z2 = node2.position
+    x1, y1, z1 = node1._position
+    x2, y2, z2 = node2._position
     issteep = abs(y2 - y1) > abs(x2 - x1)
     
     if issteep:
@@ -50,7 +52,6 @@ def calculateEdges(node1, node2):
     if x1 > x2:
         x1, x2 = x2, x1
         y1, y2 = y2, y1
-        rev = True
         
     deltax = x2 - x1
     deltay = abs(y2 - y1)
@@ -70,9 +71,38 @@ def calculateEdges(node1, node2):
         if error < 0:
             y += ystep
             error += deltax
-            
-    # Reverse the list if the coordinates were reversed
-    if rev:
-        points.reverse()
         
     return points
+
+
+"""_summary_
+Calculates the distance between two nodes
+"""
+def calculateEdgeLength(node1, node2):
+    return math.dist(node1._position, node2._position)
+
+
+def calculateFlux(viscosity, edge):
+    edge._flux = ((np.pi * edge._radius) ** 4 * (edge._start._pressure - edge._end._pressure)) / 8 * viscosity * edge._length
+
+    return
+    
+#TODO inflow and outflow check and calculation
+def calculatePressure(viscosity, edge, currentNode, source, sink):
+    if(edge._start != currentNode):
+        if (edge._end == sink):
+            edge._start._pressure = (-(source._flux * 8 * viscosity * edge._length) / (np.pi * edge._radius ** 4)) / len(sink._nodeEdgeList)
+        elif (edge._end == source):
+            source._pressure = (-((source._flux - 8 * viscosity * edge._length) / (np.pi * edge._radius) ** 4) + edge._start._pressure) / len(edge._start._nodeEdgeList)
+        else:
+            edge._start._pressure = edge._end._pressure
+        
+    if(edge._end != currentNode):
+        if (edge._start == sink):
+            edge._end._pressure = (-(source._flux * 8 * viscosity * edge._length) / (np.pi * edge._radius ** 4)) / len(sink._nodeEdgeList)
+        if (edge._start == source):
+            source._pressure = (-((source._flux - 8 * viscosity * edge._length) / (np.pi * edge._radius) ** 4) + edge._end._pressure) / len(edge._end._nodeEdgeList)
+        else:
+            edge._end._pressure = edge._start._pressure
+    
+    return
