@@ -6,7 +6,6 @@ import math
 
 import numpy as np
 
-
 """_summary_
 Function for reading JSON file and converting string data to tupel
 """
@@ -85,24 +84,4 @@ def calculateEdgeLength(node1, node2):
 def calculateFlux(viscosity, edge):
     edge._flux = ((np.pi * edge._radius) ** 4 * (edge._start._pressure - edge._end._pressure)) / 8 * viscosity * edge._length
 
-    return
-    
-#TODO inflow and outflow check and calculation
-def calculatePressure(viscosity, edge, currentNode, source, sink):
-    if(edge._start != currentNode):
-        if (edge._end == sink):
-            edge._start._pressure = (-(source._flux * 8 * viscosity * edge._length) / (np.pi * edge._radius ** 4)) / len(sink._nodeEdgeList)
-        elif (edge._end == source):
-            source._pressure = (-((source._flux - 8 * viscosity * edge._length) / (np.pi * edge._radius) ** 4) + edge._start._pressure) / len(edge._start._nodeEdgeList)
-        else:
-            edge._start._pressure = edge._end._pressure
-        
-    if(edge._end != currentNode):
-        if (edge._start == sink):
-            edge._end._pressure = (-(source._flux * 8 * viscosity * edge._length) / (np.pi * edge._radius ** 4)) / len(sink._nodeEdgeList)
-        if (edge._start == source):
-            source._pressure = (-((source._flux - 8 * viscosity * edge._length) / (np.pi * edge._radius) ** 4) + edge._end._pressure) / len(edge._end._nodeEdgeList)
-        else:
-            edge._end._pressure = edge._start._pressure
-    
     return

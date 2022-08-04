@@ -80,6 +80,7 @@ class Environment:
     Create the edges between the nodes as a way to allow agents to spawn on them
     """
     def createEdges(self, edges):  
+        
         for i in range(0, len(self._nodeList)): # 5
             for j in range(0, len(edges)): # 10
                 if self._nodeList[i]._id == edges[j][0]:
@@ -88,8 +89,10 @@ class Environment:
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
                     self._nodeList[i]._connections += 1
-                    
+                
+                #TODO index error with real graph
                 if self._nodeList[i]._id == edges[j][1]:
+                    # self._edgeList.append(edge)
                     self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
                     self._nodeList[i]._connections += 1
         

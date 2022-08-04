@@ -6,7 +6,7 @@ import random
 import numpy as np
 
 from environment import Environment
-from helper import readGraphData, calculateFlux, calculatePressure
+from helper import readGraphData, calculateFlux
 
 
 def calculateFlow(nodeList, edgeList, viscosity):
@@ -31,7 +31,7 @@ def calculateFlow(nodeList, edgeList, viscosity):
         
         for edge in currentNode.nodeEdgeList:
             
-            calculatePressure(viscosity, edge, currentNode, source, sink)
+            #calculatePressure(viscosity, edge, currentNode, source, sink)
             calculateFlux(viscosity, edge)
             
             if((edge._start != currentNode) and (edge._start._visited == False)):
@@ -61,8 +61,11 @@ def initializePressure(nodeList, initialFlow):
         if (entry._sink == False):
             pressureList = list()
             
-            for i in range(0, entry._connections):
-                pressureList.extend([1., -1.])
+            for i in range(0, entry._connections + 1):
+                if (i == entry._id):
+                    pressureList.extend([entry._connections])
+                else:
+                    pressureList.extend([-1])
                 
             b.append((initialFlow) / entry._nodeEdgeList[0]._conductivity) # (initialFlow * edge._length)
             A.append(pressureList)
@@ -70,30 +73,36 @@ def initializePressure(nodeList, initialFlow):
         elif (entry._sink == True):
             pressureList = list()
             
-            for i in range(0, entry._connections):
-                pressureList.extend([1., 0.])
+            for i in range(0, entry._connections + 1):
+                if (i == entry._id):
+                    pressureList.extend([entry._connections])
+                else:
+                    pressureList.extend([0])
                 
             b.append(((len(nodeList) - 1) * initialFlow) / entry._nodeEdgeList[0]._conductivity) # (len(nodeList) - 1) * initialFlow * edge._length)
             A.append(pressureList)
         else:
             pressureList = list()
             
-            for i in range(0, entry._connections):
-                pressureList.extend([1., -1.])
+            for i in range(0, entry._connections + 1):
+                if (i == entry._id):
+                    pressureList.extend([entry._connections])
+                else:
+                    pressureList.extend([-1])
             
             b.append(0)
             A.append(pressureList)
             
     A = np.array(A)
     b = np.array(b)
-    
-    for entry in A:
-        print(entry)
-        
-    for entry in b:
-        print(entry)
-
     x = np.linalg.solve(A, b)
+    
+    for i in range(len(nodeList)):
+        nodeList[i]._pressure = x[i]
+    
+    for entry in nodeList:
+        print(entry._sink)
+        print(entry._pressure)
     
     return
     
@@ -103,16 +112,15 @@ def physarumOptimizationAlgorithm(nodeList, edgeList, viscosity, initialFlow):
     randomNode._sink = True
     initializeConductivity(edgeList, viscosity)
     initializePressure(nodeList, initialFlow)
-    
-    
-    
+
     return
             
     
 # only for testing   
 def test():
     jsonFile = "code/data/simple_graph.json"
-    edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
+    edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
+     
     environment = Environment(200, 200)
     environment.createNodes(nodeList)
     environment.createEdges(edgeList)
