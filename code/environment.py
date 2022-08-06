@@ -126,7 +126,8 @@ class Node:
         self._id = id
         self._position = position
         self._flux = 0
-        self._pressure = None
+        self._pressure = 1
+        self._pressureVector = []
         self._connections = 0
         self._visited = False
         self._sink = False
@@ -142,15 +143,15 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, points, length, start, end, radius = 1):
+    def __init__(self, id, points, length, start, end, radius = 1, cost = 1):
         self._id = id
         self._points = points
-        self._length = length #TODO change it to edge cost once the algorithm works
+        self._length = length 
+        self._cost = cost #TODO figure out how to implement
         self._radius = radius
         self._start = start
         self._end = end
         self._conductivity = 0
         self._flux = 0
-        self._flowRate = 0
         
 ################################################################################
