@@ -11,39 +11,39 @@ def initializePressure(nodeList, initialFlow):
     A = list()
     b = list()
     
-    for entry in nodeList:
+    for node in nodeList:
         
-        if (entry._sink == False):
+        if (node._sink == False):
             pressureList = list()
             
-            for i in range(0, entry._connections + 1):
-                if (i == entry._id):
-                    pressureList.extend([entry._connections * entry._pressure])
+            for i in range(0, node._connections + 1):
+                if (i == node._id):
+                    pressureList.extend([node._connections * node._pressure])
                 else:
-                    pressureList.extend([-1 * entry._pressure])
+                    pressureList.extend([-1 * node._pressure])
                 
-            b.append((initialFlow * entry._nodeEdgeList[0]._length) / entry._nodeEdgeList[0]._conductivity)
+            b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
             A.append(pressureList)
             
-        elif (entry._sink == True):
+        elif (node._sink == True):
             pressureList = list()
             
-            for i in range(0, entry._connections + 1):
-                if (i == entry._id):
-                    pressureList.extend([entry._connections * entry._pressure])
+            for i in range(0, node._connections + 1):
+                if (i == node._id):
+                    pressureList.extend([node._connections * node._pressure])
                 else:
                     pressureList.extend([0])
                 
-            b.append(((len(nodeList) - 1) * initialFlow * entry._nodeEdgeList[0]._length) / entry._nodeEdgeList[0]._conductivity)
+            b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
             A.append(pressureList)
         else:
             pressureList = list()
             
-            for i in range(0, entry._connections + 1):
-                if (i == entry._id):
-                    pressureList.extend([entry._connections * entry._pressure])
+            for i in range(0, node._connections + 1):
+                if (i == node._id):
+                    pressureList.extend([node._connections * node._pressure])
                 else:
-                    pressureList.extend([-1 * entry._pressure])
+                    pressureList.extend([-1 * node._pressure])
             
             b.append(0)
             A.append(pressureList)
@@ -70,7 +70,9 @@ def physarumOptimizationAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFl
     
     calculateFlux(nodeList, edgeList)
     calculateConductivity(edgeList, sigma, rho)
-    calculatePressure(nodeList, edgeList, initialFlow)
+    
+    for ndoe in nodeList:
+        calculatePressure(node, edgeList, initialFlow)
     
 
     return
