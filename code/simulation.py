@@ -22,7 +22,7 @@ def initializePressure(nodeList, initialFlow):
                 else:
                     pressureList.extend([-1 * entry._pressure])
                 
-            b.append((initialFlow) / entry._nodeEdgeList[0]._conductivity) # (initialFlow * edge._length)
+            b.append((initialFlow * entry._nodeEdgeList[0]._length) / entry._nodeEdgeList[0]._conductivity)
             A.append(pressureList)
             
         elif (entry._sink == True):
@@ -34,7 +34,7 @@ def initializePressure(nodeList, initialFlow):
                 else:
                     pressureList.extend([0])
                 
-            b.append(((len(nodeList) - 1) * initialFlow) / entry._nodeEdgeList[0]._conductivity) # (len(nodeList) - 1) * initialFlow * edge._length)
+            b.append(((len(nodeList) - 1) * initialFlow * entry._nodeEdgeList[0]._length) / entry._nodeEdgeList[0]._conductivity)
             A.append(pressureList)
         else:
             pressureList = list()
