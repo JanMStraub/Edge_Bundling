@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import random
-
 import numpy as np
 
-from helper import calculateEdgeLength, calculateEdges
-
+from helper import calculateEdges
 
 
 """_summary_
@@ -79,12 +76,12 @@ class Environment:
     """_summary_
     Create the edges between the nodes as a way to allow agents to spawn on them
     """
-    def createEdges(self, edges):  
+    def createEdges(self, edges, edgeCost):  
         
         for i in range(0, len(self._nodeList)): # 5
             for j in range(0, len(edges)): # 10
                 if self._nodeList[i]._id == edges[j][0]:
-                    edge = Edge(j, calculateEdges(self._nodeList[i], self._nodeList[edges[j][1]]), calculateEdgeLength(self._nodeList[i], self._nodeList[edges[j][1]]), self._nodeList[i], self._nodeList[edges[j][1]])
+                    edge = Edge(j, calculateEdges(self._nodeList[i], self._nodeList[edges[j][1]]), self._nodeList[i], self._nodeList[edges[j][1]], edgeCost, 1)
                     
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
@@ -126,10 +123,9 @@ class Node:
         self._id = id
         self._position = position
         self._flux = 0
-        self._pressure = 1
+        self._initialPressure = 1
         self._pressureVector = []
         self._connections = 0
-        self._visited = False
         self._sink = False
         self._nodeEdgeList = []    
             
@@ -143,7 +139,7 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, points, length, start, end, radius = 1, cost = 1):
+    def __init__(self, id, points, start, end,  cost = 1, length = 1, radius = 1):
         self._id = id
         self._points = points
         self._length = length 
@@ -153,5 +149,3 @@ class Edge:
         self._end = end
         self._conductivity = 0
         self._flux = 0
-        
-################################################################################

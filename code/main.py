@@ -16,40 +16,46 @@ import matplotlib.animation as animation
 
 from environment import Environment
 from helper import readGraphData
-from simulation import calculateFlux
+from simulation import physarumAlgorithm, initializePhysarium
 
 
 def main():
     
     # Setup parameter
-    jsonFile = "code/data/simple_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     N = 200
     M = 200
-    viscosity = 4.5
-    flux = 0
     steps = 1
     intervals = 8
     scale = 3
     image = True # Change to False if you want a gif
     
+    # Slime parameters
+    viscosity = 1.0
+    initialFlow = 10.0
+    sigma = 0.000000375
+    rho = 0.0002
+    edgeCost = 1
+    
     # Import graph information from JSON
-    edges, nodes, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
+    edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
     
     # Setup environment
     environment = Environment(N, M)
-    environment.createNodes(nodes)
-    environment.createEdges(edges)
+    environment.createNodes(nodeList)
+    environment.createEdges(edgeList, edgeCost)
     environment.spawnNodes(scale)
     
-    # testing
-    # calculateFlux(environment._nodeList, environment._edgeList)
-    
+    # Setup simulation
+    initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
     
     if (image):
         dt = int(steps / intervals)
         
         for i in range(steps):   
-            environment.spawnNodes(scale) # Nodes have to spawn each iteration because of decay
+            
+            # Start simulation
+            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)
             
             print("Iteration: {}".format(i + 1))
             
@@ -67,10 +73,10 @@ def main():
         ax = fig.add_subplot(111)
         
         for i in range(steps):
-            environment.spawnNodes(scale)
             
-            environment.motorStage()
-            environment.sensoryStage()
+            # Start simulation
+            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)            
+            
             print("Iteration: {}".format(i + 1))
             
             txt = plt.text(0, -30, "iteration: {} Population: {} Nodes: {} Edges: {}".format(i + 1, len(environment._agents), numberOfNodes, numberOfEdges))

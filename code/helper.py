@@ -4,7 +4,6 @@
 import json
 import math
 
-import numpy as np
 
 """_summary_
 Function for reading JSON file and converting string data to tupel
@@ -32,7 +31,7 @@ def readGraphData(path):
 
 
 """_summary_
-Calculate points between edges
+Calculates points between edges
 Code from: https://stackoverflow.com/questions/25837544/get-all-points-of-a-straight-line-in-python
 """
 def calculateEdges(node1, node2):
@@ -79,62 +78,3 @@ Calculates the distance between two nodes
 """
 def calculateEdgeLength(node1, node2):
     return math.dist(node1._position, node2._position)
-
-
-def initializeConductivity(edgeList, viscosity):
-    for edge in edgeList:
-        edge._conductivity = (np.pi * edge._radius ** 4) / (8 * viscosity)
-    
-    return
-
-
-def initializePressure(nodeList, initialFlow):
-    A = list()
-    b = list()
-    
-    for node in nodeList:
-        
-        if (node._sink == False):
-            pressureList = list()
-            
-            for i in range(0, node._connections + 1):
-                if (i == node._id):
-                    pressureList.extend([node._connections * node._pressure])
-                else:
-                    pressureList.extend([-1 * node._pressure])
-                
-            b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-            A.append(pressureList)
-            
-        elif (node._sink == True):
-            pressureList = list()
-            
-            for i in range(0, node._connections + 1):
-                if (i == node._id):
-                    pressureList.extend([node._connections * node._pressure])
-                else:
-                    pressureList.extend([0])
-                
-            b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-            A.append(pressureList)
-        else:
-            pressureList = list()
-            
-            for i in range(0, node._connections + 1):
-                if (i == node._id):
-                    pressureList.extend([node._connections * node._pressure])
-                else:
-                    pressureList.extend([-1 * node._pressure])
-            
-            b.append(0)
-            A.append(pressureList)
-            
-    A = np.array(A)
-    b = np.array(b)
-    x = np.linalg.solve(A, b)
-    
-    for i in range(len(nodeList)):
-        nodeList[i]._pressure = x[i]
-        nodeList[i]._pressureVector.append(x[i])
-    
-    return
