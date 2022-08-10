@@ -34,7 +34,7 @@ def readGraphData(path):
 Calculates points between edges
 Code from: https://stackoverflow.com/questions/25837544/get-all-points-of-a-straight-line-in-python
 """
-def calculateEdges(node1, node2):
+def calculateEdgePoints(node1, node2):
     
     points = []
     ystep = None

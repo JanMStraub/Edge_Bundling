@@ -3,7 +3,7 @@
 # Imports
 import numpy as np
 
-from helper import calculateEdges
+from helper import calculateEdgePoints
 
 
 """_summary_
@@ -30,9 +30,9 @@ class Environment:
     """_summary_
     Method uses to create node objects and save them in the nodes list for easy access
     """
-    def createNodes(self, nodes):
-        for i in range(0, len(nodes)):
-            node = Node(i, nodes[i])      
+    def createNodes(self, nodeList):
+        for i in range(0, len(nodeList)):
+            node = Node(i, nodeList[i])      
                   
             self._nodeList.append(node)
         
@@ -76,20 +76,21 @@ class Environment:
     """_summary_
     Create the edges between the nodes as a way to allow agents to spawn on them
     """
-    def createEdges(self, edges, edgeCost):  
+    def createEdges(self, edgeList, edgeCost):  
         
         for i in range(0, len(self._nodeList)): # 5
-            for j in range(0, len(edges)): # 10
-                if self._nodeList[i]._id == edges[j][0]:
-                    edge = Edge(j, calculateEdges(self._nodeList[i], self._nodeList[edges[j][1]]), self._nodeList[i], self._nodeList[edges[j][1]], edgeCost, 1)
+            for j in range(0, len(edgeList)): # 10
+                if self._nodeList[i]._id == edgeList[j][0]:
+                    edge = Edge(j, calculateEdgePoints(self._nodeList[i], self._nodeList[edgeList[j][1]]), self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost, 1)
                     
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
                     self._nodeList[i]._connections += 1
                 
                 #TODO index error with real graph
-                if self._nodeList[i]._id == edges[j][1]:
-                    # self._edgeList.append(edge)
+        for i in range(0, len(self._nodeList)): # 5
+            for j in range(0, len(edgeList)): # 10
+                if self._nodeList[i]._id == edgeList[j][1]:
                     self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
                     self._nodeList[i]._connections += 1
         
