@@ -62,13 +62,12 @@ def initializePressure(nodeList, initialFlow):
                 
                 b.append(0)
                 A.append(pressureList)
-                
+
         A = np.array(A)
         b = np.array(b)
         x = np.linalg.solve(A, b)
         
         for i in range(len(nodeList)):
-            nodeList[i]._initialPressure = x[i]
             nodeList[i]._pressureVector.append(x[i])
         
         sinkNode._sink = False
@@ -94,7 +93,7 @@ Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
 def calculateConductivity(edgeList, sigma, rho):
     for edge in edgeList:
-        edge._conductivity = edge._conductivity + (sigma * abs(edge._flux - rho * edge._cost * edge._conductivity))
+        edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
     
     return
 
@@ -102,32 +101,48 @@ def calculateConductivity(edgeList, sigma, rho):
 """_summary_
 Approximates the pressure change (p^t+1) for each node using equation (8)
 """
-def calculatePressure(node, edgeList, initialFlow):
-    
-    if (node._sink == False):
-        #node._pressureVector.clear() # Might have to change that
+def calculatePressure(nodeList, initialFlow):
+     
+    for sinkNode in nodeList:
+        sinkNode._sink = True
         
-        for edge in node._nodeEdgeList:
-            if edge._start._id != node._id:
-                node._pressureVector.append((initialFlow * edge._length + edge._conductivity * edge._start._pressureVector[edge._id]) / edge._conductivity)
-            if edge._end._id != node._id:
-                node._pressureVector.append((initialFlow * edge._length + edge._conductivity * edge._end._pressureVector[edge._id]) / edge._conductivity)
+        for node in nodeList:
+
+            if (node._sink == False):
+                
+                conductivitySum = 0
+                conductivityPressureSum = 0
+                
+                for edge in node._nodeEdgeList:
+                    if edge._start._id != node._id:
+                        conductivityPressureSum += edge._conductivity * edge._start._pressureVector[node._id]
+                    if edge._end._id != node._id:
+                        conductivityPressureSum += edge._conductivity * edge._end._pressureVector[node._id]
+                        
+                    conductivitySum += edge._conductivity
+                
+                node._pressureVector.append((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / conductivitySum)
+                
+            elif (node._sink == True):
+                for edge in node._nodeEdgeList:
+                    node._pressureVector.append(0)
+                    
+            else:
+                conductivitySum = 0
+                conductivityPressureSum = 0
+                
+                for edge in node._nodeEdgeList:
+                    if edge._start._id != node._id:
+                        conductivityPressureSum += edge._conductivity * edge._start._pressureVector[node._id]
+                    if edge._end._id != node._id:
+                        conductivityPressureSum += edge._conductivity * edge._end._pressureVector[node._id]
+                        
+                    conductivitySum += edge._conductivity
+                
+                node._pressureVector.append(conductivityPressureSum / conductivitySum)
             
-    elif (node._sink == True):
-        #node._pressureVector.clear()
+        sinkNode._sink = False
         
-        for edge in node._nodeEdgeList:
-            node._pressureVector.append(0)
-            
-    else:
-        #node._pressureVector.clear()
-        
-        for edge in node._nodeEdgeList:
-            if edge._start._id != node._id:
-                node._pressureVector.append((edge._conductivity * edge._start._pressureVector[edge._id]) / edge._conductivity)
-            if edge._end._id != node._id:
-                node._pressureVector.append((edge._conductivity * edge._end._pressureVector[edge._id]) / edge._conductivity)
-    
     return
 
 
@@ -148,5 +163,6 @@ def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, s
 
     calculateFlux(nodeList, edgeList)
     calculateConductivity(edgeList, sigma, rho)
+    calculatePressure(nodeList, initialFlow)
 
     return

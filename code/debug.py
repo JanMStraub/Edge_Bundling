@@ -24,7 +24,7 @@ Prints the initial pressure for each node
 """
 def printInitialPressure(nodeList):
     for node in nodeList:
-        print("Initial pressure for node {}: {}".format(node._id, node._pressureVector[0]))
+        print("Initial pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
     
@@ -77,6 +77,8 @@ def test():
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, 1)
     
+    for node in environment._nodeList:
+        print("id: " + str(node._id) + " edge: " + str(node._nodeEdgeList))
     
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
     
@@ -90,7 +92,6 @@ def test():
     printFlux(environment._edgeList)
     printConductivity(environment._edgeList)
     printPressure(environment._nodeList)
-    
     
     return
     
