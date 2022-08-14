@@ -26,42 +26,45 @@ def initializePressure(nodeList, initialFlow):
         b = list()
         
         for node in nodeList:
-            
+
             if (node._sink == False):
-                pressureList = list()
+                pressureVector = [0] * len(nodeList)
+
+                for i in range(len(nodeList)):
+                    for j in range(len(node._neighbourIDs)):
+                        if (i == node._id):
+                            pressureVector[i] = node._connections * node._initialPressure
+                        elif (i == node._neighbourIDs[j]):
+                            pressureVector[i] = -1 * node._initialPressure
                 
-                for i in range(0, node._connections + 1):
-                    if (i == node._id):
-                        pressureList.extend([node._connections * node._initialPressure])
-                    else:
-                        pressureList.extend([-1 * node._initialPressure])
-                    
                 b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                A.append(pressureList)
+                A.append(pressureVector)
                 
             elif (node._sink == True):
-                pressureList = list()
+                pressureVector = [0] * len(nodeList)
                 
-                for i in range(0, node._connections + 1):
-                    if (i == node._id):
-                        pressureList.extend([node._connections * node._initialPressure])
-                    else:
-                        pressureList.extend([0])
+                for i in range(len(nodeList)):
+                    for j in range(len(node._neighbourIDs)):
+                        if (i == node._id):
+                            pressureVector[i] = node._connections * node._initialPressure
+                        elif (i == node._neighbourIDs[j]):
+                            pressureVector[i] = 0
                     
                 b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                A.append(pressureList)
+                A.append(pressureVector)
                 
             else:
-                pressureList = list()
+                pressureVector = [0] * len(nodeList)
                 
-                for i in range(0, node._connections + 1):
-                    if (i == node._id):
-                        pressureList.extend([node._connections * node._initialPressure])
-                    else:
-                        pressureList.extend([-1 * node._initialPressure])
+                for i in range(node._connections + 1):
+                    for j in range(len(node._neighbourIDs)):
+                        if (i == node._id):
+                            pressureVector[i] = node._connections * node._initialPressure
+                        elif (i == node._neighbourIDs[j]):
+                            pressureVector[i] = -1 * node._initialPressure
                 
                 b.append(0)
-                A.append(pressureList)
+                A.append(pressureVector)
 
         A = np.array(A)
         b = np.array(b)
@@ -81,7 +84,7 @@ Calculates the flux (Q^t) throught each edge using equation (5)
 def calculateFlux(nodeList, edgeList):
     for edge in edgeList:
         pressureSum = 0
-        for i in range(0, len(nodeList)):
+        for i in range(len(nodeList)):
             pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
         edge._flux = (edge._conductivity / edge._length) * pressureSum
     

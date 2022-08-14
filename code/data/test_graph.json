@@ -4,12 +4,16 @@
   "comment": "",
   "graph": {
     "graphID": 0,
-    "nodesNumber": 2,
+    "nodesNumber": 3,
     "edgesNumber": 1,
     "edges": [
       [
         0,
         1
+      ],
+      [
+        0,
+        2
       ]
     ],
     "properties": {
@@ -19,7 +23,8 @@
         "edgeDefault": "()",
         "nodesValues": {
           "0": "(28,40,0)",
-          "1": "(15,31,0)"
+          "1": "(15,31,0)",
+          "2": "(1,1,0)"
         }
       }
     },

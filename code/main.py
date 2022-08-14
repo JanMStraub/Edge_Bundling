@@ -14,6 +14,9 @@ Based on the work of:
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+from tqdm import tqdm
+from time import sleep
+
 from environment import Environment
 from helper import readGraphData
 from simulation import physarumAlgorithm, initializePhysarium
@@ -25,7 +28,7 @@ def main():
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     N = 200
     M = 200
-    steps = 1
+    steps = 10
     intervals = 8
     scale = 3
     image = True # Change to False if you want a gif
@@ -52,12 +55,10 @@ def main():
     if (image):
         dt = int(steps / intervals)
         
-        for i in range(steps):   
+        for i in tqdm(range(steps), desc="Iteration progress"):   
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)
-            
-            print("Iteration: {}".format(i + 1))
             
             if i == steps - 1:
                 fig = plt.figure(figsize = (10, 12), dpi = 200)
@@ -67,12 +68,15 @@ def main():
                 ax.text(0, -30, "Nodes: {} Edges: {}".format(numberOfNodes, numberOfEdges))
                 plt.savefig("simulation_t{}.png".format(i + 1))
                 plt.clf()
+            
+            sleep(.1)
+            
     else:
         ims = []
         fig = plt.figure(figsize = (10, 12), dpi = 100)
         ax = fig.add_subplot(111)
         
-        for i in range(steps):
+        for i in tqdm(range(steps), desc="Iteration progress"):
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)            
@@ -82,6 +86,8 @@ def main():
             txt = plt.text(0, -30, "iteration: {} Population: {} Nodes: {} Edges: {}".format(i + 1, len(environment._agents), numberOfNodes, numberOfEdges))
             im = plt.imshow(environment._trailMap, animated = True)
             ims.append([im, txt])
+            
+            sleep(.1)
         
         fig.suptitle("Polycephalum Test")
         ani = animation.ArtistAnimation(fig, ims, interval = 50, blit = True, repeat_delay = 1000)

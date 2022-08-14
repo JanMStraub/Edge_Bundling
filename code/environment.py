@@ -86,13 +86,23 @@ class Environment:
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
                     self._nodeList[i]._connections += 1
+                    
+                    if (edge._start._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
+                    elif (edge._end._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
                 
-                #TODO index error with real graph
         for i in range(0, len(self._nodeList)): # 5
             for j in range(0, len(edgeList)): # 10
                 if self._nodeList[i]._id == edgeList[j][1]:
                     self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
                     self._nodeList[i]._connections += 1
+                    
+                    if (edge._start._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
+                    elif (edge._end._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
+                    
         
         return
         
@@ -129,6 +139,7 @@ class Node:
         self._connections = 0
         self._sink = False
         self._nodeEdgeList = []    
+        self._neighbourIDs = []
             
 ################################################################################
 
