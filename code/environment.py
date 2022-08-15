@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import scipy.misc
+
 import numpy as np
+
+from skimage.draw import line
 
 from helper import calculateEdgePoints
 
@@ -21,8 +25,6 @@ class Environment:
         self._N = N
         self._M = M
         self._dataMap = np.zeros(shape = (N, M)) # Agent-based layer
-        self._trailMap = np.zeros(shape = (N, M)) # Continuum-based layer
-        self._controlMap = np.zeros(shape = (N, M)) # Graph-based layer
         self._nodeList = []
         self._edgeList = []
                 
@@ -41,34 +43,20 @@ class Environment:
     
     #TODO create Steiner point function
             
-            
-    """_summary_
-    This function is only for testing purposes
-    """     
-    def spawnOffLimitNode(self, position, strength = -1, radius = 5):
-        n, m = position
-        y, x = np.ogrid[-n : self._N - n, -m : self._M - m]
-        mask = x ** 2 + y ** 2 <= radius ** 2
-        
-        self._controlMap[mask] = strength  
-
-        return
-            
     
     """_summary_
     Spawn the created nodes on the trail map as "food" for the agents
     """
-    def spawnNodes(self, scale, radius = 3, strength = 2):
+    def spawnNodes(self, scale, radius = 3):
         for entry in self._nodeList:
             a, b, c = entry._position
-            
-            # For testing
+          
             a *= scale
             b *= scale
             y, x = np.ogrid[-a : self._N - a, -b : self._M - b]
             mask = x ** 2 + y ** 2 <= radius ** 2
             
-            self._trailMap[mask] = strength  
+            self._dataMap[mask] = 1  
             
         return
          
@@ -78,8 +66,8 @@ class Environment:
     """
     def createEdges(self, edgeList, edgeCost):  
         
-        for i in range(0, len(self._nodeList)): # 5
-            for j in range(0, len(edgeList)): # 10
+        for i in range(0, len(self._nodeList)):
+            for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][0]:
                     edge = Edge(j, calculateEdgePoints(self._nodeList[i], self._nodeList[edgeList[j][1]]), self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost, 1)
                     
@@ -92,8 +80,8 @@ class Environment:
                     elif (edge._end._id != self._nodeList[i]._id):
                         self._nodeList[i]._neighbourIDs.append(edge._end._id)
                 
-        for i in range(0, len(self._nodeList)): # 5
-            for j in range(0, len(edgeList)): # 10
+        for i in range(0, len(self._nodeList)):
+            for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][1]:
                     self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
                     self._nodeList[i]._connections += 1
@@ -110,14 +98,12 @@ class Environment:
     """_summary_
     Spawn agents on the line connection the nodes
     """
-    def spawnEdges(self, scale, sensorAngle = np.pi / 4, rotationAngle = np.pi / 8, sensorOffset = 9):        
-        for entry in self._edgeList:
-            for point in entry.points:
-                N = point[0] * scale
-                M = point[1] * scale
-                if (self._dataMap[N, M] == 0 and self._controlMap[N, M] >= 0): # Check if pixel empty and not in offlimit area
-                    self._dataMap[N, M] = 1
+    def spawnEdges(self, scale):        
         
+        for entry in self._edgeList:    
+            rr, cc = line(entry._start._position[0] * scale, entry._start._position[1] * scale, entry._end._position[0] * scale, entry._end._position[1] * scale)
+            self._dataMap[rr, cc] = 1
+
         return
             
 ################################################################################

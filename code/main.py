@@ -47,7 +47,8 @@ def main():
     environment = Environment(N, M)
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
-    environment.spawnNodes(scale)
+    environment.spawnNodes(scale, 3)
+    environment.spawnEdges(scale)
     
     # Setup simulation
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
@@ -63,13 +64,11 @@ def main():
             if i == steps - 1:
                 fig = plt.figure(figsize = (10, 12), dpi = 200)
                 ax = fig.add_subplot(111)
-                ax.imshow(environment._trailMap)
+                ax.imshow(environment._dataMap)
                 ax.set_title("Polycephalum Test, step = {}".format(i + 1))
                 ax.text(0, -30, "Nodes: {} Edges: {}".format(numberOfNodes, numberOfEdges))
                 plt.savefig("simulation_t{}.png".format(i + 1))
                 plt.clf()
-            
-            sleep(.1)
             
     else:
         ims = []

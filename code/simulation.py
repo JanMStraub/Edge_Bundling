@@ -94,9 +94,10 @@ def calculateFlux(nodeList, edgeList):
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
-def calculateConductivity(edgeList, sigma, rho):
+def calculateConductivity(edgeList, sigma, rho, viscosity):
     for edge in edgeList:
         edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
+        edge._radius = calculateRadius(edge, viscosity)
     
     return
 
@@ -110,6 +111,8 @@ def calculatePressure(nodeList, initialFlow):
         sinkNode._sink = True
         
         for node in nodeList:
+            
+            index = 0
 
             if (node._sink == False):
                 
@@ -124,11 +127,11 @@ def calculatePressure(nodeList, initialFlow):
                         
                     conductivitySum += edge._conductivity
                 
-                node._pressureVector.append((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / conductivitySum)
+                node._pressureVector[index] = ((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / conductivitySum)
                 
             elif (node._sink == True):
                 for edge in node._nodeEdgeList:
-                    node._pressureVector.append(0)
+                    node._pressureVector[index] = 0
                     
             else:
                 conductivitySum = 0
@@ -142,11 +145,20 @@ def calculatePressure(nodeList, initialFlow):
                         
                     conductivitySum += edge._conductivity
                 
-                node._pressureVector.append(conductivityPressureSum / conductivitySum)
+                node._pressureVector[index] = (conductivityPressureSum / conductivitySum)
+                
+            index += 1
             
         sinkNode._sink = False
+        index = 0
         
     return
+
+"""_summary_
+Calculates radius of each edge, derived from equation (1)
+"""
+def calculateRadius(edge, viscosity):
+    return ((edge._conductivity * 8 * viscosity) / np.pi) ** (1 / 4)
 
 
 """_summary_
@@ -165,7 +177,7 @@ Function is used to calculate each time step in the simulation
 def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, sigma = 0.000000375, rho = 0.0002):
 
     calculateFlux(nodeList, edgeList)
-    calculateConductivity(edgeList, sigma, rho)
+    calculateConductivity(edgeList, sigma, rho, viscosity)
     calculatePressure(nodeList, initialFlow)
 
     return

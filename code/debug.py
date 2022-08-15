@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+from tqdm import tqdm
+from time import sleep
+
 from environment import Environment
 from helper import readGraphData
 from simulation import physarumAlgorithm, initializePhysarium
@@ -55,6 +58,17 @@ def printConductivity(edgeList):
 
 
 """_summary_
+Prints the radius of each edge
+"""
+def printEdgeRadius(edgeList):
+    for edge in edgeList:
+         print("Radius of edge {}: {}".format(edge._id, edge._radius))
+        
+    print("\n####################################################################\n")   
+    return
+
+
+"""_summary_
 Prints the pressure for each node
 """
 def printPressure(nodeList):
@@ -86,11 +100,14 @@ def test():
     printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
-    physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002)
+    for i in tqdm(range(50000), desc="Iteration progress"):
+        
+        physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002)
     
     # Debugging
     printFlux(environment._edgeList)
     printConductivity(environment._edgeList)
+    printEdgeRadius(environment._edgeList)
     printPressure(environment._nodeList)
     
     return
