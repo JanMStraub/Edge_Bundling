@@ -90,8 +90,7 @@ class Environment:
                         self._nodeList[i]._neighbourIDs.append(edge._start._id)
                     elif (edge._end._id != self._nodeList[i]._id):
                         self._nodeList[i]._neighbourIDs.append(edge._end._id)
-                    
-        
+    
         return
         
         
