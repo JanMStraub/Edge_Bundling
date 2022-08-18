@@ -100,7 +100,7 @@ def test():
     printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
-    for i in tqdm(range(50000), desc="Iteration progress"):
+    for i in tqdm(range(100), desc="Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002)
     
