@@ -115,7 +115,7 @@ def calculatePressure(nodeList, initialFlow):
             index = 0
 
             if (node._sink == False):
-                
+            
                 conductivitySum = 0
                 conductivityPressureSum = 0
                 

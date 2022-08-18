@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import scipy.misc
-
 import numpy as np
 
+from matplotlib.collections import LineCollection
 from skimage.draw import line
 
 from helper import calculateEdgePoints
@@ -45,11 +44,11 @@ class Environment:
             
     
     """_summary_
-    Spawn the created nodes on the trail map as "food" for the agents
+    Plots the created nodes on the data map
     """
-    def spawnNodes(self, scale, radius = 3):
-        for entry in self._nodeList:
-            a, b, c = entry._position
+    def plotNodes(self, scale, radius = 3):
+        for node in self._nodeList:
+            a, b, c = node._position
           
             a *= scale
             b *= scale
@@ -95,15 +94,41 @@ class Environment:
         
         
     """_summary_
-    Spawn agents on the line connection the nodes
+    Plots edges in the graph
     """
-    def spawnEdges(self, scale):        
+    def plotEdges(self, scale):        
         
-        for entry in self._edgeList:    
-            rr, cc = line(entry._start._position[0] * scale, entry._start._position[1] * scale, entry._end._position[0] * scale, entry._end._position[1] * scale)
+        for edge in self._edgeList:    
+            rr, cc = line(edge._start._position[0] * scale, edge._start._position[1] * scale, edge._end._position[0] * scale, edge._end._position[1] * scale)
             self._dataMap[rr, cc] = 1
 
         return
+    
+    
+    def plotGraph(self, plt, scale):
+        nodes = list()
+        edges = list()
+        edgeWidth = list()
+        
+        for node in self._nodeList:
+            a, b, c = node._position
+            nodes.append([a, b])
+        
+        nodes = np.array(nodes)
+        
+        for edge in self._edgeList:
+            edges.append([edge._start._id, edge._end._id])
+            edgeWidth.append(edge._radius * 2)
+        
+        edges = np.array(edges)
+        
+        lc = LineCollection(nodes[edges], edgeWidth)
+        plt.gca().add_collection(lc)
+        #plt.xlim(nodes[:,0].min() - scale, nodes[:,0].max() + scale)
+        #plt.ylim(nodes[:,1].min() - scale, nodes[:,1].max() + scale)
+        plt.plot(nodes[:,0], nodes[:,1], 'ro')
+
+        return plt
             
 ################################################################################
 

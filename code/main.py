@@ -11,6 +11,8 @@ Based on the work of:
 """
 
 # Imports
+import numpy as np
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -28,7 +30,7 @@ def main():
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     N = 200
     M = 200
-    steps = 10
+    steps = 100000
     intervals = 8
     scale = 3
     image = True # Change to False if you want a gif
@@ -47,8 +49,6 @@ def main():
     environment = Environment(N, M)
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
-    environment.spawnNodes(scale, 3)
-    environment.spawnEdges(scale)
     
     # Setup simulation
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
@@ -59,20 +59,19 @@ def main():
         for i in tqdm(range(steps), desc="Iteration progress"):   
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)
+            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho) 
             
             if i == steps - 1:
-                fig = plt.figure(figsize = (10, 12), dpi = 200)
+                fig = plt.figure(figsize = (10, 10), dpi = 200)
                 ax = fig.add_subplot(111)
-                ax.imshow(environment._dataMap)
+                fig = environment.plotGraph(plt, scale)
                 ax.set_title("Polycephalum Test, step = {}".format(i + 1))
-                ax.text(0, -30, "Nodes: {} Edges: {}".format(numberOfNodes, numberOfEdges))
                 plt.savefig("simulation_t{}.png".format(i + 1))
                 plt.clf()
             
     else:
         ims = []
-        fig = plt.figure(figsize = (10, 12), dpi = 100)
+        fig = plt.figure(figsize = (10, 10), dpi = 100)
         ax = fig.add_subplot(111)
         
         for i in tqdm(range(steps), desc="Iteration progress"):
