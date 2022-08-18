@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import math
+
 from tqdm import tqdm
 from time import sleep
 
@@ -93,6 +95,7 @@ def test():
     environment = Environment(200, 200)
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, 1)
+    tau = 0.0004
     
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
     
@@ -100,9 +103,11 @@ def test():
     printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
-    for i in tqdm(range(100), desc="Iteration progress"):
+    for t in tqdm(range(10000), desc="Iteration progress"):
         
-        physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002)
+        physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002, tau)
+        
+        print(math.log(t + 1, tau))
     
     # Debugging
     printFlux(environment._edgeList)

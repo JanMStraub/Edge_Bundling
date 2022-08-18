@@ -40,6 +40,7 @@ def main():
     initialFlow = 10.0
     sigma = 0.000000375
     rho = 0.0002
+    tau = 0.0004
     edgeCost = 1
     
     # Import graph information from JSON
@@ -56,36 +57,38 @@ def main():
     if (image):
         dt = int(steps / intervals)
         
-        for i in tqdm(range(steps), desc="Iteration progress"):   
+        for t in tqdm(range(steps), desc="Iteration progress"):   
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho) 
+            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau) 
             
-            if i == steps - 1:
+            if t == steps - 1:
                 fig = plt.figure(figsize = (10, 10), dpi = 200)
                 ax = fig.add_subplot(111)
                 fig = environment.plotGraph(plt, scale)
-                ax.set_title("Polycephalum Test, step = {}".format(i + 1))
-                plt.savefig("simulation_t{}.png".format(i + 1))
+                ax.set_title("Polycephalum Test, step = {}".format(t + 1))
+                plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
+                
+            tau *= t + 1
             
     else:
         ims = []
         fig = plt.figure(figsize = (10, 10), dpi = 100)
         ax = fig.add_subplot(111)
         
-        for i in tqdm(range(steps), desc="Iteration progress"):
+        for t in tqdm(range(steps), desc="Iteration progress"):
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho)            
+            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)            
             
-            print("Iteration: {}".format(i + 1))
+            print("Iteration: {}".format(t + 1))
             
-            txt = plt.text(0, -30, "iteration: {} Population: {} Nodes: {} Edges: {}".format(i + 1, len(environment._agents), numberOfNodes, numberOfEdges))
+            txt = plt.text(0, -30, "iteration: {} Population: {} Nodes: {} Edges: {}".format(t + 1, len(environment._agents), numberOfNodes, numberOfEdges))
             im = plt.imshow(environment._trailMap, animated = True)
             ims.append([im, txt])
             
-            sleep(.1)
+            tau *= t
         
         fig.suptitle("Polycephalum Test")
         ani = animation.ArtistAnimation(fig, ims, interval = 50, blit = True, repeat_delay = 1000)
