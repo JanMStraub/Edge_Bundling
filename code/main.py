@@ -17,7 +17,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from tqdm import tqdm
-from time import sleep
 
 from environment import Environment
 from helper import readGraphData
@@ -28,11 +27,8 @@ def main():
     
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
-    N = 200
-    M = 200
-    steps = 15000
+    steps = 50000
     intervals = 8
-    scale = 3
     image = True # Change to False if you want a gif
     
     # Slime parameters
@@ -47,7 +43,7 @@ def main():
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
     
     # Setup environment
-    environment = Environment(N, M)
+    environment = Environment()
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
     
@@ -65,7 +61,7 @@ def main():
             if t == steps - 1:
                 fig = plt.figure(figsize = (10, 10), dpi = 200)
                 ax = fig.add_subplot(111)
-                fig = environment.plotGraph(plt, scale)
+                fig = environment.plotGraph(plt)
                 ax.set_title("Polycephalum Test, step = {}".format(t + 1))
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()

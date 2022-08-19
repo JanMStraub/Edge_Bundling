@@ -100,7 +100,7 @@ def test():
     tau = 0.0004
     edgeCost = 1
     
-    environment = Environment(200, 200)
+    environment = Environment()
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
     
@@ -110,7 +110,7 @@ def test():
     printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
-    for t in tqdm(range(15000), desc = "Iteration progress"):
+    for t in tqdm(range(50000), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
@@ -119,7 +119,7 @@ def test():
     print(tau)
     
     # Debugging
-    printFlux(environment._edgeList)
+    # printFlux(environment._edgeList)
     printConductivity(environment._edgeList)
     printEdgeRadius(environment._edgeList)
     printPressure(environment._nodeList)

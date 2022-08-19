@@ -4,9 +4,6 @@
 import numpy as np
 
 from matplotlib.collections import LineCollection
-from skimage.draw import line
-
-from helper import calculateEdgePoints
 
 
 """_summary_
@@ -14,16 +11,10 @@ Class used to create the environment for the graph and the agents to operate upo
 Returns:
     _type_: _description_
     environment: Object which serves as a controller for the algorithm
-    dataMap: Agent-based layer
-    trailMap: Continuum-based layer (Nodes)
-    controlMap: Map for managing the off limit areas for agents
 """
 class Environment:
     
-    def __init__(self, N = 200, M = 200):
-        self._N = N
-        self._M = M
-        self._dataMap = np.zeros(shape = (N, M)) # Agent-based layer
+    def __init__(self):
         self._nodeList = []
         self._edgeList = []
                 
@@ -34,30 +25,12 @@ class Environment:
     def createNodes(self, nodeList):
         for i in range(0, len(nodeList)):
             node = Node(i, nodeList[i])      
-                  
             self._nodeList.append(node)
         
         return
     
     
     #TODO create Steiner point function
-            
-    
-    """_summary_
-    Plots the created nodes on the data map
-    """
-    def plotNodes(self, scale, radius = 3):
-        for node in self._nodeList:
-            a, b, c = node._position
-          
-            a *= scale
-            b *= scale
-            y, x = np.ogrid[-a : self._N - a, -b : self._M - b]
-            mask = x ** 2 + y ** 2 <= radius ** 2
-            
-            self._dataMap[mask] = 1  
-            
-        return
          
     
     """_summary_
@@ -68,7 +41,7 @@ class Environment:
         for i in range(0, len(self._nodeList)):
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][0]:
-                    edge = Edge(j, calculateEdgePoints(self._nodeList[i], self._nodeList[edgeList[j][1]]), self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
+                    edge = Edge(j, self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
                     
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
@@ -91,21 +64,9 @@ class Environment:
                         self._nodeList[i]._neighbourIDs.append(edge._end._id)
     
         return
-        
-        
-    """_summary_
-    Plots edges in the graph
-    """
-    def plotEdges(self, scale):        
-        
-        for edge in self._edgeList:    
-            rr, cc = line(edge._start._position[0] * scale, edge._start._position[1] * scale, edge._end._position[0] * scale, edge._end._position[1] * scale)
-            self._dataMap[rr, cc] = 1
-
-        return
     
     
-    def plotGraph(self, plt, scale):
+    def plotGraph(self, plt):
         nodes = list()
         edges = list()
         edgeWidth = list()
@@ -143,9 +104,9 @@ class Node:
         self._position = position
         self._flux = 0
         self._initialPressure = 1
-        self._pressureVector = []
         self._connections = 0
         self._sink = False
+        self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
             
@@ -159,9 +120,8 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, points, start, end,  cost = 1, length = 1, radius = 1):
+    def __init__(self, id, start, end,  cost = 1, length = 1, radius = 1):
         self._id = id
-        self._points = points
         self._length = length 
         self._cost = cost #TODO figure out how to implement
         self._radius = radius
