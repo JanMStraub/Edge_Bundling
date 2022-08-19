@@ -68,7 +68,7 @@ class Environment:
         for i in range(0, len(self._nodeList)):
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][0]:
-                    edge = Edge(j, calculateEdgePoints(self._nodeList[i], self._nodeList[edgeList[j][1]]), self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost, 1)
+                    edge = Edge(j, calculateEdgePoints(self._nodeList[i], self._nodeList[edgeList[j][1]]), self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
                     
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
@@ -124,8 +124,6 @@ class Environment:
         
         lc = LineCollection(nodes[edges], edgeWidth)
         plt.gca().add_collection(lc)
-        #plt.xlim(nodes[:,0].min() - scale, nodes[:,0].max() + scale)
-        #plt.ylim(nodes[:,1].min() - scale, nodes[:,1].max() + scale)
         plt.plot(nodes[:,0], nodes[:,1], 'ro')
 
         return plt

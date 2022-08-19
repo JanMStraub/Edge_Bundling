@@ -91,23 +91,32 @@ def test():
     
     print("Number of nodes: " + str(numberOfNodes))
     print("Number of edges: " + str(numberOfEdges))
-     
+    
+    # Slime parameters
+    viscosity = 1.0
+    initialFlow = 100.0
+    sigma = 0.000000375
+    rho = 0.0002
+    tau = 0.0004
+    edgeCost = 1
+    
     environment = Environment(200, 200)
     environment.createNodes(nodeList)
-    environment.createEdges(edgeList, 1)
-    tau = 0.0004
+    environment.createEdges(edgeList, edgeCost)
     
-    initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
+    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     # Debugging
     printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
-    for t in tqdm(range(10000), desc="Iteration progress"):
+    for t in tqdm(range(15000), desc = "Iteration progress"):
         
-        physarumAlgorithm(environment._nodeList, environment._edgeList, 1.0, 10.0, 0.000000375, 0.0002, tau)
+        physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        print(math.log(t + 1, tau))
+        tau = 0.0004 * t
+        
+    print(tau)
     
     # Debugging
     printFlux(environment._edgeList)

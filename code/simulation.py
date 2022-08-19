@@ -99,9 +99,12 @@ def calculateConductivity(edgeList, sigma, rho, tau, viscosity):
         edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
         edge._radius = calculateRadius(edge, viscosity)
         
+        """
+        #TODO get it to work
         if edge._conductivity < tau:
             edgeList.remove(edge)
-    
+            print("REMOVES! tau = " + str(tau))
+        """
     return
 
 

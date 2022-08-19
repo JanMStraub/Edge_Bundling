@@ -30,14 +30,14 @@ def main():
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     N = 200
     M = 200
-    steps = 100000
+    steps = 15000
     intervals = 8
     scale = 3
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 10.0
+    initialFlow = 100.0
     sigma = 0.000000375
     rho = 0.0002
     tau = 0.0004
@@ -52,12 +52,12 @@ def main():
     environment.createEdges(edgeList, edgeCost)
     
     # Setup simulation
-    initializePhysarium(environment._nodeList, environment._edgeList, viscosity = 1.0, initialFlow = 10.0)
+    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     if (image):
         dt = int(steps / intervals)
         
-        for t in tqdm(range(steps), desc="Iteration progress"):   
+        for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau) 
@@ -70,14 +70,14 @@ def main():
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            tau *= t + 1
+            tau = 0.0004 * t
             
     else:
         ims = []
         fig = plt.figure(figsize = (10, 10), dpi = 100)
         ax = fig.add_subplot(111)
         
-        for t in tqdm(range(steps), desc="Iteration progress"):
+        for t in tqdm(range(steps), desc = "Iteration progress"):
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)            
@@ -88,7 +88,7 @@ def main():
             im = plt.imshow(environment._trailMap, animated = True)
             ims.append([im, txt])
             
-            tau *= t
+            tau = 0.0004 * t
         
         fig.suptitle("Polycephalum Test")
         ani = animation.ArtistAnimation(fig, ims, interval = 50, blit = True, repeat_delay = 1000)
