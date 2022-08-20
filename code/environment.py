@@ -65,7 +65,9 @@ class Environment:
     
         return
     
-    
+    """_summary_
+    Plot edges and nodes in matplotlib
+    """
     def plotGraph(self, plt):
         nodes = list()
         edges = list()

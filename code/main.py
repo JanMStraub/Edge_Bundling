@@ -36,7 +36,7 @@ def main():
     initialFlow = 100.0
     sigma = 0.000000375
     rho = 0.0002
-    tau = 0.0004
+    tau = 0.00000004
     edgeCost = 1
     
     # Import graph information from JSON
@@ -66,7 +66,7 @@ def main():
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            tau = 0.0004 * t
+            tau = 0.00000004 * t #00000004
             
     else:
         ims = []
@@ -78,16 +78,15 @@ def main():
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)            
             
-            print("Iteration: {}".format(t + 1))
-            
-            txt = plt.text(0, -30, "iteration: {} Population: {} Nodes: {} Edges: {}".format(t + 1, len(environment._agents), numberOfNodes, numberOfEdges))
-            im = plt.imshow(environment._trailMap, animated = True)
+            fig = environment.plotGraph(plt)
+            txt = plt.text(0, -30, "iteration: {} Nodes: {} Edges: {}".format(t + 1, numberOfNodes, numberOfEdges))
+            im = plt.plot()
             ims.append([im, txt])
             
-            tau = 0.0004 * t
+            tau = 0.00000004 * t
         
         fig.suptitle("Polycephalum Test")
-        ani = animation.ArtistAnimation(fig, ims, interval = 50, blit = True, repeat_delay = 1000)
+        ani = animation.ArtistAnimation(fig, ims, interval = 1000, blit = True, repeat_delay = 1000)
         ani.save("simulation.gif")
         
     return
