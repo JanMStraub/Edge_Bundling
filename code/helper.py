@@ -25,7 +25,7 @@ def readGraphData(path):
     
     # Convert node to tupel
     for i in range(len(nodes)):
-        nodeList.append(tuple(map(int, nodes[str(i)].strip("()").split(','))))
+        nodeList.append(tuple(map(float, nodes[str(i)].strip("()").split(','))))
     
     return edges, nodeList, numberOfEdges, numberOfNodes
 

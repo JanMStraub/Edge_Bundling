@@ -30,8 +30,14 @@ class Environment:
         return
     
     
-    #TODO create Steiner point function
-         
+    """_summary_
+    Function creates Steiner points
+    """
+    def createSteinerNodes(self, position):
+        
+        
+        return
+     
     
     """_summary_
     Create the edges between the nodes as a way to allow agents to spawn on them
@@ -81,7 +87,7 @@ class Environment:
         
         for edge in self._edgeList:
             edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius * 2)
+            edgeWidth.append(edge._radius / 2) #edge._radius / (len(self._edgeList) / 2)
         
         edges = np.array(edges)
         

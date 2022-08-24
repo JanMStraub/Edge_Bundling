@@ -34,7 +34,7 @@ def main():
     # Slime parameters
     viscosity = 1.0
     initialFlow = 100.0
-    sigma = 0.000000375
+    sigma = 0.00000375
     rho = 0.0002
     tau = 0.00000004
     edgeCost = 1
@@ -57,6 +57,15 @@ def main():
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau) 
+            
+            """
+            if ((t % 10000) == 0):
+                fig = plt.figure(figsize = (10, 10), dpi = 200)
+                ax = fig.add_subplot(111)
+                fig = environment.plotGraph(plt)
+                ax.set_title("Polycephalum Test, step = {}".format(t + 1))
+                plt.show()
+            """
             
             if t == steps - 1:
                 fig = plt.figure(figsize = (10, 10), dpi = 200)

@@ -114,7 +114,7 @@ def test():
         
         physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        tau = 0.0004 * t
+        tau = 0.00000004 * t
         
     print(tau)
     

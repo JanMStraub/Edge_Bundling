@@ -94,14 +94,16 @@ def calculateFlux(nodeList, edgeList):
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
-def calculateConductivity(edgeList, sigma, rho, tau, viscosity):
+def calculateConductivity(nodeListLength, edgeList, sigma, rho, tau, viscosity):
     for edge in edgeList:
         edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
         edge._radius = calculateRadius(edge, viscosity)
         
         if edge._conductivity < tau:
             edgeList.remove(edge)
-            print("REMOVES! tau = " + str(tau))
+            print("REMOVES! tau = " + str(tau) + " ,edges remaining: " + str(len(edgeList)))
+            if len(edgeList) < nodeListLength:
+                raise ValueError("Steiner tree no longer possible")
         
     return
 
@@ -181,7 +183,7 @@ Function is used to calculate each time step in the simulation
 def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, sigma = 0.000000375, rho = 0.0002, tau = 0.0004):
     
     calculateFlux(nodeList, edgeList)
-    calculateConductivity(edgeList, sigma, rho, tau, viscosity)
+    calculateConductivity(len(nodeList), edgeList, sigma, rho, tau, viscosity)
     calculatePressure(nodeList, initialFlow)
 
     return
