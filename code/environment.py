@@ -16,7 +16,6 @@ class Environment:
     
     def __init__(self):
         self._nodeList = []
-        self._steinerNodeList = []
         self._edgeList = []
                 
                 

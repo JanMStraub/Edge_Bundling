@@ -70,6 +70,9 @@ def main():
                 ax = fig.add_subplot(111)
                 fig = environment.plotGraph(plt)
                 ax.set_title("Polycephalum Test, step = {}".format(t + 1))
+                plt.minorticks_on()
+                plt.grid(which='minor', linestyle = '-')
+                plt.grid(which='major', linestyle = '-')
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
