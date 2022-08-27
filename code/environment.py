@@ -17,26 +17,48 @@ class Environment:
     def __init__(self):
         self._nodeList = []
         self._edgeList = []
-                
-                
+    
+    
     """_summary_
-    Method uses to create node objects and save them in the nodes list for easy access
+    Function is used to create node grid
     """
     def createNodes(self, nodeList):
-        for i in range(0, len(nodeList)):
-            node = Node(i, nodeList[i])      
-            self._nodeList.append(node)
+        id = 0
+        xMin, xMax, yMin, yMax = float("inf"), 0.0, float("inf"), 0.0
+        
+        for node in nodeList:
+            x, y, z = node
+            
+            if (x < xMin):
+                xMin = x
+            
+            if (x > xMax):
+                xMax = x
+
+            if (y < yMin):
+                yMin = y
+
+            if (y > yMax):
+                yMax = y
+        
+        for x in range(int(xMin), int(xMax) + 1):
+            for y in range(int(yMin), int(yMax) + 1):
+                node = Node(id, [x, y, z])
+                self._nodeList.append(node)
+                id += 1
         
         return
-    
+        
     
     """_summary_
     Function creates point grid
     """
-    def createGrid(self):
-        xMin, xMax, yMin, yMax = 1000.0, 0.0, 1000.0, 0.0
-        lastNodeId = 1 #self._nodeList[-1]._id
-        lastEdgeId = 1 #self._edgeList[-1]._id
+    def createGrid(self, nodeList, edgeList):
+        self.createNodes(nodeList)
+        
+        print(len(self._nodeList))
+
+        """
         nodePositionList = []
         edgePositionList = []
         
@@ -59,17 +81,9 @@ class Environment:
 
             if (y > yMax):
                 yMax = y
-                
-        print("xMin: {}, xMax: {}, yMin: {}, yMax: {}\n".format(xMin, xMax, yMin, yMax))
+    
         
-        for x in range(int(xMin), int(xMax) + 1):
-            for y in range(int(yMin), int(yMax) + 1):
-                lastNodeId += 1
-                steinerNode = Node(lastNodeId, [float(x), float(y), z])
-                steinerNode._steinerPoint = True
-                
-                if steinerNode._position not in nodePositionList:
-                    self._nodeList.append(steinerNode)
+
                 
         for node in self._nodeList:
             x, y, z = node._position
@@ -111,8 +125,22 @@ class Environment:
                         
                         if [edge._start, edge._end] not in edgePositionList:
                             self._edgeList.append(edge)       
-                
+        """      
         return
+        
+                
+    """_summary_
+    Method uses to create node objects and save them in the nodes list for easy access
+    """
+    def createNodesOld(self, nodeList):
+        for i in range(0, len(nodeList)):
+            node = Node(i, nodeList[i])      
+            self._nodeList.append(node)
+        
+        return
+    
+    
+
 
     
     """_summary_

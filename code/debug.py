@@ -100,9 +100,10 @@ def test():
     edgeCost = 1
     
     environment = Environment()
-    environment.createNodes(nodeList)
-    environment.createEdges(edgeList, edgeCost)
-    environment.createGrid()
+    environment.createGrid(nodeList, edgeList)
+    #environment.createNodes(nodeList)
+    #environment.createEdges(edgeList, edgeCost)
+    
     
     #initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
@@ -110,13 +111,13 @@ def test():
     #printInitialConductivity(environment._edgeList)
     #printInitialPressure(environment._nodeList)
    
-    
+    """
     fig = plt.figure(figsize = (10, 10), dpi = 200)
     ax = fig.add_subplot(111)
     fig = environment.plotGraph(plt)
     ax.set_title("Polycephalum Test, step = {}".format(1))
     plt.show()
-    
+    """
     """
     for t in tqdm(range(50000), desc = "Iteration progress"):
         
