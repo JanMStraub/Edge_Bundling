@@ -35,3 +35,9 @@ Calculates the distance between two nodes
 """
 def calculateEdgeLength(node1, node2):
     return math.dist(node1._position, node2._position)
+
+
+def findNodeByPosition(nodeList, x, y, z):
+    for node in nodeList:
+        if node._position[0] == x and node._position[1] == y and node._position[2] == z: 
+            return node

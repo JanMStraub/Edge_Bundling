@@ -5,6 +5,7 @@ import numpy as np
 
 from matplotlib.collections import LineCollection
 
+from helper import findNodeByPosition
 
 """_summary_
 Class used to create the environment for the graph and the agents to operate upon
@@ -16,13 +17,15 @@ class Environment:
     
     def __init__(self):
         self._nodeList = []
+        self._terminalNodeList = []
         self._edgeList = []
+        self._terminalEdgeList = []
     
     
     """_summary_
     Function is used to create node grid
     """
-    def createNodes(self, nodeList):
+    def createGridNodes(self, nodeList):
         id = 0
         xMin, xMax, yMin, yMax = float("inf"), 0.0, float("inf"), 0.0
         
@@ -41,113 +44,91 @@ class Environment:
             if (y > yMax):
                 yMax = y
         
+        print("xMin: {}, xMax: {}, yMin: {}, yMax: {}".format(xMin, xMax, yMin, yMax))
+        
         for x in range(int(xMin), int(xMax) + 1):
             for y in range(int(yMin), int(yMax) + 1):
-                node = Node(id, [x, y, z])
+                node = Node(id, [float(x), float(y), z])
                 self._nodeList.append(node)
                 id += 1
         
+        return xMin, xMax, yMin, yMax
+    
+    
+    def createGridEdges(self, xMin, xMax, yMin, yMax):
+        id = 0
+        
+        for node in self._nodeList:
+            x, y, z = node._position
+            
+            for i in range(0, 4): 
+                if i == 0:
+                    if x != xMax:
+                        value = x + 1.0
+                        edge = Edge(id, node, findNodeByPosition(self._nodeList, value, y, z))
+                        self._edgeList.append(edge)
+                        id += 1
+                                
+                if i == 1:
+                    if y != yMax:
+                        value = y + 1.0
+                        edge = Edge(id, node, findNodeByPosition(self._nodeList, x, value, z))
+                        self._edgeList.append(edge)
+                        id += 1
+                    
+                if i == 2:
+                    if x != xMin:
+                        value = x - 1.0
+                        edge = Edge(id, node, findNodeByPosition(self._nodeList, value, y, z))
+                        self._edgeList.append(edge)
+                        id += 1
+                    
+                if i == 3:
+                    if y != yMin:
+                        value = y - 1.0
+                        edge = Edge(id, node, findNodeByPosition(self._nodeList, x, value, z))
+                        self._edgeList.append(edge)
+                        id += 1
+                
         return
         
     
     """_summary_
     Function creates point grid
     """
-    def createGrid(self, nodeList, edgeList):
-        self.createNodes(nodeList)
-        
-        print(len(self._nodeList))
+    def createGrid(self, nodeList):
+        xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
+        self.createGridEdges(xMin, xMax, yMin, yMax)       
 
-        """
-        nodePositionList = []
-        edgePositionList = []
-        
-        for edge in self._edgeList:
-            edgePositionList.append([edge._start, edge._end])
-            edgePositionList.append([edge._end, edge._start])
-        
-        for node in self._nodeList:
-            x, y, z = node._position
-            nodePositionList.append(node._position)
-            
-            if (x < xMin):
-                xMin = x
-            
-            if (x > xMax):
-                xMax = x
-
-            if (y < yMin):
-                yMin = y
-
-            if (y > yMax):
-                yMax = y
-    
-        
-
-                
-        for node in self._nodeList:
-            x, y, z = node._position
-            
-            for i in range(0, 4):
-                lastEdgeId += 1
-                if i == 0:
-                    if x != xMax:
-                        value = x + 1.0
-                        edge = Edge(lastEdgeId, node._position, [value, y, z])
-                        edge._steinerEdge = True
-                        
-                        if [edge._start, edge._end] not in edgePositionList:
-                            self._edgeList.append(edge)
-                                
-                if i == 1:
-                    if y != yMax:
-                        value = y + 1.0
-                        edge = Edge(lastEdgeId, node._position, [x, value, z])
-                        edge._steinerEdge = True
-                        
-                        if [edge._start, edge._end] not in edgePositionList:
-                            self._edgeList.append(edge)
-                    
-                if i == 2:
-                    if x != xMin:
-                        value = x - 1.0
-                        edge = Edge(lastEdgeId, node._position, [value, y, z])
-                        edge._steinerEdge = True
-                        
-                        if [edge._start, edge._end] not in edgePositionList:
-                            self._edgeList.append(edge)
-                    
-                if i == 3:
-                    if y != yMin:
-                        value = y - 1.0
-                        edge = Edge(lastEdgeId, node._position, [x, value, z])
-                        edge._steinerEdge = True
-                        
-                        if [edge._start, edge._end] not in edgePositionList:
-                            self._edgeList.append(edge)       
-        """      
         return
         
                 
     """_summary_
     Method uses to create node objects and save them in the nodes list for easy access
     """
-    def createNodesOld(self, nodeList):
-        for i in range(0, len(nodeList)):
-            node = Node(i, nodeList[i])      
-            self._nodeList.append(node)
+    def createTerminalNodes(self, nodeList):
+        for node in nodeList:
+            x, y, z = node
+            selectedNode = findNodeByPosition(self._nodeList, x, y, z)
+            selectedNode._terminal = True
+            self._terminalNodeList.append(selectedNode)
         
         return
     
     
-
-
-    
     """_summary_
     Create the edges between the nodes as a way to allow agents to spawn on them
     """
-    def createEdges(self, edgeList, edgeCost):  
+    def createTerminalEdges(self, nodeList, edgeList, edgeCost):  
         
+        for i in range (0, len(nodeList)):
+            for j in range (0, len(edgeList)):
+                if (i == edgeList[j][0]) or (i == edgeList[j][1]):
+                    print(edgeList[j])
+            print()
+
+        
+        """
         for i in range(0, len(self._nodeList)):
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][0]:
@@ -172,7 +153,7 @@ class Environment:
                         self._nodeList[i]._neighbourIDs.append(edge._start._id)
                     elif (edge._end._id != self._nodeList[i]._id):
                         self._nodeList[i]._neighbourIDs.append(edge._end._id)
-    
+        """
         return
      
     
@@ -221,7 +202,7 @@ class Node:
         self._initialPressure = 1
         self._connections = 0
         self._sink = False
-        self._steinerPoint = False
+        self._terminal = False
         self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
@@ -245,4 +226,4 @@ class Edge:
         self._end = end
         self._conductivity = 0
         self._flux = 0
-        self._steinerEdge = False
+        self._terminal = False

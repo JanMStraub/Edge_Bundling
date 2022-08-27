@@ -100,9 +100,9 @@ def test():
     edgeCost = 1
     
     environment = Environment()
-    environment.createGrid(nodeList, edgeList)
-    #environment.createNodes(nodeList)
-    #environment.createEdges(edgeList, edgeCost)
+    environment.createGrid(nodeList)
+    environment.createTerminalNodes(nodeList)
+    environment.createTerminalEdges(nodeList, edgeList, edgeCost)
     
     
     #initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
