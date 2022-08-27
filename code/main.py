@@ -11,8 +11,6 @@ Based on the work of:
 """
 
 # Imports
-import numpy as np
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -34,9 +32,9 @@ def main():
     # Slime parameters
     viscosity = 1.0
     initialFlow = 100.0
-    sigma = 0.00000375
+    sigma = 0.000000375
     rho = 0.0002
-    tau = 0.00000004
+    tau = 0.0004
     edgeCost = 1
     
     # Import graph information from JSON

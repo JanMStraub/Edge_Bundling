@@ -27,7 +27,7 @@ def initializePressure(nodeList, initialFlow):
         
         for node in nodeList:
 
-            if (node._sink == False):
+            if (node._sink == False and node._steinerPoint == False):
                 pressureVector = [0] * len(nodeList)
 
                 for i in range(len(nodeList)):
@@ -40,7 +40,7 @@ def initializePressure(nodeList, initialFlow):
                 b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
                 A.append(pressureVector)
                 
-            elif (node._sink == True):
+            elif (node._sink == True and node._steinerPoint == False):
                 pressureVector = [0] * len(nodeList)
                 
                 for i in range(len(nodeList)):
@@ -53,7 +53,7 @@ def initializePressure(nodeList, initialFlow):
                 b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
                 A.append(pressureVector)
                 
-            else:
+            elif (node._steinerPoint == True):
                 pressureVector = [0] * len(nodeList)
                 
                 for i in range(node._connections + 1):
@@ -65,6 +65,9 @@ def initializePressure(nodeList, initialFlow):
                 
                 b.append(0)
                 A.append(pressureVector)
+
+        for entry in A:
+            print(entry)
 
         A = np.array(A)
         b = np.array(b)
@@ -101,8 +104,8 @@ def calculateConductivity(nodeListLength, edgeList, sigma, rho, tau, viscosity):
         
         if edge._conductivity < tau:
             edgeList.remove(edge)
-            print("REMOVES! tau = " + str(tau) + " ,edges remaining: " + str(len(edgeList)))
-            if len(edgeList) < nodeListLength:
+            print("REMOVES! tau = " + str(tau) + ", edges remaining: " + str(len(edgeList)))
+            if (len(edgeList) < (nodeListLength - 1)):
                 raise ValueError("Steiner tree no longer possible")
         
     return
@@ -120,7 +123,7 @@ def calculatePressure(nodeList, initialFlow):
             
             index = 0
 
-            if (node._sink == False):
+            if (node._sink == False and node._steinerPoint == False):
             
                 conductivitySum = 0
                 conductivityPressureSum = 0
@@ -135,11 +138,11 @@ def calculatePressure(nodeList, initialFlow):
                 
                 node._pressureVector[index] = ((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / (2 * conductivitySum))
                 
-            elif (node._sink == True):
+            elif (node._sink == True and node._steinerPoint == False):
                 for edge in node._nodeEdgeList:
                     node._pressureVector[index] = 0
                     
-            else:
+            if (node._steinerPoint == True):
                 conductivitySum = 0
                 conductivityPressureSum = 0
                 

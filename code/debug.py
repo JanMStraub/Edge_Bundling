@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import math
+import matplotlib.pyplot as plt
 
 from tqdm import tqdm
-from time import sleep
 
 from environment import Environment
 from helper import readGraphData
@@ -103,26 +102,35 @@ def test():
     environment = Environment()
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
+    environment.createGrid()
     
-    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
+    #initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     # Debugging
-    printInitialConductivity(environment._edgeList)
-    printInitialPressure(environment._nodeList)
+    #printInitialConductivity(environment._edgeList)
+    #printInitialPressure(environment._nodeList)
    
+    
+    fig = plt.figure(figsize = (10, 10), dpi = 200)
+    ax = fig.add_subplot(111)
+    fig = environment.plotGraph(plt)
+    ax.set_title("Polycephalum Test, step = {}".format(1))
+    plt.show()
+    
+    """
     for t in tqdm(range(50000), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
         tau = 0.00000004 * t
-        
-    print(tau)
+    """    
+    #print(tau)
     
     # Debugging
-    # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
-    printEdgeRadius(environment._edgeList)
-    printPressure(environment._nodeList)
+    #printFlux(environment._edgeList)
+    #printConductivity(environment._edgeList)
+    #printEdgeRadius(environment._edgeList)
+    #printPressure(environment._nodeList)
     
     return
     
