@@ -102,10 +102,10 @@ def test():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
-    environment.createTerminalEdges(nodeList, edgeList, edgeCost)
+    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)
     
     
-    #initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
+    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     # Debugging
     #printInitialConductivity(environment._edgeList)

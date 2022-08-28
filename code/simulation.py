@@ -20,63 +20,67 @@ Initializes the pressure vector (p^0) in all nodes according to equation (4).
 def initializePressure(nodeList, initialFlow):
     
     for sinkNode in nodeList:
-        sinkNode._sink = True
-        
-        A = list()
-        b = list()
-        
-        for node in nodeList:
+        if sinkNode._terminal == True:
+            sinkNode._sink = True
+            
+            A = list()
+            b = list()
+            
+            for node in nodeList:
 
-            if (node._sink == False and node._steinerPoint == False):
-                pressureVector = [0] * len(nodeList)
+                if (node._sink == False and node._terminal == True):
+                    pressureVector = [0] * len(nodeList)
 
-                for i in range(len(nodeList)):
-                    for j in range(len(node._neighbourIDs)):
-                        if (i == node._id):
-                            pressureVector[i] = node._connections * node._initialPressure
-                        elif (i == node._neighbourIDs[j]):
-                            pressureVector[i] = -1 * node._initialPressure
-                
-                b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                A.append(pressureVector)
-                
-            elif (node._sink == True and node._steinerPoint == False):
-                pressureVector = [0] * len(nodeList)
-                
-                for i in range(len(nodeList)):
-                    for j in range(len(node._neighbourIDs)):
-                        if (i == node._id):
-                            pressureVector[i] = node._connections * node._initialPressure
-                        elif (i == node._neighbourIDs[j]):
-                            pressureVector[i] = 0
+                    for i in range(len(nodeList)):
+                        for j in range(len(node._neighbourIDs)):
+                            if (i == node._id):
+                                pressureVector[i] = node._connections * node._initialPressure
+                            elif (i == node._neighbourIDs[j]):
+                                pressureVector[i] = -1 * node._initialPressure
                     
-                b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                A.append(pressureVector)
-                
-            elif (node._steinerPoint == True):
-                pressureVector = [0] * len(nodeList)
-                
-                for i in range(node._connections + 1):
-                    for j in range(len(node._neighbourIDs)):
-                        if (i == node._id):
-                            pressureVector[i] = node._connections * node._initialPressure
-                        elif (i == node._neighbourIDs[j]):
-                            pressureVector[i] = -1 * node._initialPressure
-                
-                b.append(0)
-                A.append(pressureVector)
+                    b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+                    A.append(pressureVector)
+                    
+                elif (node._sink == True and node._terminal == True):
+                    pressureVector = [0] * len(nodeList)
+                    
+                    for i in range(len(nodeList)):
+                        for j in range(len(node._neighbourIDs)):
+                            if (i == node._id):
+                                pressureVector[i] = node._connections * node._initialPressure
+                            elif (i == node._neighbourIDs[j]):
+                                pressureVector[i] = 0
+                        
+                    b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+                    A.append(pressureVector)
+                    
+                elif (node._terminal == False):
+                    pressureVector = [0] * len(nodeList)
+                    
+                    for i in range(len(nodeList)):
+                        for j in range(len(node._neighbourIDs)):
+                            if (i == node._id):
+                                pressureVector[i] = node._connections * node._initialPressure
+                            elif (i == node._neighbourIDs[j]):
+                                pressureVector[i] = -1 * node._initialPressure
+                    
+                    b.append(0)
+                    A.append(pressureVector)
 
-        for entry in A:
-            print(entry)
+            for entry in A[:3]:
+                print(entry)
+                
+            for entry in b[:3]:
+                print(entry)
 
-        A = np.array(A)
-        b = np.array(b)
-        x = np.linalg.solve(A, b)
-        
-        for i in range(len(nodeList)):
-            nodeList[i]._pressureVector.append(x[i])
-        
-        sinkNode._sink = False
+            A = np.array(A)
+            b = np.array(b)
+            x = np.linalg.solve(A, b)
+            
+            for i in range(len(nodeList)):
+                nodeList[i]._pressureVector.append(x[i])
+            
+            sinkNode._sink = False
     
     return
 

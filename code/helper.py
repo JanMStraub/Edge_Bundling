@@ -37,7 +37,21 @@ def calculateEdgeLength(node1, node2):
     return math.dist(node1._position, node2._position)
 
 
+"""_summary_
+Function used to specific node object in node grid
+"""
 def findNodeByPosition(nodeList, x, y, z):
     for node in nodeList:
         if node._position[0] == x and node._position[1] == y and node._position[2] == z: 
             return node
+        
+
+"""_summary_
+Use A* to find shortest path in grid graph
+"""
+def findShortestPath(nodeList, startNode, endNode):
+    gCost, hCost, fCost = 0, 0, 0
+    
+    
+    
+    return
