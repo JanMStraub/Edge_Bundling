@@ -67,12 +67,6 @@ def initializePressure(nodeList, initialFlow):
                     b.append(0)
                     A.append(pressureVector)
 
-            for entry in A[:3]:
-                print(entry)
-                
-            for entry in b[:3]:
-                print(entry)
-
             A = np.array(A)
             b = np.array(b)
             x = np.linalg.solve(A, b)
@@ -127,7 +121,7 @@ def calculatePressure(nodeList, initialFlow):
             
             index = 0
 
-            if (node._sink == False and node._steinerPoint == False):
+            if (node._sink == False and node._terminal == True):
             
                 conductivitySum = 0
                 conductivityPressureSum = 0
@@ -142,11 +136,11 @@ def calculatePressure(nodeList, initialFlow):
                 
                 node._pressureVector[index] = ((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / (2 * conductivitySum))
                 
-            elif (node._sink == True and node._steinerPoint == False):
+            elif (node._sink == True and node._terminal == True):
                 for edge in node._nodeEdgeList:
                     node._pressureVector[index] = 0
                     
-            if (node._steinerPoint == True):
+            if (node._terminal == False):
                 conductivitySum = 0
                 conductivityPressureSum = 0
                 
