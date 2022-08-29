@@ -106,6 +106,26 @@ def calculateConductivity(edgeList, sigma, rho, tau, viscosity):
     return
 
 
+def calculateConductivity(currentNode, currentNeighbour, nodeListLength, edgeList, sigma, rho, tau, viscosity):
+    
+    pressureSum = 0
+    for i in range(nodeListLength):
+        pressureSum += currentNode._pressureVector[i] - currentNeighbour._pressureVector[i]
+    
+    kappa = 1 + sigma * (abs(pressureSum)) - rho
+    
+    for edge in edgeList:
+        if (currentNode._id == edge._start._id or currentNode._id == edge._end._id) and (currentNeighbour._id == edge._start._id or currentNeighbour._id == edge._end._id):
+                edge._conductivity = edge._conductivity * kappa
+                edge._radius = calculateRadius(edge, viscosity)
+    
+                if edge._conductivity < tau:
+                    edgeList.remove(edge)
+                    print("REMOVES! tau = " + str(tau))
+        
+    return
+
+
 """_summary_
 Approximates the pressure change (p^t+1) for each node using equation (8)
 """
