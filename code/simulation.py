@@ -180,8 +180,12 @@ Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, sigma = 0.000000375, rho = 0.0002, tau = 0.0004):
     
-    calculateFlux(nodeList, edgeList)
-    calculateConductivity(edgeList, sigma, rho, tau, viscosity)
-    calculatePressure(nodeList, initialFlow)
+    index = 0
+    
+    for node in nodeList:
+        for neighbour in node._neighbour:
+            calculateConductivity(node, neighbour, len(nodeList), edgeList, sigma, rho, tau, viscosity)
+        calculatePressure(index, node, initialFlow)
+        index += 1
 
     return
