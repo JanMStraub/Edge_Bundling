@@ -25,7 +25,7 @@ def main():
     
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
-    steps = 50000
+    steps = 10000
     intervals = 8
     image = True # Change to False if you want a gif
     
@@ -42,8 +42,8 @@ def main():
     
     # Setup environment
     environment = Environment()
-    environment.createNodes(nodeList)
-    environment.createEdges(edgeList, edgeCost)
+    environment.createGrid(nodeList)
+    environment.createTerminalNodes(nodeList)
     
     # Setup simulation
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
@@ -54,7 +54,7 @@ def main():
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau) 
+            physarumAlgorithm(environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau) 
             
             """
             if ((t % 10000) == 0):

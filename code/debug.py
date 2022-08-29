@@ -14,7 +14,7 @@ from simulation import physarumAlgorithm, initializePhysarium
 Prints the initial conductivity for each node
 """
 def printInitialConductivity(edgeList):
-    for edge in edgeList:
+    for edge in edgeList[:10]:
                 
         print("Initial conductivity of edge {}: {}".format(edge._id, edge._conductivity))
     
@@ -27,7 +27,7 @@ def printInitialConductivity(edgeList):
 Prints the initial pressure for each node
 """
 def printInitialPressure(nodeList):
-    for node in nodeList:
+    for node in nodeList[:10]:
         print("Initial pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
@@ -39,7 +39,7 @@ def printInitialPressure(nodeList):
 Prints the flux at each edge
 """
 def printFlux(edgeList):
-    for edge in edgeList:
+    for edge in edgeList[:10]:
         print("Flux of edge {}: {}".format(edge._id, edge._flux))
         
     print("\n####################################################################\n")
@@ -51,7 +51,7 @@ def printFlux(edgeList):
 Prints the conductivity at each edge
 """
 def printConductivity(edgeList):
-    for edge in edgeList:
+    for edge in edgeList[:10]:
         print("Conductivity of edge {}: {}".format(edge._id, edge._conductivity))
         
     print("\n####################################################################\n")   
@@ -62,7 +62,7 @@ def printConductivity(edgeList):
 Prints the radius of each edge
 """
 def printEdgeRadius(edgeList):
-    for edge in edgeList:
+    for edge in edgeList[:10]:
          print("Radius of edge {}: {}".format(edge._id, edge._radius))
         
     print("\n####################################################################\n")   
@@ -73,7 +73,7 @@ def printEdgeRadius(edgeList):
 Prints the pressure for each node
 """
 def printPressure(nodeList):
-    for node in nodeList:
+    for node in nodeList[:10]:
         print("Pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
@@ -93,7 +93,7 @@ def test():
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 100.0
+    initialFlow = 10.0
     sigma = 0.000000375
     rho = 0.0002
     tau = 0.0004
@@ -119,16 +119,19 @@ def test():
     plt.show()
     """
     
-    for t in tqdm(range(50000), desc = "Iteration progress"):
+    for t in tqdm(range(10000), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        tau = 0.00000004 * t
+        tau = 0.0004 * t
       
     print(tau)
     
+    print("Number of nodes: " + str(len(environment._nodeList)))
+    print("Number of edges: " + str(len(environment._edgeList)))
+    
     # Debugging
-    printFlux(environment._edgeList)
+    #printFlux(environment._edgeList)
     printConductivity(environment._edgeList)
     printEdgeRadius(environment._edgeList)
     printPressure(environment._nodeList)

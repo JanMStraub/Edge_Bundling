@@ -70,6 +70,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
+                        node._neighbour.append(endNode)
                         node._connections += 1
                         id += 1
                                 
@@ -81,6 +82,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
+                        node._neighbour.append(endNode)
                         node._connections += 1
                         id += 1
                     
@@ -92,6 +94,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
+                        node._neighbour.append(endNode)
                         node._connections += 1
                         id += 1
                     
@@ -103,6 +106,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
+                        node._neighbour.append(endNode)
                         node._connections += 1
                         id += 1
                 
@@ -182,14 +186,14 @@ class Environment:
         edgeWidth = list()
         
         for node in self._nodeList:
-            if node._steinerPoint == False:
+            if node._terminal == False:
                 a, b, c = node._position
                 nodes.append([a, b])
         
         nodes = np.array(nodes)
         
         for edge in self._edgeList:
-            if edge._steinerEdge == False:
+            if edge._terminal == False:
                 edges.append([edge._start._id, edge._end._id])
                 edgeWidth.append(edge._radius / (len(self._edgeList)))
         
@@ -222,6 +226,7 @@ class Node:
         self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
+        self._neighbour = []
             
 ################################################################################
 
