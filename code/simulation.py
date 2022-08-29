@@ -80,31 +80,26 @@ def initializePressure(nodeList, initialFlow):
 
 
 """_summary_
-Calculates the flux (Q^t) throught each edge using equation (5)
-"""
-def calculateFlux(nodeList, edgeList):
-    for edge in edgeList:
-        pressureSum = 0
-        for i in range(len(nodeList)):
-            pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
-        edge._flux = (edge._conductivity / edge._length) * pressureSum
-    
-    return
-
-
-"""_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
-def calculateConductivity(nodeListLength, edgeList, sigma, rho, tau, viscosity):
-    for edge in edgeList:
-        edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
-        edge._radius = calculateRadius(edge, viscosity)
-        
-        if edge._conductivity < tau:
-            edgeList.remove(edge)
-            print("REMOVES! tau = " + str(tau) + ", edges remaining: " + str(len(edgeList)))
-            if (len(edgeList) < (nodeListLength - 1)):
-                raise ValueError("Steiner tree no longer possible")
+def calculateConductivity(currentNode, currentNeighbour, nodeListLength, edgeList, sigma, rho, tau, viscosity):
+    
+    pressureSum = 0
+    for i in range(nodeListLength):
+        pressureSum += currentNode._pressureVector[i] - currentNeighbour._pressureVector[i]
+    
+    kappa = 1 + sigma * (abs(pressureSum)) - rho
+    
+    
+    
+    for edge in currentNode._nodeEdgeList:
+        if (currentNode._id == edge._start._id or currentNode._id == edge._end._id) and (currentNeighbour._id == edge._start._id or currentNeighbour._id == edge._end._id):
+                edge._conductivity = edge._conductivity * kappa
+                edge._radius = calculateRadius(edge, viscosity)
+    
+                if edge._conductivity < tau:
+                    edgeList.remove(edge)
+                    print("REMOVES! tau = " + str(tau))
         
     return
 
@@ -112,7 +107,7 @@ def calculateConductivity(nodeListLength, edgeList, sigma, rho, tau, viscosity):
 """_summary_
 Approximates the pressure change (p^t+1) for each node using equation (8)
 """
-def calculatePressure(nodeList, initialFlow):
+def calculatePressure(node, nodeList, initialFlow):
      
     for sinkNode in nodeList:
         sinkNode._sink = True
@@ -183,8 +178,9 @@ Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, sigma = 0.000000375, rho = 0.0002, tau = 0.0004):
     
-    calculateFlux(nodeList, edgeList)
-    calculateConductivity(len(nodeList), edgeList, sigma, rho, tau, viscosity)
-    calculatePressure(nodeList, initialFlow)
+    for node in nodeList:
+        for neighbour in node._neighbour:
+            calculateConductivity(node, neighbour, len(nodeList), edgeList, sigma, rho, tau, viscosity)
+        calculatePressure(node, nodeList, initialFlow)
 
     return
