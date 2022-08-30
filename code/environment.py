@@ -113,6 +113,7 @@ class Node:
         self._initialPressure = 1
         self._connections = 0
         self._sink = False
+        self._terminal = True
         self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []

@@ -78,44 +78,18 @@ def initializePressure(nodeList, initialFlow):
     return
 
 
-"""_summary_
-Calculates the flux (Q^t) throught each edge using equation (5)
-"""
-def calculateFlux(nodeList, edgeList):
-    for edge in edgeList:
-        pressureSum = 0
-        for i in range(len(nodeList)):
-            pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
-        edge._flux = (edge._conductivity / edge._length) * pressureSum
-    
-    return
-
-
-"""_summary_
-Calculates the conductivity (D^t+1) throught each edge using equation (6)
-"""
-def calculateConductivity(edgeList, sigma, rho, tau, viscosity):
-    for edge in edgeList:
-        edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
-        edge._radius = calculateRadius(edge, viscosity)
-        
-        if edge._conductivity < tau:
-            edgeList.remove(edge)
-            print("REMOVES! tau = " + str(tau))
-        
-    return
-
-
 def calculateConductivity(currentNode, currentNeighbour, nodeListLength, edgeList, sigma, rho, tau, viscosity):
-    
-    pressureSum = 0
-    for i in range(nodeListLength):
-        pressureSum += currentNode._pressureVector[i] - currentNeighbour._pressureVector[i]
-    
-    kappa = 1 + sigma * (abs(pressureSum)) - rho
-    
+        
     for edge in edgeList:
-        if (currentNode._id == edge._start._id or currentNode._id == edge._end._id) and (currentNeighbour._id == edge._start._id or currentNeighbour._id == edge._end._id):
+        if (currentNode._id == edge._start._id and currentNeighbour._id == edge._end._id) or (currentNeighbour._id == edge._start._id and currentNode._id == edge._end._id):
+                pressureSum = 0
+                for i in range(nodeListLength):
+                    pressureSum += (currentNode._pressureVector[i] - currentNeighbour._pressureVector[i])
+                    if (pressureSum > 100000000):
+                        print(pressureSum)
+                
+                kappa = 1 + sigma * (abs(pressureSum)) / edge._length - rho
+            
                 edge._conductivity = edge._conductivity * kappa
                 edge._radius = calculateRadius(edge, viscosity)
     
@@ -140,12 +114,12 @@ def calculatePressure(index, currentNode, initialFlow):
                 conductivitySum += edge._conductivity
                 conductivityPressureSum += edge._conductivity * (currentNode._pressureVector[index] + neighbour._pressureVector[index])
                 
-            currentNode._pressureVector[index] = (initialFlow * currentNode._nodeEdgeList[0] + conductivityPressureSum) / 2 * conductivitySum
+            currentNode._pressureVector[index] = (initialFlow * 1 + conductivityPressureSum) / 2 * conductivitySum
             
         elif (currentNode._id == index):
             currentNode._pressureVector[index] = 0
             
-        elif (False):
+        elif (neighbour._terminal == False):
             conductivitySum = 0
             conductivityPressureSum = 0
             
@@ -157,54 +131,6 @@ def calculatePressure(index, currentNode, initialFlow):
      
     return
 
-def calculatePressure(nodeList, initialFlow):
-     
-    for sinkNode in nodeList:
-        sinkNode._sink = True
-        
-        for node in nodeList:
-            
-            index = 0
-
-            if (node._sink == False):
-            
-                conductivitySum = 0
-                conductivityPressureSum = 0
-                
-                for edge in node._nodeEdgeList:
-                    if edge._start._id != node._id:
-                        conductivityPressureSum += edge._conductivity * (edge._end._pressureVector[node._id] - edge._start._pressureVector[node._id])
-                    if edge._end._id != node._id:
-                        conductivityPressureSum += edge._conductivity * (edge._start._pressureVector[node._id] - edge._end._pressureVector[node._id])
-                        
-                    conductivitySum += edge._conductivity
-                
-                node._pressureVector[index] = ((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / (2 * conductivitySum))
-                
-            elif (node._sink == True):
-                for edge in node._nodeEdgeList:
-                    node._pressureVector[index] = 0
-                    
-            else:
-                conductivitySum = 0
-                conductivityPressureSum = 0
-                
-                for edge in node._nodeEdgeList:
-                    if edge._start._id != node._id:
-                        conductivityPressureSum += edge._conductivity * (edge._end._pressureVector[node._id] - edge._start._pressureVector[node._id])
-                    if edge._end._id != node._id:
-                        conductivityPressureSum += edge._conductivity * (edge._start._pressureVector[node._id] - edge._end._pressureVector[node._id])
-                        
-                    conductivitySum += edge._conductivity
-                
-                node._pressureVector[index] = (conductivityPressureSum / (2 * conductivitySum))
-                
-            index += 1
-            
-        sinkNode._sink = False
-        index = 0
-        
-    return
 
 """_summary_
 Calculates radius of each edge, derived from equation (1)
@@ -226,7 +152,7 @@ def initializePhysarium(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0)
 """_summary_
 Function is used to calculate each time step in the simulation
 """
-def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0, sigma = 0.000000375, rho = 0.0002, tau = 0.0004):
+def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
     
     index = 0
     

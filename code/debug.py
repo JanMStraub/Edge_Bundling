@@ -93,8 +93,8 @@ def test():
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 100.0
-    sigma = 0.000000375
+    initialFlow = 0.5
+    sigma = 0.00000375
     rho = 0.0002
     tau = 0.0004
     edgeCost = 1
@@ -106,7 +106,7 @@ def test():
     initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     # Debugging
-    # printInitialConductivity(environment._edgeList)
+    printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
    
     for t in tqdm(range(50000), desc = "Iteration progress"):
