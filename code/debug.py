@@ -103,11 +103,7 @@ def test():
     environment.createNodes(nodeList)
     environment.createEdges(edgeList, edgeCost)
     
-    for node in environment._nodeList:
-        for edge in node._edgeList:
-            print(edge._id)
-    
-    #initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
+    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
     
     # Debugging
     # printInitialConductivity(environment._edgeList)
@@ -115,7 +111,7 @@ def test():
    
     for t in tqdm(range(50000), desc = "Iteration progress"):
         
-        #physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+        physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
         tau = 0.0004 * t
         

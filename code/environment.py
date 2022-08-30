@@ -41,7 +41,6 @@ class Environment:
     """
     def createEdges(self, edgeList, edgeCost):  
         
-        
         for i in range(0, len(self._nodeList)):
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][0]:
@@ -115,9 +114,8 @@ class Node:
         self._connections = 0
         self._sink = False
         self._pressureVector = []
-        self._edgeList = []    
+        self._nodeEdgeList = []    
         self._neighbourIDs = []
-        self._edgeIDs = []
         self._neighbour = []
             
 ################################################################################
