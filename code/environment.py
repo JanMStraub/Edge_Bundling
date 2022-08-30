@@ -41,31 +41,33 @@ class Environment:
     """
     def createEdges(self, edgeList, edgeCost):  
         
-        id = 0
         
-        for node in self._nodeList:
-            for edge in edgeList:
- 
-                if (node._id == edge[0]):
-                    neighbour = findNodeById(edge[0], self._nodeList)
-                    edgeObject = Edge(id, node, neighbour)
-                    self._edgeList.append(edgeObject)
-                    node._neighbourIDs.append(edge[1])
-                    node._edgeList.append(edgeObject)
-                    node._neighbour.append(neighbour)
-                    node._connections += 1
-                    id += 1                   
+        for i in range(0, len(self._nodeList)):
+            for j in range(0, len(edgeList)):
+                if self._nodeList[i]._id == edgeList[j][0]:
+                    edge = Edge(j, self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
                     
-        for node in self._nodeList:
-            for edge in self._edgeList:
+                    self._nodeList[i]._nodeEdgeList.append(edge)
+                    self._edgeList.append(edge)
+                    self._nodeList[i]._neighbour.append(edge._end)
+                    self._nodeList[i]._connections += 1
+                    
+                    if (edge._start._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
+                    elif (edge._end._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
                 
-                if (node._id == edge._end._id):                       
-                    node._neighbourIDs.append(edge._start._id)
-                    node._connections += 1
-                    node._edgeList.append(edge)
-                    node._neighbour.append(edge._start)
-
-        print(id)
+        for i in range(0, len(self._nodeList)):
+            for j in range(0, len(edgeList)):
+                if self._nodeList[i]._id == edgeList[j][1]:
+                    self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
+                    self._nodeList[i]._neighbour.append(self._edgeList[j]._start)
+                    self._nodeList[i]._connections += 1
+                    
+                    if (edge._start._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
+                    elif (edge._end._id != self._nodeList[i]._id):
+                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
         
         return
     
@@ -115,6 +117,7 @@ class Node:
         self._pressureVector = []
         self._edgeList = []    
         self._neighbourIDs = []
+        self._edgeIDs = []
         self._neighbour = []
             
 ################################################################################
