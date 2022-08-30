@@ -26,14 +26,14 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/planar_graph.json"
     steps = 50000
     intervals = 8
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 100.0
+    initialFlow = 10
     sigma = 0.000000375
     rho = 0.0002
     tau = 0.00000004
@@ -66,7 +66,7 @@ def main():
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            tau = 0.00000004 * t #00000004
+            tau = 0.000004 * t #00000004
             
     else:
         ims = []
