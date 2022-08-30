@@ -37,7 +37,7 @@ def initializePressure(nodeList, initialFlow):
                         elif (i == node._neighbourIDs[j]):
                             pressureVector[i] = -1 * node._initialPressure
                 
-                b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+                b.append((initialFlow * node._edgeList[0]._length) / node._edgeList[0]._conductivity)
                 A.append(pressureVector)
                 
             elif (node._sink == True):
@@ -50,7 +50,7 @@ def initializePressure(nodeList, initialFlow):
                         elif (i == node._neighbourIDs[j]):
                             pressureVector[i] = 0
                     
-                b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+                b.append(((len(nodeList) - 1) * initialFlow * node._edgeList[0]._length) / node._edgeList[0]._conductivity)
                 A.append(pressureVector)
                 
             else:
@@ -143,7 +143,7 @@ def calculatePressure(nodeList, initialFlow):
                 conductivitySum = 0
                 conductivityPressureSum = 0
                 
-                for edge in node._nodeEdgeList:
+                for edge in node._edgeList:
                     if edge._start._id != node._id:
                         conductivityPressureSum += edge._conductivity * (edge._end._pressureVector[node._id] - edge._start._pressureVector[node._id])
                     if edge._end._id != node._id:
@@ -151,17 +151,17 @@ def calculatePressure(nodeList, initialFlow):
                         
                     conductivitySum += edge._conductivity
                 
-                node._pressureVector[index] = ((initialFlow * node._nodeEdgeList[0]._length + conductivityPressureSum) / (2 * conductivitySum))
+                node._pressureVector[index] = ((initialFlow * node._edgeList[0]._length + conductivityPressureSum) / (2 * conductivitySum))
                 
             elif (node._sink == True):
-                for edge in node._nodeEdgeList:
+                for edge in node._edgeList:
                     node._pressureVector[index] = 0
                     
             else:
                 conductivitySum = 0
                 conductivityPressureSum = 0
                 
-                for edge in node._nodeEdgeList:
+                for edge in node._edgeList:
                     if edge._start._id != node._id:
                         conductivityPressureSum += edge._conductivity * (edge._end._pressureVector[node._id] - edge._start._pressureVector[node._id])
                     if edge._end._id != node._id:

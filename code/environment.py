@@ -43,7 +43,7 @@ class Environment:
                 if self._nodeList[i]._id == edgeList[j][0]:
                     edge = Edge(j, self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
                     
-                    self._nodeList[i]._nodeEdgeList.append(edge)
+                    self._nodeList[i]._edgeList.append(edge)
                     self._edgeList.append(edge)
                     self._nodeList[i]._connections += 1
                     
@@ -55,7 +55,7 @@ class Environment:
         for i in range(0, len(self._nodeList)):
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][1]:
-                    self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
+                    self._nodeList[i]._edgeList.append(self._edgeList[j])
                     self._nodeList[i]._connections += 1
                     
                     if (edge._start._id != self._nodeList[i]._id):
@@ -109,8 +109,9 @@ class Node:
         self._connections = 0
         self._sink = False
         self._pressureVector = []
-        self._nodeEdgeList = []    
+        self._edgeList = []    
         self._neighbourIDs = []
+        self._neighbour = []
             
 ################################################################################
 
