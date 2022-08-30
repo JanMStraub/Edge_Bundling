@@ -6,6 +6,9 @@ import numpy as np
 from matplotlib.collections import LineCollection
 
 
+from helper import findNodeById
+
+
 """_summary_
 Class used to create the environment for the graph and the agents to operate upon
 Returns:
@@ -38,31 +41,32 @@ class Environment:
     """
     def createEdges(self, edgeList, edgeCost):  
         
-        for i in range(0, len(self._nodeList)):
-            for j in range(0, len(edgeList)):
-                if self._nodeList[i]._id == edgeList[j][0]:
-                    edge = Edge(j, self._nodeList[i], self._nodeList[edgeList[j][1]], edgeCost)
+        id = 0
+        
+        for node in self._nodeList:
+            for edge in edgeList:
+ 
+                if (node._id == edge[0]):
+                    neighbour = findNodeById(edge[0], self._nodeList)
+                    edgeObject = Edge(id, node, neighbour)
+                    self._edgeList.append(edgeObject)
+                    node._neighbourIDs.append(edge[1])
+                    node._edgeList.append(edgeObject)
+                    node._neighbour.append(neighbour)
+                    node._connections += 1
+                    id += 1                   
                     
-                    self._nodeList[i]._edgeList.append(edge)
-                    self._edgeList.append(edge)
-                    self._nodeList[i]._connections += 1
-                    
-                    if (edge._start._id != self._nodeList[i]._id):
-                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
-                    elif (edge._end._id != self._nodeList[i]._id):
-                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
+        for node in self._nodeList:
+            for edge in self._edgeList:
                 
-        for i in range(0, len(self._nodeList)):
-            for j in range(0, len(edgeList)):
-                if self._nodeList[i]._id == edgeList[j][1]:
-                    self._nodeList[i]._edgeList.append(self._edgeList[j])
-                    self._nodeList[i]._connections += 1
-                    
-                    if (edge._start._id != self._nodeList[i]._id):
-                        self._nodeList[i]._neighbourIDs.append(edge._start._id)
-                    elif (edge._end._id != self._nodeList[i]._id):
-                        self._nodeList[i]._neighbourIDs.append(edge._end._id)
-    
+                if (node._id == edge._end._id):                       
+                    node._neighbourIDs.append(edge._start._id)
+                    node._connections += 1
+                    node._edgeList.append(edge)
+                    node._neighbour.append(edge._start)
+
+        print(id)
+        
         return
     
     """_summary_
