@@ -85,7 +85,7 @@ def printPressure(nodeList):
 Function exits only for testing purposes
 """ 
 def test():
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
     print("Number of nodes: " + str(numberOfNodes))
@@ -93,7 +93,7 @@ def test():
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 0.5
+    initialFlow = 10.0
     sigma = 0.00000375
     rho = 0.0002
     tau = 0.0004
@@ -113,15 +113,15 @@ def test():
         
         physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        tau = 0.0004 * t
+        #tau = 0.0004 * t
         
-    print(tau)
+    #print(tau)
     
     # Debugging
     # printFlux(environment._edgeList)
-    # printConductivity(environment._edgeList)
-    # printEdgeRadius(environment._edgeList)
-    # printPressure(environment._nodeList)
+    printConductivity(environment._edgeList)
+    printEdgeRadius(environment._edgeList)
+    printPressure(environment._nodeList)
     
     return
     

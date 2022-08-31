@@ -4,8 +4,8 @@
   "comment": "",
   "graph": {
     "graphID": 0,
-    "nodesNumber": 3,
-    "edgesNumber": 1,
+    "nodesNumber": 4,
+    "edgesNumber": 4,
     "edges": [
       [
         0,
@@ -14,6 +14,14 @@
       [
         0,
         2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
       ]
     ],
     "properties": {
@@ -22,9 +30,10 @@
         "nodeDefault": "(0,0,0)",
         "edgeDefault": "()",
         "nodesValues": {
-          "0": "(28,40,0)",
-          "1": "(15,31,0)",
-          "2": "(1,1,0)"
+          "0": "(1,1,0)",
+          "1": "(1,5,0)",
+          "2": "(5,1,0)",
+          "3": "(5,5,0"
         }
       }
     },

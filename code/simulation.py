@@ -77,34 +77,6 @@ def initializePressure(nodeList, initialFlow):
     
     return
 
-"""_summary_
-Calculates the flux (Q^t) throught each edge using equation (5)
-"""
-def calculateFlux(nodeList, edgeList):
-    for edge in edgeList:
-        pressureSum = 0
-        for i in range(len(nodeList)):
-            pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
-        #print(pressureSum)
-        edge._flux = (edge._conductivity / edge._length) * pressureSum
-    
-    return
-
-
-"""_summary_
-Calculates the conductivity (D^t+1) throught each edge using equation (6)
-"""
-def calculateConductivityold(edgeList, sigma, rho, tau, viscosity):
-    for edge in edgeList:
-        edge._conductivity = edge._conductivity + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity)
-        edge._radius = calculateRadius(edge, viscosity)
-        
-        if edge._conductivity < tau:
-            edgeList.remove(edge)
-            print("REMOVES! tau = " + str(tau))
-        
-    return
-
 
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
@@ -122,10 +94,13 @@ def calculateConductivity(currentNode, currentNeighbour, nodeListLength, edgeLis
             
                 edge._conductivity = edge._conductivity * kappa
                 edge._radius = calculateRadius(edge, viscosity)
-    
+
+                """
+                # edge cutting
                 if edge._conductivity < tau:
-                    edgeList.remove(edge)
+                     edgeList.remove(edge)
                     print("REMOVES! tau = " + str(tau))
+                """
         
     return
 
@@ -134,7 +109,8 @@ def calculateConductivity(currentNode, currentNeighbour, nodeListLength, edgeLis
 Approximates the pressure change (p^t+1) for each node using equation (8)
 """
 def calculatePressure(index, currentNode, initialFlow):
-     
+    
+    """ 
     for neighbour in currentNode._neighbour:
         if (neighbour._terminal == True):
             conductivitySum = 0
@@ -158,7 +134,32 @@ def calculatePressure(index, currentNode, initialFlow):
                 conductivityPressureSum += edge._conductivity * (currentNode._pressureVector[index] + neighbour._pressureVector[index])
                 
             currentNode._pressureVector[index] = conductivityPressureSum / 2 * conductivitySum
-     
+        """
+        
+    for neighbour in currentNode._neighbour:
+        if (neighbour._terminal == True):
+            conductivitySum = 0
+            conductivityPressureSum = 0
+            
+            for edge in currentNode._nodeEdgeList:
+                conductivitySum += edge._conductivity
+                conductivityPressureSum += edge._conductivity * neighbour._pressureVector[index]
+                
+            currentNode._pressureVector[index] = (initialFlow * 1 + conductivityPressureSum) / conductivitySum
+            
+        elif (currentNode._id == index):
+            currentNode._pressureVector[index] = 0
+            
+        elif (neighbour._terminal == False):
+            conductivitySum = 0
+            conductivityPressureSum = 0
+            
+            for edge in currentNode._nodeEdgeList:
+                conductivitySum += edge._conductivity
+                conductivityPressureSum += edge._conductivity * neighbour._pressureVector[index]
+                
+            currentNode._pressureVector[index] = conductivityPressureSum / conductivitySum
+        
     return
 
 
