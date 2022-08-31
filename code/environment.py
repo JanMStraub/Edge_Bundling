@@ -7,6 +7,9 @@ from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
 
+from helper import findNodeById
+
+
 """_summary_
 Class used to create the environment for the graph and the agents to operate upon
 Returns:
@@ -156,6 +159,7 @@ class Environment:
                     
                     self._nodeList[i]._nodeEdgeList.append(edge)
                     self._edgeList.append(edge)
+                    self._nodeList[i]._neighbour.append(edge._end)
                     self._nodeList[i]._connections += 1
                     
                     if (edge._start._id != self._nodeList[i]._id):
@@ -167,6 +171,7 @@ class Environment:
             for j in range(0, len(edgeList)):
                 if self._nodeList[i]._id == edgeList[j][1]:
                     self._nodeList[i]._nodeEdgeList.append(self._edgeList[j])
+                    self._nodeList[i]._neighbour.append(self._edgeList[j]._start)
                     self._nodeList[i]._connections += 1
                     
                     if (edge._start._id != self._nodeList[i]._id):

@@ -37,6 +37,12 @@ def calculateEdgeLength(node1, node2):
     return math.dist(node1._position, node2._position)
 
 
+def findNodeById(id, nodeList):
+    for node in nodeList:
+        if (node._id == id):
+            return node
+
+
 """_summary_
 Function used to specific node object in node grid
 """
