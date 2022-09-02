@@ -3,13 +3,14 @@
 # Imports
 import numpy as np
 
+from helper import findConnection
+
 
 """_summary_
 Initializes the conductivity (D_0) of all edges according to equation (1)
 """
-def initializeConductivity(edgeList, viscosity):
-    for edge in edgeList:
-        edge._conductivity = (np.pi * edge._radius ** 4) / (8 * viscosity)
+def initializeConductivity(edge, viscosity):
+    edge._conductivity = (np.pi * edge._radius ** 4) / (8 * viscosity)
     
     return
 
@@ -17,65 +18,105 @@ def initializeConductivity(edgeList, viscosity):
 """_summary_
 Initializes the pressure vector (p^0) in all nodes according to equation (4). 
 """
-def initializePressure(nodeList, initialFlow):
+def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     
-    for sinkNode in nodeList:
-        if sinkNode._terminal == True:
-            sinkNode._sink = True
+    for node in nodeList:
+      
+        if (node._sink == False and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
             
-            A = list()
-            b = list()
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == node._id):
+                        pressureVector[entry._id] = node._connections * node._initialPressure
+                    elif (entry._id == neighbour._id):
+                        pressureVector[entry._id] = -1 * node._initialPressure
             
-            for node in nodeList:
+            b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+            A.append(pressureVector)            
+        
+        elif (node._sink == True and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
+            
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == neighbour._id):
+                        pressureVector[entry._id] = node._initialPressure
+            
+            b.append(((len(terminalNodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+            A.append(pressureVector)       
+        
+        elif (node._sink == False and node._terminal == False):
+            pressureVector = [0] * len(nodeList)
+            
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == node._id):
+                        pressureVector[entry._id] = node._connections * node._initialPressure
+                    elif (entry._id == neighbour._id):
+                        pressureVector[entry._id] = -1 * node._initialPressure
+            
+            b.append(0)
+            A.append(pressureVector)
+        
+        
+        
+    """
+    
+            
+    A = list()
+    b = list()
+    
+    for node in nodeList:
 
-                if (node._sink == False and node._terminal == True):
-                    pressureVector = [0] * len(nodeList)
+        if (node._sink == False and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
 
-                    for i in range(len(nodeList)):
-                        for j in range(len(node._neighbourIDs)):
-                            if (i == node._id):
-                                pressureVector[i] = node._connections * node._initialPressure
-                            elif (i == node._neighbourIDs[j]):
-                                pressureVector[i] = -1 * node._initialPressure
-                    
-                    b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                    A.append(pressureVector)
-                    
-                elif (node._sink == True and node._terminal == True):
-                    pressureVector = [0] * len(nodeList)
-                    
-                    for i in range(len(nodeList)):
-                        for j in range(len(node._neighbourIDs)):
-                            if (i == node._id):
-                                pressureVector[i] = node._connections * node._initialPressure
-                            elif (i == node._neighbourIDs[j]):
-                                pressureVector[i] = 0
-                        
-                    b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
-                    A.append(pressureVector)
-                    
-                elif (node._terminal == False):
-                    pressureVector = [0] * len(nodeList)
-                    
-                    for i in range(len(nodeList)):
-                        for j in range(len(node._neighbourIDs)):
-                            if (i == node._id):
-                                pressureVector[i] = node._connections * node._initialPressure
-                            elif (i == node._neighbourIDs[j]):
-                                pressureVector[i] = -1 * node._initialPressure
-                    
-                    b.append(0)
-                    A.append(pressureVector)
-
-            A = np.array(A)
-            b = np.array(b)
-            x = np.linalg.solve(A, b)
+            for i in range(len(nodeList)):
+                for j in range(len(node._neighbourIDs)):
+                    if (i == node._id):
+                        pressureVector[i] = node._connections * node._initialPressure
+                    elif (i == node._neighbourIDs[j]):
+                        pressureVector[i] = -1 * node._initialPressure
+            
+            b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+            A.append(pressureVector)
+            
+        elif (node._sink == True and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
             
             for i in range(len(nodeList)):
-                nodeList[i]._pressureVector.append(x[i])
+                for j in range(len(node._neighbourIDs)):
+                    if (i == node._id):
+                        pressureVector[i] = node._connections * node._initialPressure
+                    elif (i == node._neighbourIDs[j]):
+                        pressureVector[i] = 0
+                
+            b.append(((len(nodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity)
+            A.append(pressureVector)
             
-            sinkNode._sink = False
+        elif (node._terminal == False):
+            pressureVector = [0] * len(nodeList)
+            
+            for i in range(len(nodeList)):
+                for j in range(len(node._neighbourIDs)):
+                    if (i == node._id):
+                        pressureVector[i] = node._connections * node._initialPressure
+                    elif (i == node._neighbourIDs[j]):
+                        pressureVector[i] = -1 * node._initialPressure
+            
+            b.append(0)
+            A.append(pressureVector)
+
+    A = np.array(A)
+    b = np.array(b)
+    x = np.linalg.solve(A, b)
     
+    for i in range(len(nodeList)):
+        nodeList[i]._pressureVector.append(x[i])
+    
+    
+    """
     return
 
 
@@ -137,7 +178,7 @@ def calculatePressure(index, currentNode, initialFlow):
             currentNode._pressureVector[index] = conductivityPressureSum / 2 * conductivitySum
         """
         
-    for neighbour in currentNode._neighbour:
+    for neighbour in currentNode._neighbours:
         if (neighbour._terminal == True):
             conductivitySum = 0
             conductivityPressureSum = 0
@@ -174,10 +215,43 @@ def calculateRadius(edge, viscosity):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(nodeList, edgeList, viscosity = 1.0, initialFlow = 10.0):
-    initializeConductivity(edgeList, viscosity)
-    initializePressure(nodeList, initialFlow)
+def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0):
     
+    for edge in edgeList:
+            initializeConductivity(edge, viscosity)
+    
+    for node in nodeList:
+        A = list()
+        b = list()
+        node._pressureVector = [0] * len(terminalNodeList)
+        
+        if node._terminal == True:
+            node._sink = True
+            print("TERMINAL")
+        
+        print(node._sink)
+        
+        initializePressure(A, b, nodeList, terminalNodeList, initialFlow)
+        
+        if node._terminal == True:
+            node._sink = False
+
+        A = np.array(A)
+        b = np.array(b)
+        x = np.linalg.solve(A, b)
+        
+        for i in range(len(nodeList)):
+            nodeList[i]._pressureVector.append(x[i])
+        
+        for entry in A:
+            print(entry)
+        
+        print(b)
+            
+        print(x)
+        
+        print("############################")
+
     return
     
 
@@ -189,7 +263,7 @@ def physarumAlgorithm(nodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, si
     index = 0
     
     for node in nodeList:
-        for neighbour in node._neighbour:
+        for neighbour in node._neighbours:
             calculateConductivity(node, neighbour, len(nodeList), edgeList, sigma, rho, tau, viscosity)
         calculatePressure(index, node, initialFlow)
         index += 1

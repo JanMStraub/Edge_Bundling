@@ -14,7 +14,7 @@ from simulation import physarumAlgorithm, initializePhysarium
 Prints the initial conductivity for each node
 """
 def printInitialConductivity(edgeList):
-    for edge in edgeList[:10]:
+    for edge in edgeList:
                 
         print("Initial conductivity of edge {}: {}".format(edge._id, edge._conductivity))
     
@@ -27,7 +27,7 @@ def printInitialConductivity(edgeList):
 Prints the initial pressure for each node
 """
 def printInitialPressure(nodeList):
-    for node in nodeList[:10]:
+    for node in nodeList:
         print("Initial pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
@@ -39,7 +39,7 @@ def printInitialPressure(nodeList):
 Prints the flux at each edge
 """
 def printFlux(edgeList):
-    for edge in edgeList[:10]:
+    for edge in edgeList:
         print("Flux of edge {}: {}".format(edge._id, edge._flux))
         
     print("\n####################################################################\n")
@@ -51,7 +51,7 @@ def printFlux(edgeList):
 Prints the conductivity at each edge
 """
 def printConductivity(edgeList):
-    for edge in edgeList[:10]:
+    for edge in edgeList:
         print("Conductivity of edge {}: {}".format(edge._id, edge._conductivity))
         
     print("\n####################################################################\n")   
@@ -62,7 +62,7 @@ def printConductivity(edgeList):
 Prints the radius of each edge
 """
 def printEdgeRadius(edgeList):
-    for edge in edgeList[:10]:
+    for edge in edgeList:
          print("Radius of edge {}: {}".format(edge._id, edge._radius))
         
     print("\n####################################################################\n")   
@@ -73,7 +73,7 @@ def printEdgeRadius(edgeList):
 Prints the pressure for each node
 """
 def printPressure(nodeList):
-    for node in nodeList[:10]:
+    for node in nodeList:
         print("Pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
@@ -85,7 +85,7 @@ def printPressure(nodeList):
 Function exits only for testing purposes
 """ 
 def test():
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
     print("Number of nodes: " + str(numberOfNodes))
@@ -105,11 +105,11 @@ def test():
     #environment.createTerminalEdges(nodeList, edgeList, edgeCost)
     
     
-    initializePhysarium(environment._nodeList, environment._edgeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    printInitialConductivity(environment._edgeList)
-    printInitialPressure(environment._nodeList)
+    # printInitialConductivity(environment._edgeList)
+    # printInitialPressure(environment._nodeList)
    
     """
     fig = plt.figure(figsize = (10, 10), dpi = 200)
@@ -128,10 +128,10 @@ def test():
     #print(tau)
     
     # Debugging
-    #printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
-    printEdgeRadius(environment._edgeList)
-    printPressure(environment._nodeList)
+    # printFlux(environment._edgeList)
+    # printConductivity(environment._edgeList)
+    # printEdgeRadius(environment._edgeList)
+    # printPressure(environment._nodeList)
     
     return
     

@@ -73,7 +73,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
-                        node._neighbour.append(endNode)
+                        node._neighbours.append(endNode)
                         node._connections += 1
                         id += 1
                                 
@@ -85,7 +85,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
-                        node._neighbour.append(endNode)
+                        node._neighbours.append(endNode)
                         node._connections += 1
                         id += 1
                     
@@ -97,7 +97,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
-                        node._neighbour.append(endNode)
+                        node._neighbours.append(endNode)
                         node._connections += 1
                         id += 1
                     
@@ -109,7 +109,7 @@ class Environment:
                         self._edgeList.append(edge)
                         node._neighbourIDs.append(endNode._id)
                         node._nodeEdgeList.append(edge)
-                        node._neighbour.append(endNode)
+                        node._neighbours.append(endNode)
                         node._connections += 1
                         id += 1
                 
@@ -130,11 +130,14 @@ class Environment:
     Method uses to create node objects and save them in the nodes list for easy access
     """
     def createTerminalNodes(self, nodeList):
+        id = 0
         for node in nodeList:
             x, y, z = node
             selectedNode = findNodeByPosition(self._nodeList, x, y, z)
             selectedNode._terminal = True
+            selectedNode._terminalId = id
             self._terminalNodeList.append(selectedNode)
+            id += 1
         
         return
     
@@ -223,6 +226,7 @@ class Node:
     def __init__(self, id, position):
         self._id = id
         self._position = position
+        self._terminalId = None
         self._flux = 0
         self._initialPressure = 1
         self._connections = 0
@@ -231,7 +235,7 @@ class Node:
         self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
-        self._neighbour = []
+        self._neighbours = []
             
 ################################################################################
 
