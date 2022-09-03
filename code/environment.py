@@ -67,51 +67,75 @@ class Environment:
             for i in range(0, 4): 
                 if i == 0:
                     if x != xMax:
+                        newEdge = True
                         value = x + 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
-                        edge = Edge(id, node, endNode)
-                        self._edgeList.append(edge)
-                        node._neighbourIDs.append(endNode._id)
-                        node._nodeEdgeList.append(edge)
-                        node._neighbours.append(endNode)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._neighbourIDs.append(endNode._id)
+                            node._nodeEdgeList.append(edge)
+                            node._neighbours.append(endNode)
+                            id += 1
                         node._connections += 1
-                        id += 1
                                 
                 if i == 1:
                     if y != yMax:
+                        newEdge = True
                         value = y + 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
-                        edge = Edge(id, node, endNode)
-                        self._edgeList.append(edge)
-                        node._neighbourIDs.append(endNode._id)
-                        node._nodeEdgeList.append(edge)
-                        node._neighbours.append(endNode)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._neighbourIDs.append(endNode._id)
+                            node._nodeEdgeList.append(edge)
+                            node._neighbours.append(endNode)
+                            id += 1
                         node._connections += 1
-                        id += 1
                     
                 if i == 2:
                     if x != xMin:
+                        newEdge = True
                         value = x - 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
-                        edge = Edge(id, node, endNode)
-                        self._edgeList.append(edge)
-                        node._neighbourIDs.append(endNode._id)
-                        node._nodeEdgeList.append(edge)
-                        node._neighbours.append(endNode)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._neighbourIDs.append(endNode._id)
+                            node._nodeEdgeList.append(edge)
+                            node._neighbours.append(endNode)
+                            id += 1
                         node._connections += 1
-                        id += 1
                     
                 if i == 3:
                     if y != yMin:
+                        newEdge = True
                         value = y - 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
-                        edge = Edge(id, node, endNode)
-                        self._edgeList.append(edge)
-                        node._neighbourIDs.append(endNode._id)
-                        node._nodeEdgeList.append(edge)
-                        node._neighbours.append(endNode)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._neighbourIDs.append(endNode._id)
+                            node._nodeEdgeList.append(edge)
+                            node._neighbours.append(endNode)
+                            id += 1
                         node._connections += 1
-                        id += 1
                 
         return
         

@@ -85,7 +85,7 @@ def printPressure(nodeList):
 Function exits only for testing purposes
 """ 
 def test():
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
     print("Number of nodes: " + str(numberOfNodes))
@@ -102,13 +102,12 @@ def test():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
-    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)
-    
+    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)   
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    # printInitialConductivity(environment._edgeList)
+    printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
    
     """
@@ -119,17 +118,17 @@ def test():
     plt.show()
     """
     
-    for t in tqdm(range(10000), desc = "Iteration progress"):
+    for t in tqdm(range(1), desc = "Iteration progress"):
         
-        physarumAlgorithm(environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+        #physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        #tau = 0.0004 * t
+        tau = 0.0004 * t
         
     #print(tau)
     
     # Debugging
     # printFlux(environment._edgeList)
-    # printConductivity(environment._edgeList)
+    #printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     
