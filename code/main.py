@@ -24,14 +24,14 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
-    steps = 1
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/paper_graph.json"
+    steps = 15000
     intervals = 8
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 100.0
+    initialFlow = 1.0
     sigma = 0.000000375
     rho = 0.0002
     tau = 0.0004
@@ -70,13 +70,13 @@ def main():
                 ax = fig.add_subplot(111)
                 fig = environment.plotGraph(plt)
                 ax.set_title("Polycephalum Test, step = {}".format(t + 1))
-                plt.minorticks_on()
-                plt.grid(which='minor', linestyle = '-')
-                plt.grid(which='major', linestyle = '-')
+                # plt.minorticks_on()
+                # plt.grid(which='minor', linestyle = '-')
+                # plt.grid(which='major', linestyle = '-')
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            #tau = 0.00000004 * t #00000004
+            tau = 0.000004 * t #00000004
             
     else:
         ims = []

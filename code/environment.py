@@ -202,7 +202,7 @@ class Environment:
         
         for edge in self._edgeList:
             edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius)
+            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))
         
         edges = np.array(edges)
         

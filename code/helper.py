@@ -57,3 +57,11 @@ def findConnection(startNode, endNode):
     for edge in startNode._nodeEdgeList:
         if (startNode._id == edge._start._id or startNode._id == edge._end._id) and (endNode._id == edge._start._id or endNode._id == edge._end._id):
             return edge
+        
+
+def findOtherEdgeEnd(node, edge):
+    if (edge._start._id != node._id):
+        return edge._end
+    elif (edge._end._id != node._id):
+        return edge._start
+    
