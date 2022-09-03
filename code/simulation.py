@@ -137,7 +137,6 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
     
-    """
     for node in terminalNodeList:
         A = list()
         b = list()
@@ -154,7 +153,7 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
 
         for i in range(len(nodeList)):
             nodeList[i]._pressureVector.append(x[i])
-    """
+
     return
     
 
@@ -165,13 +164,11 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, ini
     
     index = 0
     
-    print(len(edgeList))
-    
     for node in nodeList:
         for neighbour in node._neighbours:
             calculateConductivity(node, neighbour, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
-        #calculatePressure(index, node, initialFlow)
-        print(str(node._id) + ": " + str(len(node._nodeEdgeList)))
-        index += 1
+        calculatePressure(index, node, initialFlow)
+        if node._terminal == True:
+            index += 1
 
     return

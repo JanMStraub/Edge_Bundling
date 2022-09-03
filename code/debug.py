@@ -93,7 +93,7 @@ def test():
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 10.0
+    initialFlow = 1.0
     sigma = 0.00000375
     rho = 0.0002
     tau = 0.0004
@@ -102,13 +102,13 @@ def test():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
-    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)   
+    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
     printInitialConductivity(environment._edgeList)
-    # printInitialPressure(environment._nodeList)
+    printInitialPressure(environment._nodeList)
    
     """
     fig = plt.figure(figsize = (10, 10), dpi = 200)
@@ -118,19 +118,19 @@ def test():
     plt.show()
     """
     
-    for t in tqdm(range(1), desc = "Iteration progress"):
+    for t in tqdm(range(50000), desc = "Iteration progress"):
         
-        #physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        tau = 0.0004 * t
+        #tau = 0.0004 * t
         
     #print(tau)
     
     # Debugging
     # printFlux(environment._edgeList)
-    #printConductivity(environment._edgeList)
-    # printEdgeRadius(environment._edgeList)
-    # printPressure(environment._nodeList)
+    printConductivity(environment._edgeList)
+    printEdgeRadius(environment._edgeList)
+    printPressure(environment._nodeList)
     
     return
     
