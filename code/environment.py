@@ -226,7 +226,6 @@ class Node:
         self._id = id
         self._position = position
         self._terminalId = None
-        self._flux = 0
         self._initialPressure = 1
         self._connections = 0
         self._sink = False
@@ -254,5 +253,4 @@ class Edge:
         self._start = start
         self._end = end
         self._conductivity = 0
-        self._flux = 0
         self._terminal = False
