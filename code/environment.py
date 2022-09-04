@@ -7,7 +7,7 @@ from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
 
-from helper import findNodeById
+from helper import findNodeById, calculateEdgeLength
 
 
 """_summary_
@@ -156,6 +156,104 @@ class Environment:
                         node._connections += 1
                         node._neighbours.append(endNode)
                         node._neighbourIDs.append(endNode._id)
+        
+        """
+        for node in self._nodeList:
+            x, y, z = node._position
+            
+            for i in range(0, 4): 
+                if i == 0:
+                    if x != xMax:
+                        existingEdge = None
+                        newEdge = True
+                        value = x + 1.0
+                        endNode = findNodeByPosition(self._nodeList, value, y, z)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                                existingEdge = createdEdge
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._nodeEdgeList.append(edge)
+                            id += 1
+                        else: 
+                            node._nodeEdgeList.append(existingEdge)
+                               
+                        node._connections += 1
+                        node._neighbours.append(endNode)
+                        node._neighbourIDs.append(endNode._id)
+                                
+                if i == 1:
+                    if y != yMax:
+                        existingEdge = None
+                        newEdge = True
+                        value = y + 1.0
+                        endNode = findNodeByPosition(self._nodeList, x, value, z)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                                existingEdge = createdEdge
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._nodeEdgeList.append(edge)
+                            id += 1
+                        else: 
+                            node._nodeEdgeList.append(existingEdge)
+                               
+                        node._connections += 1
+                        node._neighbours.append(endNode)
+                        node._neighbourIDs.append(endNode._id)
+                    
+                if i == 2:
+                    if x != xMin:
+                        existingEdge = None
+                        newEdge = True
+                        value = x - 1.0
+                        endNode = findNodeByPosition(self._nodeList, value, y, z)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                                existingEdge = createdEdge
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._nodeEdgeList.append(edge)
+                            id += 1
+                        else: 
+                            node._nodeEdgeList.append(existingEdge)
+                               
+                        node._connections += 1
+                        node._neighbours.append(endNode)
+                        node._neighbourIDs.append(endNode._id)
+                    
+                if i == 3:
+                    if y != yMin:
+                        existingEdge = None
+                        newEdge = True
+                        value = y - 1.0
+                        endNode = findNodeByPosition(self._nodeList, x, value, z)
+                        for createdEdge in self._edgeList:
+                            if createdEdge._start == endNode:
+                                newEdge = False 
+                                existingEdge = createdEdge
+                        
+                        if (newEdge):
+                            edge = Edge(id, node, endNode)
+                            self._edgeList.append(edge)
+                            node._nodeEdgeList.append(edge)
+                            id += 1
+                        else: 
+                            node._nodeEdgeList.append(existingEdge)
+                               
+                        node._connections += 1
+                        node._neighbours.append(endNode)
+                        node._neighbourIDs.append(endNode._id)
+            """
                 
         return
         
@@ -183,6 +281,87 @@ class Environment:
             self._terminalNodeList.append(selectedNode)
             id += 1
         
+        return
+    
+    """_summary_
+    Use A* to create terminal edges in point-grid
+    """
+    def createTerminalEdges(self, edgeList):
+
+        print(len(self._edgeList))
+        print(len(self._nodeList))
+        
+        id = 0
+        
+        for edge in edgeList:
+            print(edge)
+
+            notFinished = True
+            startNode = None
+            endNode = None
+            currentNode = None
+            openList = []
+            closedList = []
+            
+            for node in self._terminalNodeList:
+                if edge[0] == node._terminalId:
+                    startNode = node
+                    
+                if edge[1] == node._terminalId:
+                    endNode = node
+            
+            for node in self._nodeList:
+                node._parent = None
+                            
+            openList.append(startNode)
+            
+            while (len(openList) > 0 and notFinished):
+                
+                currentNode = openList[0]
+                currentIndex = 0
+                
+                for index, item in enumerate(openList):
+                    if item._GHF[2] < currentNode._GHF[2]:
+                        currentNode = item
+                        currentIndex = index
+                
+                openList.pop(currentIndex)
+                closedList.append(currentNode)
+                
+                if currentNode == endNode:
+                    path = []
+                    current = currentNode
+                    while current is not None:
+                        path.append(current)
+                        current = current._parent
+                        
+                    edge = Edge(id, startNode, endNode)
+                    edge._routingNodes = path[::-1]
+                    self._terminalEdgeList.append(edge)
+                    id += 1
+                    notFinished = False
+                
+                for neighbour in currentNode._neighbours:
+                    
+                    if neighbour != startNode:
+                        neighbour._parent = currentNode
+                    
+                    for closedNeighbour in closedList:
+                        if neighbour == closedNeighbour:
+                            continue
+                        
+                    G = calculateEdgeLength(neighbour, startNode)
+                    H = calculateEdgeLength(neighbour, endNode)
+                    F = G + H
+                    
+                    neighbour._GHF = [G, H, F]
+                    
+                    for openNode in openList:
+                        if neighbour == openNode and neighbour._GHF[0] > openNode._GHF[0]:
+                            continue
+                    
+                    openList.append(neighbour)
+
         return
    
     
@@ -226,6 +405,7 @@ class Node:
         self._id = id
         self._position = position
         self._terminalId = None
+        self._parent = None
         self._initialPressure = 1
         self._connections = 0
         self._sink = False
@@ -234,6 +414,7 @@ class Node:
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
+        self._GHF = [0, 0, 0]
             
 ################################################################################
 
@@ -254,3 +435,4 @@ class Edge:
         self._end = end
         self._conductivity = 0
         self._terminal = False
+        self._routingNodes = []
