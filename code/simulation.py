@@ -5,6 +5,11 @@ import numpy as np
 
 from helper import findOtherEdgeEnd
 
+def initializeEdgeCost():
+        
+    
+    return
+
 
 """_summary_
 Initializes the conductivity (D_0) of all edges according to equation (1)
@@ -145,6 +150,8 @@ def calculateRadius(edge, viscosity):
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
 def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0):
+    
+    initializeEdgeCost()
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
