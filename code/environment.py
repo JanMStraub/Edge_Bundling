@@ -333,6 +333,7 @@ class Edge:
     
     def __init__(self, id, start, end, cost = 1, length = 1, radius = 1):
         self._id = id
+        self._terminalId = None
         self._length = length 
         self._cost = cost #TODO figure out how to implement
         self._radius = radius
@@ -340,3 +341,4 @@ class Edge:
         self._end = end
         self._conductivity = 0
         self._terminal = False
+        self._routingNodes = []
