@@ -7,7 +7,7 @@ from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
 
-from helper import findNodeById
+from helper import findNodeById, calculateEdgeLength
 
 
 """_summary_
@@ -183,6 +183,90 @@ class Environment:
             self._terminalNodeList.append(selectedNode)
             id += 1
         
+        return
+    
+    
+    """_summary_
+    Use A* to create terminal edges in point-grid
+    """
+    def createTerminalEdges(self, edgeList):
+        
+        terminalId = 0
+        id = self._edgeList[-1]._id
+        
+        for edge in edgeList:
+
+            notFinished = True
+            startNode = None
+            endNode = None
+            currentNode = None
+            openList = []
+            closedList = []
+            
+            for node in self._terminalNodeList:
+                if edge[0] == node._terminalId:
+                    startNode = node
+                    
+                if edge[1] == node._terminalId:
+                    endNode = node
+            
+            for node in self._nodeList:
+                node._parent = None
+                            
+            openList.append(startNode)
+            
+            while (len(openList) > 0 and notFinished):
+                
+                #print(len(openList))
+
+                currentNode = openList[0]
+                currentIndex = 0
+                
+                for index, item in enumerate(openList):
+                    if item._GHF[2] < currentNode._GHF[2]:
+                        currentNode = item
+                        currentIndex = index
+                
+                openList.pop(currentIndex)
+                closedList.append(currentNode)
+                
+                if currentNode == endNode:
+                    print("found")
+                    path = []
+                    current = currentNode
+                    while current is not None:
+                        path.append(current)
+                        current = current._parent
+                        
+                    edge = Edge(id, startNode, endNode)
+                    edge._routingNodes = path[::-1]
+                    edge._terminalId = terminalId
+                    self._terminalEdgeList.append(edge)
+                    terminalId += 1
+                    id += 1
+                    notFinished = False
+                
+                for neighbour in currentNode._neighbours:
+                    
+                    if neighbour != startNode:
+                        neighbour._parent = currentNode
+                    
+                    for closedNeighbour in closedList:
+                        if neighbour == closedNeighbour:
+                            continue
+                        
+                    G = calculateEdgeLength(neighbour, startNode)
+                    H = calculateEdgeLength(neighbour, endNode)
+                    F = G + H
+                    
+                    neighbour._GHF = [G, H, F]
+                    
+                    for openNode in openList:
+                        if neighbour == openNode and neighbour._GHF[0] > openNode._GHF[0]:
+                            continue
+                    
+                    openList.append(neighbour)
+
         return
    
     

@@ -44,6 +44,7 @@ def main():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
+    environment.createTerminalEdges(edgeList)
     
     # Setup simulation
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
