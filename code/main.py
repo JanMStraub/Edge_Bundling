@@ -24,8 +24,8 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/paper_graph.json"
-    steps = 15000
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
+    steps = 1
     intervals = 8
     image = True # Change to False if you want a gif
     
@@ -44,6 +44,7 @@ def main():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
+    environment.createTerminalEdges(edgeList)   
     
     # Setup simulation
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)

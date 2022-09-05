@@ -287,14 +287,10 @@ class Environment:
     Use A* to create terminal edges in point-grid
     """
     def createTerminalEdges(self, edgeList):
-
-        print(len(self._edgeList))
-        print(len(self._nodeList))
         
         id = 0
         
         for edge in edgeList:
-            print(edge)
 
             notFinished = True
             startNode = None
@@ -373,22 +369,28 @@ class Environment:
         edges = list()
         edgeWidth = list()
         
-        for node in self._nodeList:
+        for node in self._terminalNodeList:
             a, b, c = node._position
             nodes.append([a, b])
     
         nodes = np.array(nodes)
         
-        for edge in self._edgeList:
-            edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))
+  
+        for node in self._nodeList:
+            node._position.pop()
+
+        for edge in self._terminalEdgeList:
+            for i in range(len(edge._routingNodes) - 1):
+                edges.append([edge._routingNodes[i]._position, edge._routingNodes[i + 1]._position])
+                edgeWidth.append(edge._radius)
         
         edges = np.array(edges)
+        print(edges)
         
         lc = LineCollection(nodes[edges], edgeWidth)
         plt.gca().add_collection(lc)
         plt.plot(nodes[:,0], nodes[:,1], 'ro')
-
+        
         return plt
             
 ################################################################################

@@ -104,17 +104,11 @@ def test():
     environment.createTerminalNodes(nodeList)
     environment.createTerminalEdges(edgeList)    
     
-    for edge in environment._terminalEdgeList:
-        for node in edge._routingNodes:
-            print(node._id)
-        
-        print()
-    
-    # initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    # printInitialConductivity(environment._edgeList)
-    # printInitialPressure(environment._nodeList)
+    printInitialConductivity(environment._edgeList)
+    printInitialPressure(environment._nodeList)
    
     """
     fig = plt.figure(figsize = (10, 10), dpi = 200)
@@ -123,13 +117,13 @@ def test():
     ax.set_title("Polycephalum Test, step = {}".format(1))
     plt.show()
     """
-    """
-    for t in tqdm(range(100), desc = "Iteration progress"):
+    
+    for t in tqdm(range(1), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
         #tau = 0.0004 * t
-    """
+    
     #print(tau)
     
     # Debugging
