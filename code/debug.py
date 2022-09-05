@@ -85,7 +85,7 @@ def printPressure(nodeList):
 Function exits only for testing purposes
 """ 
 def test():
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/simple_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
     print("Number of nodes: " + str(numberOfNodes))
@@ -102,9 +102,9 @@ def test():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
-    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
+    environment.createTerminalEdges(edgeList)    
     
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, environment._terminalEdgeList, viscosity, initialFlow)
     
     # Debugging
     printInitialConductivity(environment._edgeList)

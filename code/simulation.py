@@ -3,12 +3,23 @@
 # Imports
 import numpy as np
 
-from helper import findOtherEdgeEnd
+from helper import findOtherEdgeEnd, findConnection, calculateEdgeLength
 
 def initializeEdgeCost(terminalEdgeList):
     for edge in terminalEdgeList:
-        for node in edge._routingNodes:
-            return
+        
+        for i in range(len(edge._routingNodes) - 1):
+            
+            if (len(edge._routingNodes) > 1):
+                # vertical edge
+                if edge._routingNodes[i]._position[0] == edge._routingNodes[i + 1]._position[0]:
+                    edge = findConnection(edge._routingNodes[i], edge._routingNodes[i + 1])
+                    edge._cost = abs(int(edge._start._position[1]) * int(edge._end._position[1]))
+                    
+                # horizontal edge
+                elif edge._routingNodes[i]._position[0] == edge._routingNodes[i + 1]._position[0]:
+                    edge = findConnection(edge._routingNodes[i], edge._routingNodes[i + 1])
+                    edge._cost = abs(int(edge._start._position[0]) * int(edge._end._position[0]))
     
     return
 
@@ -28,7 +39,6 @@ Initializes the pressure vector (p^0) in all nodes according to equation (4).
 def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     
     for node in nodeList:
-        #node._pressureVector = [0] * len(terminalNodeList)
         
         if (node._sink == False and node._terminal == True):
             pressureVector = [0] * len(nodeList)
@@ -82,7 +92,7 @@ def calculateConductivity(currentNode, currentNeighbour, terminalNodeListLength,
                 for i in range(terminalNodeListLength):
                     pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
                 
-                kappa = 1 + sigma * (abs(pressureSum)) / edge._length - rho
+                kappa = 1 + sigma * (abs(pressureSum)) / edge._length - rho * edge._cost
             
                 edge._conductivity = edge._conductivity * kappa
                 edge._radius = calculateRadius(edge, viscosity)

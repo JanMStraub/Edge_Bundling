@@ -217,7 +217,7 @@ class Environment:
             
             while (len(openList) > 0 and notFinished):
                 
-                #print(len(openList))
+                print(len(openList))
 
                 currentNode = openList[0]
                 currentIndex = 0
@@ -286,7 +286,7 @@ class Environment:
         
         for edge in self._edgeList:
             edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))
+            edgeWidth.append(edge._radius / (len(self._edgeList) * 10000))
         
         edges = np.array(edges)
         
