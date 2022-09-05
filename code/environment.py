@@ -310,6 +310,7 @@ class Node:
         self._id = id
         self._position = position
         self._terminalId = None
+        self._parent = None
         self._initialPressure = 1
         self._connections = 0
         self._sink = False
@@ -318,6 +319,7 @@ class Node:
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
+        self._GHF = [0, 0, 0]
             
 ################################################################################
 
