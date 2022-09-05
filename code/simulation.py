@@ -21,7 +21,6 @@ Initializes the pressure vector (p^0) in all nodes according to equation (4).
 def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     
     for node in nodeList:
-        #node._pressureVector = [0] * len(terminalNodeList)
         
         if (node._sink == False and node._terminal == True):
             pressureVector = [0] * len(nodeList)
