@@ -257,14 +257,14 @@ class Environment:
                         if neighbour == closedNeighbour:
                             break
                         
-                    G = calculateEdgeLength(neighbour, startNode)
-                    H = calculateEdgeLength(neighbour, endNode)
+                    G = currentNode._GHF[0] + 1
+                    H = calculateDistance(neighbour, endNode)
                     F = G + H
                     
                     neighbour._GHF = [G, H, F]
                     
                     for openNode in openList:
-                        if neighbour == openNode and neighbour._GHF[0] > openNode._GHF[0]:
+                        if neighbour == openNode and neighbour._GHF[0] >= openNode._GHF[0]:
                             break
                     
                     openList.append(neighbour)
