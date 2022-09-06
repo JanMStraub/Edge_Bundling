@@ -9,7 +9,7 @@ from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
 
-from helper import findNodeById, calculateEdgeLength
+from helper import findNodeById, calculateDistance
 
 
 """_summary_
@@ -201,8 +201,8 @@ class Environment:
             startNode = None
             endNode = None
             currentNode = None
-            notVisited = []
-            visited = []
+            openList = []
+            closedList = []
             
             for node in self._terminalNodeList:
                 if edge[0] == node._terminalId:
@@ -214,24 +214,30 @@ class Environment:
             for node in self._nodeList:
                 node._parent = None
                             
-            notVisited.append(startNode)
+            openList.append(startNode)
             
-            while (len(notVisited) > 0 and notFinished):
+            while (len(openList) > 0 and notFinished):
                 
-                print(len(notVisited))
-                if len(notVisited) > 1000:
+                print(len(openList))
+                if len(openList) > len(self._nodeList):
                     return
+                print(len(closedList))
+                print()
+                
 
                 currentNode = startNode
                 currentIndex = 0
                 
-                for index, item in enumerate(notVisited):
+                for index, item in enumerate(openList):
                     if item._GHF[2] < currentNode._GHF[2]:
                         currentNode = item
                         currentIndex = index
                 
-                notVisited.pop(currentIndex)
-                visited.append(currentNode)
+                openList.pop(currentIndex)
+                closedList.append(currentNode)
+                
+                if currentNode != startNode._parent:
+                    currentNode
                 
                 if currentNode == endNode:
                     print("found")
@@ -251,25 +257,20 @@ class Environment:
                 
                 for neighbour in currentNode._neighbours:
                     
-                    if neighbour != startNode:
-                        neighbour._parent = currentNode
-                    
-                    for visitedNeighbour in visited:
-                        if neighbour == visitedNeighbour:
+                    for node in closedList:
+                        if neighbour == node:
                             break
-                          
-                    G = calculateEdgeLength(neighbour, startNode)
-                    H = calculateEdgeLength(neighbour, endNode)
+                    G = currentNode._GHF[0] + 1
+                    H = calculateDistance(neighbour, endNode)
                     F = G + H
-                    
                     neighbour._GHF = [G, H, F]
-                        
-                    for openNode in notVisited:
-                        if neighbour == openNode and neighbour._GHF[0] >= openNode._GHF[0]:
-                            break
-                       
-                    notVisited.append(neighbour)
 
+                    for node in openList:
+                        if neighbour == node and neighbour._GHF[0] >= node._GHF[0]:
+                            break
+                        
+                    openList.append(neighbour)
+                                    
         return
    
     
