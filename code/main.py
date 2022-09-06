@@ -25,7 +25,7 @@ def main():
     
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
-    steps = 15000
+    steps = 1
     intervals = 8
     image = True # Change to False if you want a gif
     

@@ -64,4 +64,10 @@ def findOtherEdgeEnd(node, edge):
         return edge._end
     elif (edge._end._id != node._id):
         return edge._start
+
+
+def calculateDistance(start, end):
+    x1, y1, z1 = start._position
+    x2, y2, z2 = end._position
     
+    return abs(x1 - x2) * abs(y1 - y2)

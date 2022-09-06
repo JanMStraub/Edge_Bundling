@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import heapq
+
 import numpy as np
 
 from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
 
-from helper import findNodeById, calculateEdgeLength
+from helper import findNodeById, calculateDistance
 
 
 """_summary_
@@ -283,17 +285,18 @@ class Environment:
             nodes.append([a, b])
     
         nodes = np.array(nodes)
-        
-        for edge in self._edgeList:
-            edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius / (len(self._edgeList) * 10000))
+
+        for edge in self._terminalEdgeList:
+            for i in range(len(edge._routingNodes) - 1):
+                edges.append([edge._routingNodes[i]._id, edge._routingNodes[i + 1]._id])
+                edgeWidth.append(edge._radius)
         
         edges = np.array(edges)
         
         lc = LineCollection(nodes[edges], edgeWidth)
         plt.gca().add_collection(lc)
         plt.plot(nodes[:,0], nodes[:,1], 'ro')
-
+        
         return plt
             
 ################################################################################

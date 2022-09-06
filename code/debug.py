@@ -118,12 +118,12 @@ def test():
     plt.show()
     """
     
-    for t in tqdm(range(100), desc = "Iteration progress"):
+    for t in tqdm(range(1), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
         #tau = 0.0004 * t
-        
+    
     #print(tau)
     
     # Debugging
