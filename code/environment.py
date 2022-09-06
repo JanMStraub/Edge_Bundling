@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import heapq
+
 import numpy as np
 
 from matplotlib.collections import LineCollection
@@ -199,8 +201,8 @@ class Environment:
             startNode = None
             endNode = None
             currentNode = None
-            openList = []
-            closedList = []
+            notVisited = []
+            visited = []
             
             for node in self._terminalNodeList:
                 if edge[0] == node._terminalId:
@@ -212,22 +214,24 @@ class Environment:
             for node in self._nodeList:
                 node._parent = None
                             
-            openList.append(startNode)
+            notVisited.append(startNode)
             
-            while (len(openList) > 0 and notFinished):
+            while (len(notVisited) > 0 and notFinished):
                 
-                #print(len(openList))
+                print(len(notVisited))
+                if len(notVisited) > 1000:
+                    return
 
-                currentNode = openList[0]
+                currentNode = startNode
                 currentIndex = 0
                 
-                for index, item in enumerate(openList):
+                for index, item in enumerate(notVisited):
                     if item._GHF[2] < currentNode._GHF[2]:
                         currentNode = item
                         currentIndex = index
                 
-                openList.pop(currentIndex)
-                closedList.append(currentNode)
+                notVisited.pop(currentIndex)
+                visited.append(currentNode)
                 
                 if currentNode == endNode:
                     print("found")
@@ -250,21 +254,21 @@ class Environment:
                     if neighbour != startNode:
                         neighbour._parent = currentNode
                     
-                    for closedNeighbour in closedList:
-                        if neighbour == closedNeighbour:
-                            continue
-                        
+                    for visitedNeighbour in visited:
+                        if neighbour == visitedNeighbour:
+                            break
+                          
                     G = calculateEdgeLength(neighbour, startNode)
                     H = calculateEdgeLength(neighbour, endNode)
                     F = G + H
                     
                     neighbour._GHF = [G, H, F]
-                    
-                    for openNode in openList:
-                        if neighbour == openNode and neighbour._GHF[0] > openNode._GHF[0]:
-                            continue
-                    
-                    openList.append(neighbour)
+                        
+                    for openNode in notVisited:
+                        if neighbour == openNode and neighbour._GHF[0] >= openNode._GHF[0]:
+                            break
+                       
+                    notVisited.append(neighbour)
 
         return
    
