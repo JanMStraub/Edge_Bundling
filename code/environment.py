@@ -198,7 +198,6 @@ class Environment:
         
         for edge in edgeList:
 
-            print(edge)
             notFinished = True
             startNode = None
             endNode = None
@@ -219,8 +218,6 @@ class Environment:
             openList.append(startNode)
             
             while (len(openList) > 0 and notFinished):
-                
-                print(len(openList))
 
                 currentNode = openList[0]
                 currentIndex = 0
@@ -229,16 +226,14 @@ class Environment:
                     if item._GHF[2] < currentNode._GHF[2]:
                         currentNode = item
                         currentIndex = index
-                
+                        
                 openList.pop(currentIndex)
                 closedList.append(currentNode)
                 
                 if currentNode == endNode:
-                    print("found")
                     path = []
                     current = currentNode
                     while current is not None:
-                        print(current)
                         path.append(current)
                         current = current._parent
                         
@@ -252,25 +247,28 @@ class Environment:
                 
                 for neighbour in currentNode._neighbours:
                     
-                    if neighbour != startNode:
-                        neighbour._parent = currentNode
-                    
-                    for closedNeighbour in closedList:
-                        if neighbour == closedNeighbour:
-                            break
+                    if neighbour not in closedList:
                         
-                    G = currentNode._GHF[0] + 1
-                    H = calculateDistance(neighbour, endNode)
-                    F = G + H
-                    
-                    neighbour._GHF = [G, H, F]
-                    
-                    for openNode in openList:
-                        if neighbour == openNode and neighbour._GHF[0] >= openNode._GHF[0]:
-                            break
-                    
-                    openList.append(neighbour)
-
+                        if neighbour not in openList:
+                            openList.append(neighbour)
+                            neighbour._parent = currentNode
+                            
+                            G = currentNode._GHF[0] + 1
+                            H = calculateDistance(neighbour, endNode)
+                            F = G + H
+                            
+                            neighbour._GHF = [G, H, F]
+                        
+                        else:
+                            for node in openList:
+                                if neighbour == node and neighbour._GHF[0] >= node._GHF[0]:
+                                    node._parent = currentNode
+                                    
+                                    G = node._GHF[0] + 1
+                                    H = calculateDistance(neighbour, endNode)
+                                    F = G + H
+                                    
+                                    node._GHF = [G, H, F]
         return
    
     

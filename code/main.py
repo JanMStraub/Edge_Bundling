@@ -24,7 +24,7 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/paper_graph.json"
     steps = 1
     intervals = 8
     image = True # Change to False if you want a gif
