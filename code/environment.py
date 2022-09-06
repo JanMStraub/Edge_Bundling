@@ -198,6 +198,7 @@ class Environment:
         
         for edge in edgeList:
 
+            print(edge)
             notFinished = True
             startNode = None
             endNode = None
@@ -237,6 +238,7 @@ class Environment:
                     path = []
                     current = currentNode
                     while current is not None:
+                        print(current)
                         path.append(current)
                         current = current._parent
                         
