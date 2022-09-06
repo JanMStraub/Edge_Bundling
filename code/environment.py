@@ -218,9 +218,7 @@ class Environment:
             
             while (len(openList) > 0 and notFinished):
                 
-                print(len(openList))
-                if len(openList) > len(self._nodeList):
-                    return
+                print(len(openList)) 
                 print(len(closedList))
                 print()
                 
@@ -235,9 +233,6 @@ class Environment:
                 
                 openList.pop(currentIndex)
                 closedList.append(currentNode)
-                
-                if currentNode != startNode._parent:
-                    currentNode
                 
                 if currentNode == endNode:
                     print("found")
@@ -257,9 +252,13 @@ class Environment:
                 
                 for neighbour in currentNode._neighbours:
                     
+                    if neighbour != startNode:
+                        neighbour._parent = currentNode
+                    
                     for node in closedList:
                         if neighbour == node:
                             break
+                        
                     G = currentNode._GHF[0] + 1
                     H = calculateDistance(neighbour, endNode)
                     F = G + H
