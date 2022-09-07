@@ -5,6 +5,23 @@ import numpy as np
 
 from helper import findOtherEdgeEnd
 
+def initializeEdgeCost(terminalEdgeList):
+    for edge in terminalEdgeList:
+        
+        for i in range(len(edge._routingNodes) - 1):
+            
+            if (len(edge._routingNodes) > 1):
+                # vertical edge
+                if edge._routingNodes[i]._position[0] == edge._routingNodes[i + 1]._position[0]:
+                    edge = findConnection(edge._routingNodes[i], edge._routingNodes[i + 1])
+                    edge._cost = abs(int(edge._start._position[1]) * int(edge._end._position[1]))
+                    
+                # horizontal edge
+                elif edge._routingNodes[i]._position[0] == edge._routingNodes[i + 1]._position[0]:
+                    edge = findConnection(edge._routingNodes[i], edge._routingNodes[i + 1])
+                    edge._cost = abs(int(edge._start._position[0]) * int(edge._end._position[0]))
+    
+    return
 
 """_summary_
 Initializes the conductivity (D_0) of all edges according to equation (1)
