@@ -63,7 +63,7 @@ Prints the radius of each edge
 """
 def printEdgeRadius(edgeList):
     for edge in edgeList:
-         print("Radius of edge {}: {}".format(edge._id, edge._radius))
+        print("Radius of edge {}: {}".format(edge._id, edge._radius))
         
     print("\n####################################################################\n")   
     return
@@ -74,6 +74,8 @@ Prints the pressure for each node
 """
 def printPressure(nodeList):
     for node in nodeList:
+        if node._terminal == True:
+            print("TERMINAL")
         print("Pressure for node {}: {}".format(node._id, node._pressureVector))
         
     print("\n####################################################################\n")
@@ -107,8 +109,8 @@ def test():
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    printInitialConductivity(environment._edgeList)
-    printInitialPressure(environment._nodeList)
+    # printInitialConductivity(environment._edgeList)
+    # printInitialPressure(environment._nodeList)
    
     """
     fig = plt.figure(figsize = (10, 10), dpi = 200)
@@ -128,8 +130,8 @@ def test():
     
     # Debugging
     # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
-    printEdgeRadius(environment._edgeList)
+    # printConductivity(environment._edgeList)
+    # printEdgeRadius(environment._edgeList)
     printPressure(environment._nodeList)
     
     return

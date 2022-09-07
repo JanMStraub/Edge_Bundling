@@ -248,7 +248,7 @@ class Edge:
     def __init__(self, id, start, end, cost = 1, length = 1, radius = 1):
         self._id = id
         self._length = length 
-        self._cost = cost #TODO figure out how to implement
+        self._cost = cost
         self._radius = radius
         self._start = start
         self._end = end
