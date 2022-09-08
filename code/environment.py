@@ -2,12 +2,12 @@
 
 # Imports
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
 from matplotlib.collections import LineCollection
 
 from helper import findNodeByPosition
-
-from helper import findNodeById
 
 
 """_summary_
@@ -189,27 +189,46 @@ class Environment:
     """_summary_
     Plot edges and nodes in matplotlib
     """
-    def plotGraph(self, plt):
-        nodes = list()
-        edges = list()
+    def plotGraph(self, t):
+        
+        fig = plt.figure()
+        fig = plt.figure(figsize = (10, 10))
+        ax = fig.add_subplot(111)
+        ax.set_title("Polycephalum Test, step = {}".format(t + 1))
+        # plt.minorticks_on()
+        # plt.grid(which='minor', linestyle = '-')
+        # plt.grid(which='major', linestyle = '-')
+        
+        G = nx.Graph()
+        
+        edgeLabels = dict()
+        nodeLabels = dict()
+        colorValues = list()
         edgeWidth = list()
         
         for node in self._nodeList:
             a, b, c = node._position
-            nodes.append([a, b])
-    
-        nodes = np.array(nodes)
+            G.add_node(node._id, pos = (a, b))
+            nodeLabels[node._id] = [int(x) for x in node._pressureVector]
+        
+            if node in self._terminalNodeList:
+                colorValues.append("red")
+            else:
+                colorValues.append("blue")
         
         for edge in self._edgeList:
-            edges.append([edge._start._id, edge._end._id])
-            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))
+            G.add_edge(edge._start._id, edge._end._id)
+            edgeLabels[str(edge._id)] = edge._conductivity
+            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))     
         
-        edges = np.array(edges)
+        pos = nx.get_node_attributes(G, 'pos')
+        nx.draw(G, pos, node_color = colorValues)
+        nx.draw_networkx_labels(G, pos, nodeLabels)
+        #nx.draw_networkx_nodes(G, pos, node_size=8, alpha=0.5)
+        #nx.draw_networkx_edge_labels(G, pos)
+        # plt.show()
+        plt.tight_layout()
         
-        lc = LineCollection(nodes[edges], 1)
-        plt.gca().add_collection(lc)
-        plt.plot(nodes[:,0], nodes[:,1], 'ro')
-
         return plt
             
 ################################################################################

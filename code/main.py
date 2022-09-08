@@ -11,8 +11,10 @@ Based on the work of:
 """
 
 # Imports
+import os
+import imageio
+
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 
 from tqdm import tqdm
 
@@ -24,10 +26,10 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
-    steps = 1000
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
+    steps = 750 #734
     intervals = 8
-    image = True # Change to False if you want a gif
+    image = False # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
@@ -42,61 +44,61 @@ def main():
     # Setup environment
     environment = Environment()
     environment.createGrid(nodeList)
-    environment.createTerminalNodes(nodeList)
+    environment.createTerminalNodes(nodeList) 
     
     # Setup simulation
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     if (image):
-        dt = int(steps / intervals)
         
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-            
-            """
-            if ((t % 10) == 0):
-                fig = plt.figure(figsize = (10, 10), dpi = 200)
-                ax = fig.add_subplot(111)
-                fig = environment.plotGraph(plt)
-                ax.set_title("Polycephalum Test, step = {}".format(t + 1))
-                plt.show()
-            """
-            
+
             if t == steps - 1:
-                fig = plt.figure(figsize = (10, 10), dpi = 200)
-                ax = fig.add_subplot(111)
-                fig = environment.plotGraph(plt)
-                ax.set_title("Polycephalum Test, step = {}".format(t + 1))
-                # plt.minorticks_on()
-                # plt.grid(which='minor', linestyle = '-')
-                # plt.grid(which='major', linestyle = '-')
+                plt = environment.plotGraph(t) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            tau = 0.000004 * t #00000004
+            tau = 0.0004 * t #00000004
             
     else:
-        ims = []
-        fig = plt.figure(figsize = (10, 10), dpi = 100)
-        ax = fig.add_subplot(111)
+        filenames = []
         
         for t in tqdm(range(steps), desc = "Iteration progress"):
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)            
+            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
-            fig = environment.plotGraph(plt)
-            txt = plt.text(0, -30, "iteration: {} Nodes: {} Edges: {}".format(t + 1, numberOfNodes, numberOfEdges))
-            im = plt.plot()
-            ims.append([im, txt])
             
-            tau = 0.0004 * t
+            if (t > 700):
+                plt = environment.plotGraph(t)
+                filename = f'{t}.png'
+                filenames.append(filename)
+                
+                plt.savefig(filename)
+                plt.close()
         
-        fig.suptitle("Polycephalum Test")
-        ani = animation.ArtistAnimation(fig, ims, interval = 1000, blit = True, repeat_delay = 1000)
-        ani.save("simulation.gif")
+            
+            if t == steps - 1:
+                plt = environment.plotGraph(t)
+                filename = f'{t}.png'
+                filenames.append(filename)
+                
+                plt.savefig(filename)
+                plt.close()
+                
+                with imageio.get_writer("simulationGIF_t{}.gif".format(t + 1), mode='I') as writer:
+                    for filename in filenames:
+                        image = imageio.imread(filename)
+                        writer.append_data(image)
+                    
+                # Remove files
+                for filename in set(filenames):
+                    os.remove(filename)
+            
+            tau = 0.0004 * t #00000004
         
     return
 
