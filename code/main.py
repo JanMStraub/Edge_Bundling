@@ -27,7 +27,7 @@ def main():
     
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 10 #734
+    steps = 734 #734
     image = True # Change to False if you want a gif
     
     # Slime parameters

@@ -174,7 +174,6 @@ Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
     random.shuffle(nodeList)
-    random.shuffle(edgeList)
     
     for node in nodeList:
         for neighbour in node._neighbours:
