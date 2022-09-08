@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import random
+
 import numpy as np
 
 from helper import findOtherEdgeEnd, findConnection
@@ -90,24 +92,12 @@ def calculateConductivity(currentNode, currentNeighbour, terminalNodeListLength,
                 edge._conductivity = edge._conductivity * kappa
                 edge._radius = calculateRadius(edge, viscosity)
 
-                """
+                
                 # edge cutting
                 if edge._conductivity < tau:
                     edgeList.remove(edge)
                     print("REMOVES! tau = " + str(tau))
                 
-                "0": "(2,22,0)",
-                "1": "(4,8,0)",
-                "2": "(9,3,0)",
-                "3": "(8,19,0)",
-                "4": "(13,12,0)",
-                "5": "(17,5,0)",
-                "6": "(18,21,0)",
-                "7": "(21,9,0)",
-                "8": "(23,19,0)"    
-                
-                
-                """
         
     return
 
@@ -183,7 +173,9 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-
+    # random.shuffle(nodeList)
+    # random.shuffle(edgeList)
+    
     for node in nodeList:
         for neighbour in node._neighbours:
             calculateConductivity(node, neighbour, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)

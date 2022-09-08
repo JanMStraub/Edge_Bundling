@@ -24,8 +24,8 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/paper_graph.json"
-    steps = 15000
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/test_graph.json"
+    steps = 1000
     intervals = 8
     image = True # Change to False if you want a gif
     
@@ -35,7 +35,6 @@ def main():
     sigma = 0.000000375
     rho = 0.0002
     tau = 0.0004
-    edgeCost = 1
     
     # Import graph information from JSON
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
@@ -57,7 +56,7 @@ def main():
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             """
-            if ((t % 10000) == 0):
+            if ((t % 10) == 0):
                 fig = plt.figure(figsize = (10, 10), dpi = 200)
                 ax = fig.add_subplot(111)
                 fig = environment.plotGraph(plt)
@@ -93,7 +92,7 @@ def main():
             im = plt.plot()
             ims.append([im, txt])
             
-            tau = 0.00000004 * t
+            tau = 0.0004 * t
         
         fig.suptitle("Polycephalum Test")
         ani = animation.ArtistAnimation(fig, ims, interval = 1000, blit = True, repeat_delay = 1000)

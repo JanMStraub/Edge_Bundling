@@ -3,6 +3,8 @@
 # Imports
 import matplotlib.pyplot as plt
 
+import random
+
 from tqdm import tqdm
 
 from environment import Environment
@@ -132,7 +134,7 @@ def test():
     # printFlux(environment._edgeList)
     # printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
-    printPressure(environment._nodeList)
+    # printPressure(environment._nodeList)
     
     return
     

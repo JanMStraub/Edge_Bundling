@@ -206,7 +206,7 @@ class Environment:
         
         edges = np.array(edges)
         
-        lc = LineCollection(nodes[edges], edgeWidth)
+        lc = LineCollection(nodes[edges], 1)
         plt.gca().add_collection(lc)
         plt.plot(nodes[:,0], nodes[:,1], 'ro')
 
