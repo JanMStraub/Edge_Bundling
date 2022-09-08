@@ -60,8 +60,8 @@ def findConnection(startNode, endNode):
         
 
 def findOtherEdgeEnd(node, edge):
-    if (edge._start._id != node._id):
+    if (edge._start._id == node._id):
         return edge._end
-    elif (edge._end._id != node._id):
+    elif (edge._end._id == node._id):
         return edge._start
     

@@ -49,7 +49,7 @@ def main():
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     if (image):
-        
+
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
