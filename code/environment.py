@@ -72,7 +72,7 @@ class Environment:
                         value = x + 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
                         for createdEdge in self._edgeList:
-                            if createdEdge._start == endNode:
+                            if createdEdge._start == endNode :
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -224,9 +224,8 @@ class Environment:
         pos = nx.get_node_attributes(G, 'pos')
         nx.draw(G, pos, node_color = colorValues)
         nx.draw_networkx_labels(G, pos, nodeLabels)
-        #nx.draw_networkx_nodes(G, pos, node_size=8, alpha=0.5)
-        #nx.draw_networkx_edge_labels(G, pos)
-        # plt.show()
+        # nx.draw_networkx_nodes(G, pos, node_size=8, alpha=0.5)
+        # nx.draw_networkx_edge_labels(G, pos)
         plt.tight_layout()
         
         return plt
