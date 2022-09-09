@@ -106,21 +106,13 @@ def test():
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
-    #environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
+    # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
-   
-    """
-    fig = plt.figure(figsize = (10, 10), dpi = 200)
-    ax = fig.add_subplot(111)
-    fig = environment.plotGraph(plt)
-    ax.set_title("Polycephalum Test, step = {}".format(1))
-    plt.show()
-    """
     
     for t in tqdm(range(734), desc = "Iteration progress"):
         
@@ -128,7 +120,7 @@ def test():
         
         tau = 0.0004 * t
         
-    #print(tau)
+    # print(tau)
     
     # Debugging
     # printFlux(environment._edgeList)

@@ -17,6 +17,7 @@ import imageio
 import matplotlib.pyplot as plt
 
 from tqdm import tqdm
+from PIL import Image, ImageDraw
 
 from environment import Environment
 from helper import readGraphData
@@ -27,18 +28,21 @@ def main():
     
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 734 #734
+    steps = 700 #734
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
-    initialFlow = 1.0
+    initialFlow = 1.0 
     sigma = 0.000000375
     rho = 0.0002
-    tau = 0.0004
+    tau = 0.0004 
     
     # Import graph information from JSON
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
+    
+    print("Number of nodes: " + str(numberOfNodes))
+    print("Number of edges: " + str(numberOfEdges))
     
     # Setup environment
     environment = Environment()
@@ -71,7 +75,7 @@ def main():
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t > 700):
+            if (t > 0):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)

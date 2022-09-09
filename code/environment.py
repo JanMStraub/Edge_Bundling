@@ -72,7 +72,7 @@ class Environment:
                         value = x + 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
                         for createdEdge in self._edgeList:
-                            if createdEdge._start == endNode :
+                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -95,7 +95,7 @@ class Environment:
                         value = y + 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
                         for createdEdge in self._edgeList:
-                            if createdEdge._start == endNode:
+                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -118,7 +118,7 @@ class Environment:
                         value = x - 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
                         for createdEdge in self._edgeList:
-                            if createdEdge._start == endNode:
+                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -141,7 +141,7 @@ class Environment:
                         value = y - 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
                         for createdEdge in self._edgeList:
-                            if createdEdge._start == endNode:
+                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -206,10 +206,14 @@ class Environment:
         colorValues = list()
         edgeWidth = list()
         
+        print(len(self._nodeList))
+        print(len(self._edgeList))
+
+        
         for node in self._nodeList:
             a, b, c = node._position
             G.add_node(node._id, pos = (a, b))
-            nodeLabels[node._id] = [int(x) for x in node._pressureVector]
+            nodeLabels[node._id] = [round(x, 2) for x in node._pressureVector]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -218,14 +222,14 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[str(edge._id)] = edge._conductivity
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity, 2)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))     
         
         pos = nx.get_node_attributes(G, 'pos')
         nx.draw(G, pos, node_color = colorValues)
         nx.draw_networkx_labels(G, pos, nodeLabels)
         # nx.draw_networkx_nodes(G, pos, node_size=8, alpha=0.5)
-        # nx.draw_networkx_edge_labels(G, pos)
+        nx.draw_networkx_edge_labels(G, pos, edgeLabels)
         plt.tight_layout()
         
         return plt

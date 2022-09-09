@@ -97,9 +97,9 @@ def calculateConductivity(currentNode, currentNeighbour, terminalNodeListLength,
             currentNode._nodeEdgeList.remove(edge)
             currentNode._connections -= 1
             currentNode._neighbours.remove(otherEnd)
-            currentNode._neighbourIDs.remove(otherEnd)
+            currentNode._neighbourIDs.remove(otherEnd._id)
             edgeList.remove(edge)
-            print("REMOVED! tau = " + str(tau))
+            # print("REMOVED! tau = " + str(tau))
                 
         
     return
@@ -125,7 +125,6 @@ def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
         elif (currentNode._terminal == False):
             conductivitySum = 0
             conductivityPressureSum = 0
-            
             for edge in currentNode._nodeEdgeList:
                 conductivitySum += edge._conductivity
                 conductivityPressureSum += edge._conductivity * (currentNode._pressureVector[i] + findOtherEdgeEnd(currentNode, edge)._pressureVector[i])
@@ -174,16 +173,14 @@ Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
     random.shuffle(nodeList)
-    
-    print(len(nodeList))        
-    
+
     for node in nodeList:
+        for neighbour in node._neighbours:
+            calculateConductivity(node, neighbour, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
+        
         if node._connections == 0:
-            nodeList.remove(node)
+            print("node removes") # nodeList.remove(node)
         else:
-            #print(len(node._nodeEdgeList))
-            for neighbour in node._neighbours:
-                calculateConductivity(node, neighbour, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
             calculatePressure(node, len(terminalNodeList), initialFlow)
 
     return
