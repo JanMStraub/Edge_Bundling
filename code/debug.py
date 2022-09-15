@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import matplotlib.pyplot as plt
-
-import random
-
 from tqdm import tqdm
 
 from environment import Environment
@@ -112,13 +108,13 @@ def test():
     
     # Debugging
     # printInitialConductivity(environment._edgeList)
-    # printInitialPressure(environment._nodeList)
+    printInitialPressure(environment._nodeList)
     
     for t in tqdm(range(734), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        tau = 0.0004 * t
+        #tau = 0.0004 * t
         
     # print(tau)
     

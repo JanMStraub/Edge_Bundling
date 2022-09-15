@@ -64,4 +64,17 @@ def findOtherEdgeEnd(node, edge):
         return edge._end
     elif (edge._end._id == node._id):
         return edge._start
+
+
+def calculatePressureDelta(node):
+    delta = []
     
+    for i in range(len(node._pressureVector)):
+        if node._pressureVector[i] < node._oldPressureVector[i]:
+            delta.append("-")
+        elif node._pressureVector[i] > node._oldPressureVector[i]:
+            delta.append("+")
+        else:
+            delta.append("=")
+            
+    return delta

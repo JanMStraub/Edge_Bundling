@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
 from matplotlib.collections import LineCollection
 
-from helper import findNodeByPosition
+from helper import findNodeByPosition, calculatePressureDelta
 
 
 """_summary_
@@ -213,7 +212,7 @@ class Environment:
         for node in self._nodeList:
             a, b, c = node._position
             G.add_node(node._id, pos = (a, b))
-            nodeLabels[node._id] = [round(x, 2) for x in node._pressureVector]
+            nodeLabels[node._id] = calculatePressureDelta(node) # [round(x, 2) for x in node._pressureVector]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -223,7 +222,7 @@ class Environment:
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
             edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity, 2)
-            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))     
+            edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
         nx.draw(G, pos, node_color = colorValues)
@@ -253,6 +252,7 @@ class Node:
         self._sink = False
         self._terminal = False
         self._pressureVector = []
+        self._oldPressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
