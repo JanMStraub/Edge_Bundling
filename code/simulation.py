@@ -28,6 +28,7 @@ Initializes the conductivity (D_0) of all edges according to equation (1)
 """
 def initializeConductivity(edge, viscosity):
     edge._conductivity = (np.pi * edge._radius ** 4) / (8 * viscosity)
+    edge._oldConductivity = edge._conductivity
     
     return
 
@@ -91,7 +92,8 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
             pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
         
         kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
-    
+
+        edge._oldConductivity = edge._conductivity
         edge._conductivity = edge._conductivity * kappa
         edge._radius = calculateRadius(edge, viscosity)
 

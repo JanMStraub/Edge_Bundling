@@ -78,3 +78,13 @@ def calculatePressureDelta(node):
             delta.append("=")
             
     return delta
+
+
+def calculateConductivityDelta(edge):
+    
+    if edge._conductivity < edge._oldConductivity:
+        return "-"
+    elif edge._conductivity > edge._oldConductivity:
+        return "+"
+    else:
+        return "="

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from matplotlib.collections import LineCollection
 
-from helper import findNodeByPosition, calculatePressureDelta
+from helper import findNodeByPosition, calculatePressureDelta, calculateConductivityDelta
 
 
 """_summary_
@@ -205,7 +205,7 @@ class Environment:
         colorValues = list()
         edgeWidth = list()
         
-        print(len(self._nodeList))
+        #print(len(self._nodeList))
         print(len(self._edgeList))
 
         
@@ -221,7 +221,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity, 2)
+            edgeLabels[edge._start._id, edge._end._id] = calculateConductivityDelta(edge) # round(edge._conductivity, 2)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
@@ -275,4 +275,5 @@ class Edge:
         self._start = start
         self._end = end
         self._conductivity = 0
+        self._oldConductivity = 0
         self._terminal = False

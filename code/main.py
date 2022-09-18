@@ -24,9 +24,9 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 734 #734
-    image = False # Change to False if you want a gif
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
+    steps = 200 #734
+    image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0
@@ -72,7 +72,7 @@ def main():
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t > 500):
+            if (t > 0):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)

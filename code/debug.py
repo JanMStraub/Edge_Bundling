@@ -85,7 +85,7 @@ def printPressure(nodeList):
 Function exits only for testing purposes
 """ 
 def test():
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json"
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
     print("Number of nodes: " + str(numberOfNodes))
@@ -107,10 +107,10 @@ def test():
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    # printInitialConductivity(environment._edgeList)
+    printInitialConductivity(environment._edgeList)
     printInitialPressure(environment._nodeList)
     
-    for t in tqdm(range(734), desc = "Iteration progress"):
+    for t in tqdm(range(10), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
@@ -120,9 +120,9 @@ def test():
     
     # Debugging
     # printFlux(environment._edgeList)
-    # printConductivity(environment._edgeList)
-    # printEdgeRadius(environment._edgeList)
-    # printPressure(environment._nodeList)
+    printConductivity(environment._edgeList)
+    printEdgeRadius(environment._edgeList)
+    printPressure(environment._nodeList)
     
     return
     
