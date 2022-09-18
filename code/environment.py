@@ -276,4 +276,3 @@ class Edge:
         self._end = end
         self._conductivity = 0
         self._oldConductivity = 0
-        self._terminal = False

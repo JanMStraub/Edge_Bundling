@@ -107,8 +107,8 @@ def test():
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     # Debugging
-    printInitialConductivity(environment._edgeList)
-    printInitialPressure(environment._nodeList)
+    # printInitialConductivity(environment._edgeList)
+    # printInitialPressure(environment._nodeList)
     
     for t in tqdm(range(10), desc = "Iteration progress"):
         
@@ -118,11 +118,14 @@ def test():
         
     # print(tau)
     
+    for edge in environment._edgeList:
+        print("ID: {} - start: {} - end: {}".format(edge._id, edge._start._id, edge._end._id))
+    
     # Debugging
     # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
-    printEdgeRadius(environment._edgeList)
-    printPressure(environment._nodeList)
+    # printConductivity(environment._edgeList)
+    # printEdgeRadius(environment._edgeList)
+    # printPressure(environment._nodeList)
     
     return
     
