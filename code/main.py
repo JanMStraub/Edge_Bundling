@@ -26,7 +26,7 @@ def main():
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
     steps = 200 #734
-    image = True # Change to False if you want a gif
+    image = False # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 1.0

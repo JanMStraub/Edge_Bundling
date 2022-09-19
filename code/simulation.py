@@ -121,6 +121,7 @@ def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
             conductivitySum = 0
             conductivityPressureSum = 0
             for edge in currentNode._nodeEdgeList:
+                # print(edge._id)
                 conductivitySum += edge._conductivity
                 conductivityPressureSum += edge._conductivity * (currentNode._pressureVector[i] + findOtherEdgeEnd(currentNode, edge)._pressureVector[i])
             
@@ -134,6 +135,7 @@ def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
             conductivitySum = 0
             conductivityPressureSum = 0
             for edge in currentNode._nodeEdgeList:
+                # print(edge._id)
                 conductivitySum += edge._conductivity
                 conductivityPressureSum += edge._conductivity * (currentNode._pressureVector[i] + findOtherEdgeEnd(currentNode, edge)._pressureVector[i])
             

@@ -59,7 +59,7 @@ class Environment:
     
     def createGridEdges(self, xMin, xMax, yMin, yMax):
         id = 0
-        
+       
         for node in self._nodeList:
             x, y, z = node._position
             
@@ -70,8 +70,9 @@ class Environment:
                         newEdge = True
                         value = x + 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
+                        
                         for createdEdge in self._edgeList:
-                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
+                            if (createdEdge._start == node and createdEdge._end == endNode) or (createdEdge._end == node and createdEdge._start == endNode):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -81,7 +82,7 @@ class Environment:
                             node._nodeEdgeList.append(edge)
                             id += 1
                         else: 
-                            node._nodeEdgeList.append(existingEdge)
+                            node._nodeEdgeList.append( )
                                
                         node._connections += 1
                         node._neighbours.append(endNode)
@@ -93,8 +94,9 @@ class Environment:
                         newEdge = True
                         value = y + 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
+                        
                         for createdEdge in self._edgeList:
-                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
+                            if (createdEdge._start == node and createdEdge._end == endNode) or (createdEdge._end == node and createdEdge._start == endNode):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -116,8 +118,9 @@ class Environment:
                         newEdge = True
                         value = x - 1.0
                         endNode = findNodeByPosition(self._nodeList, value, y, z)
+                        
                         for createdEdge in self._edgeList:
-                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
+                            if (createdEdge._start == node and createdEdge._end == endNode) or (createdEdge._end == node and createdEdge._start == endNode):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -139,8 +142,9 @@ class Environment:
                         newEdge = True
                         value = y - 1.0
                         endNode = findNodeByPosition(self._nodeList, x, value, z)
+                        
                         for createdEdge in self._edgeList:
-                            if (createdEdge._start == node._id and createdEdge._end == endNode._id) or (createdEdge._end == node._id and createdEdge._start == endNode._id):
+                            if (createdEdge._start == node and createdEdge._end == endNode) or (createdEdge._end == node and createdEdge._start == endNode):
                                 newEdge = False 
                                 existingEdge = createdEdge
                         
@@ -154,8 +158,7 @@ class Environment:
                                
                         node._connections += 1
                         node._neighbours.append(endNode)
-                        node._neighbourIDs.append(endNode._id)
-                
+                        node._neighbourIDs.append(endNode._id)      
         return
         
     
@@ -205,8 +208,8 @@ class Environment:
         colorValues = list()
         edgeWidth = list()
         
-        #print(len(self._nodeList))
-        print(len(self._edgeList))
+        # print(len(self._nodeList))
+        # print(len(self._edgeList))
 
         
         for node in self._nodeList:

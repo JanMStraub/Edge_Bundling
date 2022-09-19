@@ -52,7 +52,6 @@ def findNodeByPosition(nodeList, x, y, z):
             return node
         
 
-
 def findConnection(startNode, endNode):
     for edge in startNode._nodeEdgeList:
         if (startNode._id == edge._start._id or startNode._id == edge._end._id) and (endNode._id == edge._start._id or endNode._id == edge._end._id):

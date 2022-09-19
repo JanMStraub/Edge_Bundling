@@ -106,6 +106,21 @@ def test():
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
+    for edge in environment._edgeList:
+        print("ID: {} - start: {} - end: {}".format(edge._id, edge._start._id, edge._end._id))
+    
+    print()
+    
+    for node in environment._nodeList:
+        print("ID: {} - neighbours: {} - neighbour IDs: {}".format(node._id, len(node._neighbours),node._neighbourIDs))
+    
+    print()
+    
+    for node in environment._nodeList:
+        for edge in node._nodeEdgeList:
+            print("node ID: {} - edge ID: {} - start: {} - end: {}".format(node._id, edge._id, edge._start._id, edge._end._id))
+        print()
+    
     # Debugging
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
@@ -117,9 +132,6 @@ def test():
         #tau = 0.0004 * t
         
     # print(tau)
-    
-    for edge in environment._edgeList:
-        print("ID: {} - start: {} - end: {}".format(edge._id, edge._start._id, edge._end._id))
     
     # Debugging
     # printFlux(environment._edgeList)
