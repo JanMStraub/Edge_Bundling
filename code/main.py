@@ -24,8 +24,8 @@ from simulation import physarumAlgorithm, initializePhysarium
 def main():
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    steps = 200 #734
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
+    steps = 10 #734
     image = False # Change to False if you want a gif
     
     # Slime parameters
