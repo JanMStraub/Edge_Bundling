@@ -215,7 +215,7 @@ class Environment:
         for node in self._nodeList:
             a, b, c = node._position
             G.add_node(node._id, pos = (a, b))
-            nodeLabels[node._id] = calculatePressureDelta(node) # [round(x, 2) for x in node._pressureVector]
+            nodeLabels[node._id] = calculatePressureDelta(node) # [round(x, 2) for x in node._currentPressureVector]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -224,7 +224,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = calculateConductivityDelta(edge) # round(edge._conductivity, 2)
+            edgeLabels[edge._start._id, edge._end._id] = calculateConductivityDelta(edge) # round(edge._conductivity[1], 2)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
@@ -254,8 +254,8 @@ class Node:
         self._connections = 0
         self._sink = False
         self._terminal = False
-        self._pressureVector = []
-        self._oldPressureVector = []
+        self._nextPressureVector = []
+        self._currentPressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
@@ -277,5 +277,4 @@ class Edge:
         self._radius = radius
         self._start = start
         self._end = end
-        self._conductivity = 0
-        self._oldConductivity = 0
+        self._conductivity = [0] * 2

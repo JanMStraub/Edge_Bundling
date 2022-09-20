@@ -14,7 +14,7 @@ Prints the initial conductivity for each node
 def printInitialConductivity(edgeList):
     for edge in edgeList:
                 
-        print("Initial conductivity of edge {}: {}".format(edge._id, edge._conductivity))
+        print("Initial conductivity of edge {}: {}".format(edge._id, edge._conductivity[0]))
     
     print("\n####################################################################\n")
     
@@ -26,7 +26,7 @@ Prints the initial pressure for each node
 """
 def printInitialPressure(nodeList):
     for node in nodeList:
-        print("Initial pressure for node {}: {}".format(node._id, node._pressureVector))
+        print("Initial pressure for node {}: {}".format(node._id, node._currentPressureVector))
         
     print("\n####################################################################\n")
     
@@ -50,7 +50,7 @@ Prints the conductivity at each edge
 """
 def printConductivity(edgeList):
     for edge in edgeList:
-        print("Conductivity of edge {}: {}".format(edge._id, edge._conductivity))
+        print("Conductivity of edge {}: {}".format(edge._id, edge._conductivity[1]))
         
     print("\n####################################################################\n")   
     return
@@ -73,8 +73,10 @@ Prints the pressure for each node
 def printPressure(nodeList):
     for node in nodeList:
         if node._terminal == True:
-            print("TERMINAL")
-        print("Pressure for node {}: {}".format(node._id, node._pressureVector))
+            print("Pressure for terminal node {}: {}".format(node._id, node._currentPressureVector))
+        else:
+            print("Pressure for node {}:          {}".format(node._id, node._currentPressureVector))
+        
         
     print("\n####################################################################\n")
     
@@ -84,12 +86,12 @@ def printPressure(nodeList):
 def checkGrid(edgeList, nodeList):
     
     for edge in edgeList:
-        print("ID: {} - start: {} - end: {}".format(edge._id, edge._start._id, edge._end._id))
+        print("Edge ID: {} - start: {} - end: {}".format(edge._id, edge._start._id, edge._end._id))
     
     print("\n####################################################################\n")
     
     for node in nodeList:
-        print("ID: {} - neighbours: {} - neighbour IDs: {}".format(node._id, len(node._neighbours),node._neighbourIDs))
+        print("Node ID: {} - neighbours: {} - neighbour IDs: {}".format(node._id, len(node._neighbours),node._neighbourIDs))
     
     print("\n####################################################################\n")
     
@@ -100,10 +102,25 @@ def checkGrid(edgeList, nodeList):
     
     return
 
+
+def printEdgeCost(edgeList):
+    for edge in edgeList:
+        print("Edge ID: {} - cost: {}".format(edge._id, edge._cost))
+        
+    print("\n####################################################################\n")
+    
+    
+def printEdgePosition(edgeList):
+    for edge in edgeList:
+        print("Edge ID: {} - Start position: {} - End position: {}".format(edge._id, edge._start._position, edge._end._position))
+        
+    print("\n####################################################################\n")
+
+
 """_summary_
 Function exits only for testing purposes
 """ 
-def test():
+def test():     
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json"
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
@@ -111,7 +128,7 @@ def test():
     print("Number of edges: " + str(numberOfEdges))
     
     # Slime parameters
-    viscosity = 1.0
+    viscosity = 0.5
     initialFlow = 1.0
     sigma = 0.00000375
     rho = 0.0002
@@ -124,23 +141,25 @@ def test():
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
-    
+    print()    
     # Debugging
     # checkGrid(environment._edgeList, environment._nodeList)
-    printInitialConductivity(environment._edgeList)
-    printInitialPressure(environment._nodeList)
-    
+    # printEdgePosition(environment._edgeList)
+    # printEdgeCost(environment._edgeList)
+    # printInitialConductivity(environment._edgeList)
+    # printInitialPressure(environment._nodeList)
+
     for t in tqdm(range(1), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        #tau = 0.0004 * t
-        
+        # tau = 0.0004 * t
+    print()
     # print(tau)
     
     # Debugging
     # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
+    # printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     
