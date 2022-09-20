@@ -97,9 +97,9 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
 
 
 if __name__ == "__main__":
-    
+
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
     steps = 1500 # 1467 734
     image = False # Change to False if you want a gif
     

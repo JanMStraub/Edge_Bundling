@@ -4,7 +4,6 @@
 import json
 import math
 
-
 """_summary_
 Function for reading JSON file and converting string data to tupel
 """

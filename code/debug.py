@@ -7,7 +7,6 @@ from environment import Environment
 from helper import readGraphData
 from simulation import physarumAlgorithm, initializePhysarium, updateCalculations
 
-
 """_summary_
 Prints the initial conductivity for each node
 """
@@ -90,7 +89,7 @@ def checkGrid(edgeList, nodeList):
     print("\n####################################################################\n")
     
     for node in nodeList:
-        print("Node ID: {} - neighbours: {} - neighbour IDs: {}".format(node._id, len(node._neighbours),node._neighbourIDs))
+        print("Node ID: {} - neighbours: {} - neighbour IDs: {}".format(node._id, len(node._neighbours), node._neighbourIDs))
     
     print("\n####################################################################\n")
     
@@ -114,6 +113,13 @@ def printEdgePosition(edgeList):
         print("Edge ID: {} - Start position: {} - End position: {}".format(edge._id, edge._start._position, edge._end._position))
         
     print("\n####################################################################\n")
+    
+    
+def printNodeConnections(nodeList):
+    for node in nodeList:
+        print("Node ID: {} - connections: {}".format(node._id, node._connections))
+    
+    print("\n####################################################################\n")
 
 
 """_summary_
@@ -132,14 +138,17 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau):
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
     initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
-    print()    
+
     # Debugging
+    printNodeConnections(environment._nodeList)
     # checkGrid(environment._edgeList, environment._nodeList)
     # printEdgePosition(environment._edgeList)
     # printEdgeCost(environment._edgeList)
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
-
+    
+    print()    
+    
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
@@ -155,5 +164,6 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau):
     printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     printPressure(environment._nodeList)
+    printNodeConnections(environment._nodeList)
     
     return
