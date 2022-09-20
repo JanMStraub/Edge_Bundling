@@ -211,7 +211,7 @@ class Environment:
         for node in self._nodeList:
             a, b, c = node._position
             G.add_node(node._id, pos = (a, b))
-            nodeLabels[node._id] = calculatePressureDelta(node) # [round(x, 2) for x in node._currentPressureVector]
+            nodeLabels[node._id] = [round(x, 3) for x in node._currentPressureVector]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -220,7 +220,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = calculateConductivityDelta(edge) # round(edge._conductivity[1], 2)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 3)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')

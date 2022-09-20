@@ -49,7 +49,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
                 plt = environment.plotGraph(t) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
-                
+            
             updateCalculations(environment._edgeList, environment._nodeList)
                 
             tau = 0.0004 * t #00000004
@@ -63,7 +63,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t > 700):
+            if (t > 1400):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)
@@ -89,6 +89,8 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
                 for filename in set(filenames):
                     os.remove(filename)
 
+            updateCalculations(environment._edgeList, environment._nodeList)
+            
             tau = 0.0004 * t #00000004
         
     return
@@ -97,16 +99,16 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
 if __name__ == "__main__":
     
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    steps = 1000 #734
-    image = True # Change to False if you want a gif
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
+    steps = 1500 # 1467 734
+    image = False # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
     initialFlow = 1.0 
-    sigma = 0.00000375
+    sigma = 0.000005
     rho = 0.0002
     tau = 0.0004
     
-    # main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau)
-    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau)
+    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau)
+    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau)

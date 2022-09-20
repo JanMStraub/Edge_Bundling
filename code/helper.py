@@ -69,9 +69,9 @@ def calculatePressureDelta(node):
     delta = []
     
     for i in range(len(node._nextPressureVector)):
-        if node._nextPressureVector[i] < node._currentPressureVector[i]:
+        if node._currentPressureVector[i] < node._nextPressureVector[i]:
             delta.append("-")
-        elif node._nextPressureVector[i] > node._currentPressureVector[i]:
+        elif node._currentPressureVector[i] > node._nextPressureVector[i]:
             delta.append("+")
         else:
             delta.append("=")
