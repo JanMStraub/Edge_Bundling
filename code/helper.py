@@ -68,10 +68,10 @@ def findOtherEdgeEnd(node, edge):
 def calculatePressureDelta(node):
     delta = []
     
-    for i in range(len(node._pressureVector)):
-        if node._pressureVector[i] < node._oldPressureVector[i]:
+    for i in range(len(node._nextPressureVector)):
+        if node._nextPressureVector[i] < node._currentPressureVector[i]:
             delta.append("-")
-        elif node._pressureVector[i] > node._oldPressureVector[i]:
+        elif node._nextPressureVector[i] > node._currentPressureVector[i]:
             delta.append("+")
         else:
             delta.append("=")
@@ -81,9 +81,9 @@ def calculatePressureDelta(node):
 
 def calculateConductivityDelta(edge):
     
-    if edge._conductivity < edge._oldConductivity:
+    if edge._conductivity[1] < edge._conductivity[0]:
         return "-"
-    elif edge._conductivity > edge._oldConductivity:
+    elif edge._conductivity[1] > edge._conductivity[0]:
         return "+"
     else:
         return "="

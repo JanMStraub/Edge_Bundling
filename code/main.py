@@ -18,23 +18,12 @@ from tqdm import tqdm
 
 from environment import Environment
 from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium
+from simulation import physarumAlgorithm, initializePhysarium, updateCalculations
+from debug import test
 
 
-def main():
-    
-    # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
-    steps = 10 #734
-    image = False # Change to False if you want a gif
-    
-    # Slime parameters
-    viscosity = 1.0
-    initialFlow = 1.0 
-    sigma = 0.000005
-    rho = 0.0002
-    tau = 0.0004
-    
+def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
+
     # Import graph information from JSON
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
     
@@ -61,18 +50,20 @@ def main():
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            #tau = 0.0004 * t #00000004
+            updateCalculations(environment._edgeList, environment._nodeList)
+                
+            tau = 0.0004 * t #00000004
             
     else:
         filenames = []
         
         for t in tqdm(range(steps), desc = "Iteration progress"):
-            
+
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t > 0):
+            if (t > 700):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)
@@ -97,12 +88,25 @@ def main():
                 # Remove files
                 for filename in set(filenames):
                     os.remove(filename)
-            
-            #tau = 0.0004 * t #00000004
+
+            tau = 0.0004 * t #00000004
         
     return
 
 
 if __name__ == "__main__":
     
-    main()
+    # Setup parameter
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
+    steps = 1000 #734
+    image = True # Change to False if you want a gif
+    
+    # Slime parameters
+    viscosity = 0.5
+    initialFlow = 1.0 
+    sigma = 0.00000375
+    rho = 0.0002
+    tau = 0.0004
+    
+    # main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau)
+    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau)

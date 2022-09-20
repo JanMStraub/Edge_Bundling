@@ -119,7 +119,6 @@ def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
             conductivitySum = 0
             conductivityPressureSum = 0
             for edge in currentNode._nodeEdgeList:
-                # print(edge._id)
                 conductivitySum += edge._conductivity[1]
                 conductivityPressureSum += edge._conductivity[1] * (currentNode._currentPressureVector[i] + findOtherEdgeEnd(currentNode, edge)._currentPressureVector[i])
             
@@ -132,7 +131,6 @@ def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
             conductivitySum = 0
             conductivityPressureSum = 0
             for edge in currentNode._nodeEdgeList:
-                # print(edge._id)
                 conductivitySum += edge._conductivity[1]
                 conductivityPressureSum += edge._conductivity[1] * (currentNode._currentPressureVector[i] + findOtherEdgeEnd(currentNode, edge)._currentPressureVector[i])
             
@@ -180,7 +178,7 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-    # random.shuffle(nodeList)
+    random.shuffle(nodeList)
 
     for node in nodeList:
         for neighbour in node._neighbours:
@@ -188,10 +186,15 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, ini
         
         if node._connections != 0:
             calculatePressure(node, len(terminalNodeList), initialFlow)
+
+    return
+
+
+def updateCalculations(edgeList, nodeList):
     
     for edge in edgeList:
         edge._conductivity[0] = edge._conductivity[1]    
-        
+    
     for node in nodeList:
         node._currentPressureVector = node._nextPressureVector
     

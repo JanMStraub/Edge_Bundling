@@ -207,11 +207,7 @@ class Environment:
         nodeLabels = dict()
         colorValues = list()
         edgeWidth = list()
-        
-        # print(len(self._nodeList))
-        # print(len(self._edgeList))
 
-        
         for node in self._nodeList:
             a, b, c = node._position
             G.add_node(node._id, pos = (a, b))
