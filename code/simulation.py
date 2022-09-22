@@ -2,24 +2,42 @@
 
 # Imports
 import random
+import math
 
 import numpy as np
 
-from helper import findOtherEdgeEnd
+from scipy.integrate import quad
 
+from helper import findOtherEdgeEnd, horizontalIntegrand, verticalIntegrand
+
+   
 """_summary_
 Edge cost calculation from the paper
 """
-def initializeEdgeCost(edge):
+def initializeEdgeCost(edge, sensorNodeList):
     
     # vertical edge
     if (edge._start._position[0] == edge._end._position[0]):
-        edge._cost = abs(edge._start._position[0]) * abs(edge._start._position[1] - edge._end._position[1])
+        a = 0
+        b = 1
+        x2, y2, z2 = edge._start._position
         
+        for sensor in sensorNodeList:
+            x1, y1, z1 = sensor
+            I = quad(verticalIntegrand, a, b, args = (x1, y1, x2))[0]
+            edge._cost += abs(I)  
+
     # horizontal edge
     elif (edge._start._position[1] == edge._end._position[1]):
-        edge._cost = abs(edge._start._position[1]) * abs(edge._start._position[0] - edge._end._position[0])
+        a = 0
+        b = 1
+        x2, y2, z2 = edge._start._position
         
+        for sensor in sensorNodeList:
+            x1, y1, z1 = sensor
+            I = quad(horizontalIntegrand, a, b, args = (x1, y1, y2))[0]
+            edge._cost += abs(I)
+    
     return
 
 
@@ -104,7 +122,7 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
             currentNode._neighbours.remove(otherEnd)
             currentNode._neighbourIDs.remove(otherEnd._id)
             edgeList.remove(edge)
-            print("REMOVED! tau = " + str(tau))
+            # print("Edge ID: {} removed - tau: {}".format(edge._id, tau))
                 
         
     return
@@ -149,11 +167,11 @@ def calculateRadius(edge, viscosity):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0):
+def initializePhysarium(edgeList, nodeList, terminalNodeList, sensorNodeList, viscosity = 1.0, initialFlow = 10.0):
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
-        initializeEdgeCost(edge)
+        initializeEdgeCost(edge, sensorNodeList)
     
     for node in terminalNodeList:
         A = list()            
@@ -179,7 +197,7 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-    # random.shuffle(nodeList)
+    random.shuffle(nodeList)
 
     for node in nodeList:
         for neighbour in node._neighbours:

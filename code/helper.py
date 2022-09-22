@@ -29,11 +29,19 @@ def readGraphData(path):
     return edges, nodeList, numberOfEdges, numberOfNodes
 
 
+def horizontalIntegrand(x2, x1, y1, y2):
+    return 1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
+
+
+def verticalIntegrand(y2, x1, y1, x2):
+    return 1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
+
+
 """_summary_
 Calculates the distance between two nodes
 """
-def calculateEdgeLength(node1, node2):
-    return math.dist(node1._position, node2._position)
+def calculateDistanceBetweenPositions(position1, position2):
+    return math.dist(position1, position2)
 
 
 def findNodeById(id, nodeList):

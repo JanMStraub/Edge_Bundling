@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from matplotlib.collections import LineCollection
 
-from helper import findNodeByPosition, calculatePressureDelta, calculateConductivityDelta
+from helper import findNodeByPosition
 
 
 """_summary_
@@ -20,6 +20,7 @@ class Environment:
     def __init__(self):
         self._nodeList = []
         self._terminalNodeList = []
+        self._sensorNodeList = []
         self._edgeList = []
         self._terminalEdgeList = []
     
@@ -46,7 +47,7 @@ class Environment:
             if (y > yMax):
                 yMax = y
         
-        print("xMin: {}, xMax: {}, yMin: {}, yMax: {}".format(xMin, xMax, yMin, yMax))
+        # print("xMin: {}, xMax: {}, yMin: {}, yMax: {}".format(xMin, xMax, yMin, yMax))
         
         for x in range(int(xMin), int(xMax) + 1):
             for y in range(int(yMin), int(yMax) + 1):
@@ -170,7 +171,12 @@ class Environment:
         self.createGridEdges(xMin, xMax, yMin, yMax)       
 
         return
-        
+    
+    
+    def createSensorNodes(self, sensorList):
+        for sensor in sensorList:
+            self._sensorNodeList.append(sensor)
+
                 
     """_summary_
     Method uses to create node objects and save them in the nodes list for easy access
@@ -209,9 +215,9 @@ class Environment:
         edgeWidth = list()
 
         for node in self._nodeList:
-            a, b, c = node._position
-            G.add_node(node._id, pos = (a, b))
-            nodeLabels[node._id] = [round(x, 3) for x in node._currentPressureVector]
+            x, y, z = node._position
+            G.add_node(node._id, pos = (x, y))
+            nodeLabels[node._id] = [round(a, 2) for a in node._currentPressureVector]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -220,7 +226,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 3)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 2)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
@@ -266,7 +272,7 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, start, end, cost = 1, length = 1, radius = 1):
+    def __init__(self, id, start, end, cost = 0, length = 1, radius = 1):
         self._id = id
         self._length = length 
         self._cost = cost

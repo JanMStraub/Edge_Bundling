@@ -125,30 +125,29 @@ def printNodeConnections(nodeList):
 """_summary_
 Function exits only for testing purposes
 """ 
-def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau):     
+def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList):     
     
     edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
     
-    print("Number of nodes: " + str(numberOfNodes))
-    print("Number of edges: " + str(numberOfEdges))
+    # print("Number of nodes: " + str(numberOfNodes))
+    # print("Number of edges: " + str(numberOfEdges))
     
     environment = Environment()
     environment.createGrid(nodeList)
     environment.createTerminalNodes(nodeList)
+    environment.createSensorNodes(sensorNodeList)
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, environment._sensorNodeList, viscosity, initialFlow)
 
     # Debugging
-    printNodeConnections(environment._nodeList)
+    # printNodeConnections(environment._nodeList)
     # checkGrid(environment._edgeList, environment._nodeList)
     # printEdgePosition(environment._edgeList)
-    # printEdgeCost(environment._edgeList)
+    printEdgeCost(environment._edgeList)
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
-    
-    print()    
-    
+
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
@@ -157,13 +156,11 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau):
         
         tau = 0.0004 * t
         
-    print()
-
     # Debugging
     # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
+    # printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
-    printPressure(environment._nodeList)
-    printNodeConnections(environment._nodeList)
+    # printPressure(environment._nodeList)
+    # printNodeConnections(environment._nodeList)
     
     return
