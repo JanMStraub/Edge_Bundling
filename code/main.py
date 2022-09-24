@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    steps = 1200  # 1467 734
+    steps = 3000  # 1467 734
     image = True # Change to False if you want a gif
     
     # Slime parameters
@@ -119,9 +119,9 @@ if __name__ == "__main__":
     initialFlow = 1.0 
     sigma = 0.00000375
     rho = 0.0002
-    tau = 0.0002
+    tau = 0.0004
     
-    sensorNodeList = [(0.1, 1.9, 0)] 
+    sensorNodeList = [(0.2, 2.5, 0), (1.8, 2.5, 0), (-0.5, 1.8, 0), (2.5, 1.8, 0), (-0.5, 0.8, 0), (2.5, 0.8, 0)] 
     
     """
     (0.1, 0.9, 0)

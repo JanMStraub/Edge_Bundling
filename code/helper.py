@@ -29,12 +29,12 @@ def readGraphData(path):
     return edges, nodeList, numberOfEdges, numberOfNodes
 
 
-def horizontalIntegrand(x2, x1, y1, y2):
-    return 1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
+def horizontalIntegrand(x2, x1, y1, y2, gamma):
+    return (1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
 
 
-def verticalIntegrand(y2, x1, y1, x2):
-    return 1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))
+def verticalIntegrand(y2, x1, y1, x2, gamma):
+    return (1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
 
 
 """_summary_
