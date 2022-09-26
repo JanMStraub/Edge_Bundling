@@ -205,6 +205,9 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, ini
         
         if node._connections != 0:
             calculatePressure(node, len(terminalNodeList), initialFlow)
+        else:
+            nodeList.remove(node)
+            
     
     return
 
