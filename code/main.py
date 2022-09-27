@@ -26,10 +26,7 @@ from debug import test
 def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensorNodeList):
 
     # Import graph information from JSON
-    edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile) 
-    
-    print("Number of nodes: " + str(numberOfNodes))
-    print("Number of edges: " + str(numberOfEdges))
+    edgeList, nodeList = readGraphData(jsonFile) 
     
     # Setup environment
     environment = Environment()
@@ -61,10 +58,8 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensor
                 plt.plot(xList, yList, "go")
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
-            
-            # updateCalculations(environment._edgeList, environment._nodeList)
                 
-            tau = 0.0004 * t #00000004
+            tau = 0.0004 * t
             
     else:
         filenames = []
@@ -100,11 +95,9 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensor
                 # Remove files
                 for filename in set(filenames):
                     os.remove(filename)
-
-            # updateCalculations(environment._edgeList, environment._nodeList)
             
-            tau = 0.0004 * t #00000004
-        
+            tau = 0.0004 * t
+            
     return
 
 
@@ -112,7 +105,7 @@ if __name__ == "__main__":
 
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
-    steps = 3  # 1467 734
+    steps = 3
     image = True # Change to False if you want a gif
     
     # Slime parameters
@@ -121,10 +114,6 @@ if __name__ == "__main__":
     sigma = 0.00000375
     rho = 0.0002
     tau = 0.0004
-    
-    randomSensorList = list()
-    for i in range(30):
-        randomSensorList.append((round(random.uniform(2, 23), 3), round(random.uniform(3, 22), 3), 0))
     
     sensorNodeList = [(0.1, 0.9, 0)]
     

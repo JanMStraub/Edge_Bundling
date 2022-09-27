@@ -47,8 +47,6 @@ class Environment:
             if (y > yMax):
                 yMax = y
         
-        # print("xMin: {}, xMax: {}, yMin: {}, yMax: {}".format(xMin, xMax, yMin, yMax))
-        
         for x in range(int(xMin), int(xMax) + 1):
             for y in range(int(yMin), int(yMax) + 1):
                 node = Node(id, [float(x), float(y), z])
@@ -173,9 +171,14 @@ class Environment:
         return
     
     
+    """_summary_
+    Function used to create sensor node
+    """
     def createSensorNodes(self, sensorList):
         for sensor in sensorList:
             self._sensorNodeList.append(sensor)
+        
+        return
 
                 
     """_summary_
@@ -203,9 +206,6 @@ class Environment:
         fig = plt.figure(figsize = (10, 10))
         ax = fig.add_subplot(111)
         ax.set_title("Polycephalum Test, step = {}".format(t + 1))
-        # plt.minorticks_on()
-        # plt.grid(which='minor', linestyle = '-')
-        # plt.grid(which='major', linestyle = '-')
         
         G = nx.Graph()
         
