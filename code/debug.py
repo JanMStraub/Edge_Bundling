@@ -144,7 +144,7 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
     # printNodeConnections(environment._nodeList)
     # checkGrid(environment._edgeList, environment._nodeList)
     # printEdgePosition(environment._edgeList)
-    printEdgeCost(environment._edgeList)
+    # printEdgeCost(environment._edgeList)
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
 
@@ -152,8 +152,11 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        updateCalculations(environment._edgeList, environment._nodeList)
+        if (t >= 0):
+                print("Time step: {}".format(t))
+                printPressure(environment._nodeList)
         
+        # updateCalculations(environment._edgeList, environment._nodeList)
         tau = 0.0004 * t
         
     # Debugging
