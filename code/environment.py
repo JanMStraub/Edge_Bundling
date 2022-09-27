@@ -217,7 +217,7 @@ class Environment:
         for node in self._nodeList:
             x, y, z = node._position
             G.add_node(node._id, pos = (x, y))
-            nodeLabels[node._id] = [round(a, 2) for a in node._currentPressureVector]
+            nodeLabels[node._id] = [round(a, 2) for a in node._pressureVector[:2]]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -256,8 +256,7 @@ class Node:
         self._connections = 0
         self._sink = False
         self._terminal = False
-        self._nextPressureVector = []
-        self._currentPressureVector = []
+        self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []

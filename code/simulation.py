@@ -105,7 +105,7 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
 
         pressureSum = 0
         for i in range(terminalNodeListLength):
-            pressureSum += edge._start._currentPressureVector[i] - edge._end._currentPressureVector[i]
+            pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
         
         kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
 
@@ -137,41 +137,34 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
 Approximates the pressure change (p^t+1) for each node using equation (9)
 """
 def calculatePressure(currentNode, terminalNodeListLength, initialFlow):
-    print("Current node id: {} - current pressure vector: {} - next pressure vector: {}".format(currentNode._id, currentNode._currentPressureVector, currentNode._nextPressureVector))
-    
+
     for i in range(terminalNodeListLength):
         if (currentNode._terminal == True and currentNode._terminalId != i):
             conductivitySum = 0
             conductivityPressureSum = 0
-            print("1_current pressure vector: {}".format(currentNode._currentPressureVector))
             
             for edge in currentNode._nodeEdgeList:
                 conductivitySum += edge._conductivity[1]
-                conductivityPressureSum += edge._conductivity[1] * (currentNode._currentPressureVector[i] + findOtherEdgeEnd(currentNode, edge)._currentPressureVector[i])
+                conductivityPressureSum += edge._conductivity[1] * (currentNode._pressureVector[i] + findOtherEdgeEnd(currentNode, edge)._pressureVector[i])
             
-            currentNode._nextPressureVector[i] = ((initialFlow * 1 + conductivityPressureSum) / (conductivitySum * 2))
+            currentNode._pressureVector[i + terminalNodeListLength] = ((initialFlow * 1 + conductivityPressureSum) / (conductivitySum * 2))
             
         elif (currentNode._terminal == True and currentNode._terminalId == i):
-            print("2_current pressure vector: {}".format(currentNode._currentPressureVector))
-            currentNode._nextPressureVector[i] = 0
+            currentNode._pressureVector[i + terminalNodeListLength] = 0
             
         elif (currentNode._terminal == False):
             conductivitySum = 0
             conductivityPressureSum = 0
-            print("3_current pressure vector: {}".format(currentNode._currentPressureVector))
             
             for edge in currentNode._nodeEdgeList:
                 conductivitySum += edge._conductivity[1]
-                conductivityPressureSum += edge._conductivity[1] * (currentNode._currentPressureVector[i] + findOtherEdgeEnd(currentNode, edge)._currentPressureVector[i])
+                conductivityPressureSum += edge._conductivity[1] * (currentNode._pressureVector[i] + findOtherEdgeEnd(currentNode, edge)._pressureVector[i])
             
-            currentNode._nextPressureVector[i] = (conductivityPressureSum / (conductivitySum * 2))
+            currentNode._pressureVector[i + terminalNodeListLength] = (conductivityPressureSum / (conductivitySum * 2))
             
         else:
             raise ValueError("Node not supported")
-            
-        
-    print("Current node id: {} - current pressure vector: {} - next pressure vector: {}".format(currentNode._id, currentNode._currentPressureVector, currentNode._nextPressureVector))
-    print("++++++++++++++++++++++++++++++++")
+
     return
 
 
@@ -182,13 +175,14 @@ def calculateRadius(edge, viscosity):
     return ((edge._conductivity[1] * 8 * viscosity) / np.pi) ** (1 / 4)
 
 
-def updateCalculations(edgeList, nodeList):
+def updateCalculations(edgeList, nodeList, terminalNodeListLength):
     
     for edge in edgeList:
         edge._conductivity[0] = edge._conductivity[1]    
     
     for node in nodeList:
-        node._currentPressureVector = node._nextPressureVector
+        for i in range(terminalNodeListLength):
+            node._pressureVector[i] = node._pressureVector[i + terminalNodeListLength]
     
     return
 
@@ -216,8 +210,11 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, sensorNodeList, vi
         x = np.linalg.solve(A, b)
 
         for i in range(len(nodeList)):
-            nodeList[i]._nextPressureVector.append(x[i])
-            nodeList[i]._currentPressureVector.append(x[i])
+            nodeList[i]._pressureVector.append(x[i])
+            
+    for node in nodeList:
+        for i in range(len(terminalNodeList)):
+            node._pressureVector.append(0)
 
     return
     
@@ -226,7 +223,7 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, sensorNodeList, vi
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-    # random.shuffle(nodeList)
+    random.shuffle(nodeList)
 
     for node in nodeList:
         for neighbour in node._neighbours:
@@ -237,6 +234,6 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, ini
         else:
             nodeList.remove(node)
             
-    updateCalculations(edgeList, nodeList)
+    updateCalculations(edgeList, nodeList, len(terminalNodeList))
     
     return

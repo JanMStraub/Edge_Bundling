@@ -72,9 +72,9 @@ Prints the pressure for each node
 def printPressure(nodeList):
     for node in nodeList:
         if node._terminal == True:
-            print("Pressure for terminal node {}: {}".format(node._id, node._currentPressureVector))
+            print("Pressure for terminal node {}: {}".format(node._id, node._pressureVector))
         else:
-            print("Pressure for node {}:          {}".format(node._id, node._currentPressureVector))  
+            print("Pressure for node {}:          {}".format(node._id, node._pressureVector))  
         
     print("\n####################################################################\n")
     
@@ -161,10 +161,6 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
-        if (t >= 0):
-                print("Time step: {}".format(t))
-                printPressure(environment._nodeList)
-
         tau = 0.0004 * t
         
     # Debugging
