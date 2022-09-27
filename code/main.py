@@ -18,7 +18,7 @@ from tqdm import tqdm
 
 from environment import Environment
 from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium, updateCalculations
+from simulation import physarumAlgorithm, initializePhysarium
 from debug import test
 
 
