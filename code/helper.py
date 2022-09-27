@@ -49,32 +49,12 @@ def calculateDistanceBetweenPositions(position1, position2):
 
 
 """_summary_
-Function finds node by id
-"""
-def findNodeById(id, nodeList):
-    for node in nodeList:
-        if (node._id == id):
-            return node
-
-
-"""_summary_
 Function used to specific node object in node grid
 """
 def findNodeByPosition(nodeList, x, y, z):
     for node in nodeList:
         if node._position[0] == x and node._position[1] == y and node._position[2] == z: 
             return node
-      
-    
-"""_summary_
-Function used to find the edge that connects the two input nodes
-"""
-def findConnection(startNode, endNode):
-    for edge in startNode._nodeEdgeList:
-        if (startNode._id == edge._start._id or startNode._id == edge._end._id) and (endNode._id == edge._start._id or endNode._id == edge._end._id):
-            return edge
-        else:
-            raise ValueError("No edge connecting node {} and {} was found".format(startNode._id, endNode._id))
 
         
 """_summary_

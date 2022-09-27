@@ -13,7 +13,6 @@ Based on the work of:
 # Imports
 import os
 import imageio
-import random
 
 from tqdm import tqdm
 

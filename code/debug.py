@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 from environment import Environment
 from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium, updateCalculations
+from simulation import physarumAlgorithm, initializePhysarium
 
 """_summary_
 Prints the initial conductivity for each node
@@ -81,6 +81,9 @@ def printPressure(nodeList):
     return
 
 
+"""_summary_
+Prints all grid nodes and edges to check if they connect
+"""
 def checkGrid(edgeList, nodeList):
     
     for edge in edgeList:
@@ -101,20 +104,29 @@ def checkGrid(edgeList, nodeList):
     return
 
 
+"""_summary_
+Function prints edge cost
+"""
 def printEdgeCost(edgeList):
     for edge in edgeList:
         print("Edge ID: {} - cost: {}".format(edge._id, edge._cost))
         
     print("\n####################################################################\n")
     
-    
+
+"""_summary_
+Function prints edge position
+"""
 def printEdgePosition(edgeList):
     for edge in edgeList:
         print("Edge ID: {} - Start position: {} - End position: {}".format(edge._id, edge._start._position, edge._end._position))
         
     print("\n####################################################################\n")
     
-    
+
+"""_summary_
+Prints node connections
+"""
 def printNodeConnections(nodeList):
     for node in nodeList:
         print("Node ID: {} - connections: {}".format(node._id, node._connections))
@@ -127,10 +139,7 @@ Function exits only for testing purposes
 """ 
 def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList):     
     
-    edgeList, nodeList, numberOfEdges, numberOfNodes = readGraphData(jsonFile)
-    
-    # print("Number of nodes: " + str(numberOfNodes))
-    # print("Number of edges: " + str(numberOfEdges))
+    edgeList, nodeList = readGraphData(jsonFile)
     
     environment = Environment()
     environment.createGrid(nodeList)
@@ -155,8 +164,7 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
         if (t >= 0):
                 print("Time step: {}".format(t))
                 printPressure(environment._nodeList)
-        
-        # updateCalculations(environment._edgeList, environment._nodeList)
+
         tau = 0.0004 * t
         
     # Debugging
