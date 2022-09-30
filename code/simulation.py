@@ -190,11 +190,11 @@ def updateCalculations(edgeList, nodeList, terminalNodeListLength):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0, gamma = 0.5):
+def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0):
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
-        initializeEdgeCost(edge, gamma)
+        # initializeEdgeCost(edge, gamma)
     
     for node in terminalNodeList:
         A = list()            

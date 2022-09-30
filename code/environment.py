@@ -195,7 +195,7 @@ class Environment:
         xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
         self.createGridEdges(xMin, xMax, yMin, yMax)       
         self.createTerminalNodes(nodeList)
-        # self.setNodeAndEdgeWeight(nodeList)
+        self.setNodeAndEdgeWeight(nodeList)
         
         return
 

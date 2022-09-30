@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # Slime parameters
     viscosity = 0.5
     initialFlow = 1
-    sigma = 0.000375
+    sigma = 0.000007
     rho = 0.0002
     tau = 0.0004
     
