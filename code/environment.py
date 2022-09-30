@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from matplotlib.collections import LineCollection
 
-from helper import findNodeByPosition
+from helper import findNodeByPosition, calculateDistanceBetweenPositions
 
 
 """_summary_
@@ -20,7 +20,6 @@ class Environment:
     def __init__(self):
         self._nodeList = []
         self._terminalNodeList = []
-        self._sensorNodeList = []
         self._edgeList = []
         self._terminalEdgeList = []
     
@@ -159,28 +158,8 @@ class Environment:
                         node._neighbours.append(endNode)
                         node._neighbourIDs.append(endNode._id)      
         return
-        
     
-    """_summary_
-    Function creates point grid
-    """
-    def createGrid(self, nodeList):
-        xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
-        self.createGridEdges(xMin, xMax, yMin, yMax)       
 
-        return
-    
-    
-    """_summary_
-    Function used to create sensor node
-    """
-    def createSensorNodes(self, sensorList):
-        for sensor in sensorList:
-            self._sensorNodeList.append(sensor)
-        
-        return
-
-                
     """_summary_
     Method uses to create node objects and save them in the nodes list for easy access
     """
@@ -195,8 +174,32 @@ class Environment:
             id += 1
         
         return
-   
+
+ 
+    def setNodeAndEdgeWeight(self, terminalNodeList):
+        for node in self._nodeList:
+        
+            for terminal in terminalNodeList:
+                node._weight += calculateDistanceBetweenPositions(node._position, terminal)
+            
+        for edge in self._edgeList:
+            edge._cost = (edge._start._weight + edge._end._weight) / len(self._edgeList)
+        
+        return
     
+    
+    """_summary_
+    Function creates point grid
+    """
+    def createGrid(self, nodeList):
+        xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
+        self.createGridEdges(xMin, xMax, yMin, yMax)       
+        self.createTerminalNodes(nodeList)
+        # self.setNodeAndEdgeWeight(nodeList)
+        
+        return
+
+ 
     """_summary_
     Plot edges and nodes in matplotlib
     """
@@ -226,7 +229,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 4)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._cost, 4) # round(edge._conductivity[1], 4)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
@@ -254,6 +257,7 @@ class Node:
         self._terminalId = None
         self._initialPressure = 1
         self._connections = 0
+        self._weight = 0
         self._sink = False
         self._terminal = False
         self._pressureVector = []
@@ -271,7 +275,7 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, start, end, cost = 0, length = 1, radius = 1):
+    def __init__(self, id, start, end, cost = 1, length = 1, radius = 1):
         self._id = id
         self._length = length 
         self._cost = cost

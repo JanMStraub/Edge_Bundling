@@ -137,17 +137,15 @@ def printNodeConnections(nodeList):
 """_summary_
 Function exits only for testing purposes
 """ 
-def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList):     
+def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau):     
     
     edgeList, nodeList = readGraphData(jsonFile)
     
     environment = Environment()
     environment.createGrid(nodeList)
-    environment.createTerminalNodes(nodeList)
-    environment.createSensorNodes(sensorNodeList)
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, environment._sensorNodeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
 
     # Debugging
     # printNodeConnections(environment._nodeList)
