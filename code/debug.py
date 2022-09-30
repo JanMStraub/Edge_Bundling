@@ -165,7 +165,7 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
         
     # Debugging
     # printFlux(environment._edgeList)
-    # printConductivity(environment._edgeList)
+    printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     # printNodeConnections(environment._nodeList)

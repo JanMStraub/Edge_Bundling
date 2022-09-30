@@ -109,7 +109,7 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
         
         kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
 
-        edge._conductivity[1] = edge._conductivity[0] * kappa
+        edge._conductivity[1] = kappa * edge._conductivity[0]
         edge._radius = calculateRadius(edge, viscosity)
 
         # edge cutting
@@ -129,7 +129,7 @@ def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, 
             otherEnd._neighbourIDs.remove(currentNode._id)
             
             edgeList.remove(edge)
-  
+                
     return
 
 
