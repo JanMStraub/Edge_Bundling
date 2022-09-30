@@ -15,7 +15,27 @@ Edge cost calculation from the paper
 """
 def initializeEdgeCost(edge):
     
-    
+    # vertical edge
+    if (edge._start._position[0] == edge._end._position[0]):
+        a = edge._start._position[1]
+        b = edge._start._position[1] + edge._length
+        x2, y2, z2 = edge._start._position
+        
+        for sensor in sensorNodeList:
+            x1, y1, z1 = sensor
+            I = quad(verticalIntegrand, a, b, args = (x1, y1, x2, gamma))[0]
+            edge._cost += abs(I)  
+
+    # horizontal edge
+    elif (edge._start._position[1] == edge._end._position[1]):
+        a = edge._start._position[0]
+        b = edge._start._position[0] + edge._length
+        x2, y2, z2 = edge._start._position
+        
+        for sensor in sensorNodeList:
+            x1, y1, z1 = sensor
+            I = quad(horizontalIntegrand, a, b, args = (x1, y1, y2, gamma))[0]
+            edge._cost += abs(I)
     
     return
 
