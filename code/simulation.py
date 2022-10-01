@@ -13,7 +13,7 @@ from helper import findOtherEdgeEnd, horizontalIntegrand, verticalIntegrand
 """_summary_
 Edge cost calculation from the paper
 """
-def initializeEdgeCost(edge):
+def initializeEdgeCost(edge, terminalNodeList, gamma):
     
     # vertical edge
     if (edge._start._position[0] == edge._end._position[0]):
@@ -21,8 +21,8 @@ def initializeEdgeCost(edge):
         b = edge._start._position[1] + edge._length
         x2, y2, z2 = edge._start._position
         
-        for sensor in sensorNodeList:
-            x1, y1, z1 = sensor
+        for terminal in terminalNodeList:
+            x1, y1, z1 = terminal._position
             I = quad(verticalIntegrand, a, b, args = (x1, y1, x2, gamma))[0]
             edge._cost += abs(I)  
 
@@ -32,8 +32,8 @@ def initializeEdgeCost(edge):
         b = edge._start._position[0] + edge._length
         x2, y2, z2 = edge._start._position
         
-        for sensor in sensorNodeList:
-            x1, y1, z1 = sensor
+        for terminal in terminalNodeList:
+            x1, y1, z1 = terminal._position
             I = quad(horizontalIntegrand, a, b, args = (x1, y1, y2, gamma))[0]
             edge._cost += abs(I)
     
@@ -190,11 +190,11 @@ def updateCalculations(edgeList, nodeList, terminalNodeListLength):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0):
+def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0, gamma = 0.5):
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
-        # initializeEdgeCost(edge, gamma)
+        initializeEdgeCost(edge, terminalNodeList, gamma)
     
     for node in terminalNodeList:
         A = list()            

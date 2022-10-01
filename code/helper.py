@@ -31,14 +31,14 @@ def readGraphData(path):
 Function calculats the horizontal edge cost from equation (12)
 """
 def horizontalIntegrand(x2, x1, y1, y2, gamma):
-    return (1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
+    return ((math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
 
 
 """_summary_
 Function calculats the vertical edge cost from equation (12)
 """
 def verticalIntegrand(y2, x1, y1, x2, gamma):
-    return (1 / (math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
+    return ((math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
 
 
 """_summary_

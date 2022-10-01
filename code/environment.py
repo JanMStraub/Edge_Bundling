@@ -195,7 +195,7 @@ class Environment:
         xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
         self.createGridEdges(xMin, xMax, yMin, yMax)       
         self.createTerminalNodes(nodeList)
-        self.setNodeAndEdgeWeight(nodeList)
+        # self.setNodeAndEdgeWeight(nodeList)
         
         return
 
@@ -229,7 +229,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._cost, 4) # round(edge._conductivity[1], 4)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 4) # round(edge._cost, 4) # round(edge._conductivity[1], 4)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')

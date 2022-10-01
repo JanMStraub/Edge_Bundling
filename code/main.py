@@ -91,8 +91,8 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 500   
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
+    steps = 1040
     image = True # Change to False if you want a gif
     
     # Slime parameters
