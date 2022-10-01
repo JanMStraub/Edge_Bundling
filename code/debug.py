@@ -161,11 +161,18 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
         
+        test = True
+        
+        if (len(environment._edgeList) < 3):
+            if test:
+                print("#################################################")
+                test = False
+        
         tau = 0.0004 * t
         
     # Debugging
     # printFlux(environment._edgeList)
-    printConductivity(environment._edgeList)
+    # printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     # printNodeConnections(environment._nodeList)

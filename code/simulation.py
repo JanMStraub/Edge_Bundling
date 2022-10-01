@@ -99,37 +99,38 @@ def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
-def calculateConductivity(currentNode, terminalNodeListLength, edgeList, sigma, rho, tau, viscosity):
+def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, sigma, rho, tau, viscosity):
         
-    for edge in currentNode._nodeEdgeList:
+    pressureSum = 0
+    for i in range(terminalNodeListLength):
+        pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
+    
+    kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
+    
+    if edge._id == 0:
+        print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
+    
+    edge._conductivity[1] = kappa * edge._conductivity[0]
+    edge._radius = calculateRadius(edge, viscosity)
 
-        pressureSum = 0
-        for i in range(terminalNodeListLength):
-            pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
+    # edge cutting
+    if edge in edgeList and edge._conductivity[1] < tau:
+        otherEnd = findOtherEdgeEnd(currentNode, edge)
         
-        kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
-
-        edge._conductivity[1] = kappa * edge._conductivity[0]
-        edge._radius = calculateRadius(edge, viscosity)
-
-        # edge cutting
-        if edge in edgeList and edge._conductivity[1] < tau:
-            otherEnd = findOtherEdgeEnd(currentNode, edge)
-            
-            currentNode._nodeEdgeList.remove(edge)
-            otherEnd._nodeEdgeList.remove(edge)
-            
-            currentNode._connections -= 1
-            otherEnd._connections -= 1
-            
-            currentNode._neighbours.remove(otherEnd)
-            otherEnd._neighbours.remove(currentNode)
-            
-            currentNode._neighbourIDs.remove(otherEnd._id)
-            otherEnd._neighbourIDs.remove(currentNode._id)
-            
-            edgeList.remove(edge)
-                
+        currentNode._nodeEdgeList.remove(edge)
+        otherEnd._nodeEdgeList.remove(edge)
+        
+        currentNode._connections -= 1
+        otherEnd._connections -= 1
+        
+        currentNode._neighbours.remove(otherEnd)
+        otherEnd._neighbours.remove(currentNode)
+        
+        currentNode._neighbourIDs.remove(otherEnd._id)
+        otherEnd._neighbourIDs.remove(currentNode._id)
+        
+        edgeList.remove(edge)
+    
     return
 
 
@@ -223,11 +224,12 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, sensorNodeList, vi
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-    random.shuffle(nodeList)
+    # random.shuffle(nodeList)
 
     for node in nodeList:
-        for neighbour in node._neighbours:
-            calculateConductivity(node, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
+        for edge in node._nodeEdgeList:
+            if (edge._conductivity[0] == edge._conductivity[1]):
+                calculateConductivity(node, edge, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
         
         if node._connections != 0:
             calculatePressure(node, len(terminalNodeList), initialFlow)

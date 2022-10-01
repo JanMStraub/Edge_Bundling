@@ -104,13 +104,13 @@ if __name__ == "__main__":
 
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
-    steps = 1238 # 1238 
-    image = False # Change to False if you want a gif
+    steps = 1400 # 1238 
+    image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
     initialFlow = 0.5 
-    sigma = 0.00000375
+    sigma = 0.004
     rho = 0.0002
     tau = 0.0004
     
@@ -127,4 +127,4 @@ if __name__ == "__main__":
     """
     
     main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensorNodeList)
-    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList)
+    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList)
