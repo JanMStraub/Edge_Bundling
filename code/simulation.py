@@ -96,6 +96,17 @@ def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     return
 
 
+def calculateFlux(edge, terminalNodeListLength):
+    
+    pressureSum = 0
+    for i in range(terminalNodeListLength):
+        pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
+        
+    edge._flux = edge._conductivity[0] * pressureSum
+    
+    return
+
+
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
@@ -109,8 +120,8 @@ def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, s
     
     if edge._id == 0:
         print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
-    
-    edge._conductivity[1] = kappa * edge._conductivity[0]
+        
+    edge._conductivity[1] = edge._conductivity[0] + (sigma * abs(edge._flux) - rho * edge._cost * edge._conductivity[0])
     edge._radius = calculateRadius(edge, viscosity)
 
     # edge cutting
@@ -229,6 +240,7 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, ini
     for node in nodeList:
         for edge in node._nodeEdgeList:
             if (edge._conductivity[0] == edge._conductivity[1]):
+                calculateFlux(edge, len(terminalNodeList))
                 calculateConductivity(node, edge, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
         
         if node._connections != 0:

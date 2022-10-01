@@ -278,4 +278,5 @@ class Edge:
         self._radius = radius
         self._start = start
         self._end = end
+        self._flux = 0
         self._conductivity = [0] * 2
