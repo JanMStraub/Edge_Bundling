@@ -160,13 +160,8 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeLis
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-        
-        test = True
-        
-        if (len(environment._edgeList) < 3):
-            if test:
-                print("#################################################")
-                test = False
+
+        print("##################################")
         
         tau = 0.0004 * t
         

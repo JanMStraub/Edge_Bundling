@@ -107,8 +107,7 @@ def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, s
     
     kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
     
-    if edge._id == 0:
-        print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
+    print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
     
     edge._conductivity[1] = kappa * edge._conductivity[0]
     edge._radius = calculateRadius(edge, viscosity)
