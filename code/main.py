@@ -57,7 +57,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t > 1200):
+            if (t >= 1232) and (t <= 1237):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)
@@ -91,15 +91,15 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    steps = 1040
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
+    steps = 2 # 1238 
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
-    initialFlow = 1
-    sigma = 0.000007
-    rho = 0.0002
+    initialFlow = 0.5
+    sigma = 0.004
+    rho = 0.00002
     tau = 0.0004
     
     main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau)
