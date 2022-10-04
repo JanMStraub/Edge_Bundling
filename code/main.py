@@ -22,7 +22,7 @@ from simulation import physarumAlgorithm, initializePhysarium
 from debug import test
 
 
-def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
+def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma):
 
     # Import graph information from JSON
     edgeList, nodeList = readGraphData(jsonFile) 
@@ -32,7 +32,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
     environment.createGrid(nodeList)
     
     # Setup simulation
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow, gamma)
     
     if (image):
 
@@ -42,7 +42,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             if t == steps - 1:
-                plt = environment.plotGraph(t) 
+                plt = environment.plotGraph(t, tau) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
@@ -57,7 +57,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
             
             
-            if (t >= 1232) and (t <= 1237):
+            if (t >= 1569) and (t <= 1598):
                 plt = environment.plotGraph(t)
                 filename = f'{t}.png'
                 filenames.append(filename)
@@ -67,7 +67,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
         
              
             if t == steps - 1:
-                plt = environment.plotGraph(t)
+                plt = environment.plotGraph(t, tau)
                 filename = f'{t}.png'
                 filenames.append(filename)
                 
@@ -91,16 +91,17 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau):
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    steps = 1238 # 1238 
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
+    steps = 1655 # 1238 
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
     initialFlow = 0.5
-    sigma = 0.004
-    rho = 0.00002
+    sigma = 0.0042
+    rho = 0.00004
     tau = 0.0004
+    gamma = 0.5
     
-    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau)
-    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau)
+    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
+    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma)

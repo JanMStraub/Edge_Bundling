@@ -203,12 +203,12 @@ class Environment:
     """_summary_
     Plot edges and nodes in matplotlib
     """
-    def plotGraph(self, t):
+    def plotGraph(self, t, tau):
         
         fig = plt.figure()
         fig = plt.figure(figsize = (10, 10))
         ax = fig.add_subplot(111)
-        ax.set_title("Polycephalum Test, step = {}".format(t + 1))
+        ax.set_title("Polycephalum Test - step: {} - tau: {}".format(t + 1, tau))
         
         G = nx.Graph()
         
@@ -220,7 +220,7 @@ class Environment:
         for node in self._nodeList:
             x, y, z = node._position
             G.add_node(node._id, pos = (x, y))
-            nodeLabels[node._id] = [round(a, 2) for a in node._pressureVector[:2]]
+            nodeLabels[node._id] = [round(a, 2) for a in node._pressureVector[:3]]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -229,7 +229,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._cost, 4) # round(edge._cost, 4) # round(edge._conductivity[1], 4)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 4) # round(edge._cost, 4) # round(edge._conductivity[1], 4)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')

@@ -107,7 +107,7 @@ def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, s
     
     kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
     
-    print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
+    # print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
     
     edge._conductivity[1] = kappa * edge._conductivity[0]
     edge._radius = calculateRadius(edge, viscosity)
@@ -190,7 +190,7 @@ def updateCalculations(edgeList, nodeList, terminalNodeListLength):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, initialFlow = 10.0, gamma = 0.5):
+def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initialFlow, gamma):
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
@@ -222,8 +222,8 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity = 1.0, i
 """_summary_
 Function is used to calculate each time step in the simulation
 """
-def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity = 1.0, initialFlow = 0.5, sigma = 0.00000375, rho = 0.0002, tau = 0.0004):
-    # random.shuffle(nodeList)
+def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, sigma, rho, tau):
+    random.shuffle(nodeList)
 
     for node in nodeList:
         for edge in node._nodeEdgeList:
