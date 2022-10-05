@@ -65,3 +65,12 @@ def findOtherEdgeEnd(node, edge):
         return edge._end
     elif (edge._end._id == node._id):
         return edge._start
+    
+    
+def findEdgeBetweenNodes(edgeList, node1, node2):
+    
+    for edge in edgeList:
+        if(edge._start == node1 and edge._end == node2) or (edge._start == node2 and edge._end == node1):
+            return edge
+        else:
+            raise ValueError("No edge between node{} and node{}".format(node1._id, node2._id))

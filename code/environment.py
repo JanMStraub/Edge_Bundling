@@ -258,13 +258,12 @@ class Node:
         self._id = id
         self._position = position
         self._terminalId = None
-        self._initialPressure = 1
+        self._pressure = 0
         self._connections = 0
         self._weight = 0
         self._totalEdgeCost = 0
         self._sink = False
         self._terminal = False
-        self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
@@ -285,7 +284,8 @@ class Edge:
         self._cost = 1
         self._compositeCost = 0
         self._radius = 1
+        self._flux = 0
+        self._alpha = 1
         self._start = start
         self._end = end
         self._conductivity = [0] * 2
-        self._flux = 0
