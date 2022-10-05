@@ -18,7 +18,7 @@ from tqdm import tqdm
 
 from environment import Environment
 from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium
+from simulation import physarumAlgorithm
 from debug import test
 
 
@@ -30,9 +30,6 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
     # Setup environment
     environment = Environment()
     environment.createGrid(nodeList)
-    
-    # Setup simulation
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow, gamma)
     
     if (image):
 
@@ -51,7 +48,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
     else:
         filenames = []
         
-        for t in tqdm(range(steps), desc = "Iteration progress"):
+        for t in tqdm(range(steps), desc = "Outer iteration progress"):
 
             # Start simulation
             physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
@@ -91,8 +88,8 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 1655 # 1238 
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
+    steps = 1 # 1238 
     image = True # Change to False if you want a gif
     
     # Slime parameters
@@ -103,5 +100,5 @@ if __name__ == "__main__":
     tau = 0.0004
     gamma = 0.5
     
-    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
-    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma)
+    # main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
+    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma)

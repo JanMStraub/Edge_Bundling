@@ -6,6 +6,7 @@ import random
 import numpy as np
 
 from scipy.integrate import quad
+from tqdm import tqdm
 
 from helper import findOtherEdgeEnd, horizontalIntegrand, verticalIntegrand
 
@@ -96,6 +97,19 @@ def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     return
 
 
+def calculateCompositeCost(edge):
+    
+    
+    return 
+
+
+def calculateFlux(edge):
+    
+    
+    
+    return
+
+
 """_summary_
 Calculates the conductivity (D^t+1) throught each edge using equation (6)
 """
@@ -106,8 +120,6 @@ def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, s
         pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
     
     kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
-    
-    # print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
     
     edge._conductivity[1] = kappa * edge._conductivity[0]
     edge._radius = calculateRadius(edge, viscosity)
@@ -187,35 +199,24 @@ def updateCalculations(edgeList, nodeList, terminalNodeListLength):
     return
 
 
-"""_summary_
-Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
-"""
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initialFlow, gamma):
+def chooseSinkAndSource(nodeList, terminalNodeList):
+    l = []
+    T = len(terminalNodeList)
+    edgeCostSum = 0
     
-    for edge in edgeList:
-        initializeConductivity(edge, viscosity)
-        initializeEdgeCost(edge, terminalNodeList, gamma)
+    for terminal in terminalNodeList:
+        totalEdgeCost = 0
+        for edge in terminal._nodeEdgeList:
+            totalEdgeCost += edge._cost
+
+        terminal._totalEdgeCost = totalEdgeCost
+        edgeCostSum += totalEdgeCost
+        l.append(terminal)
+        
+    l.sort(key = lambda terminal: terminal._totalEdgeCost)
+
+    sink = l[T - i + 1]._totalEdgeCost / edgeCostSum
     
-    for node in terminalNodeList:
-        A = list()            
-        b = list()
-        
-        node._sink = True
-        initializePressure(A, b, nodeList, terminalNodeList, initialFlow)
-        
-        node._sink = False
-
-        A = np.array(A)
-        b = np.array(b)
-        x = np.linalg.solve(A, b)
-
-        for i in range(len(nodeList)):
-            nodeList[i]._pressureVector.append(x[i])
-            
-    for node in nodeList:
-        for i in range(len(terminalNodeList)):
-            node._pressureVector.append(0)
-
     return
     
 
@@ -223,6 +224,21 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initial
 Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, sigma, rho, tau):
+    maxNodeWeight = 0
+    
+    for node in nodeList:
+        if (node._weight > maxNodeWeight):
+            maxNodeWeight = node._weight 
+            
+    for edge in edgeList:
+        initializeConductivity(edge, viscosity)   
+    
+    K = 1
+    
+    for k in tqdm(range(K), desc = "Inner iteration progress"):
+        chooseSinkAndSource(nodeList, terminalNodeList)
+    
+    
     random.shuffle(nodeList)
 
     for node in nodeList:

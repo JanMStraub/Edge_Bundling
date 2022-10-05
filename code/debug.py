@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 from environment import Environment
 from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium
+from simulation import physarumAlgorithm
 
 """_summary_
 Prints the initial conductivity for each node
@@ -144,22 +144,18 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):
     environment = Environment()
     environment.createGrid(nodeList)
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
-    
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow, gamma)
 
     # Debugging
     # printNodeConnections(environment._nodeList)
     # checkGrid(environment._edgeList, environment._nodeList)
     # printEdgePosition(environment._edgeList)
-    printEdgeCost(environment._edgeList)
+    # printEdgeCost(environment._edgeList)
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
 
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
         physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-
-        print("##################################")
         
         tau = 0.0004 * t
         
@@ -169,6 +165,6 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     # printNodeConnections(environment._nodeList)
-    printEdgeCost(environment._edgeList)
+    # printEdgeCost(environment._edgeList)
     
     return
