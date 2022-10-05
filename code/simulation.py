@@ -218,6 +218,50 @@ def chooseSinkAndSource(nodeList, terminalNodeList):
     sink = l[T - i + 1]._totalEdgeCost / edgeCostSum
     
     return
+
+
+def calculatePressure(A, b, nodeList, terminalNodeList, initialFlow):
+    
+    for node in nodeList:
+        
+        if (node._sink == False and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
+
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == node._id):
+                        pressureVector[entry._id] = node._connections * node._initialPressure
+                    elif (entry._id == neighbour._id):
+                        pressureVector[entry._id] = -1 * node._initialPressure
+            
+            b.append((initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity[0])
+            A.append(pressureVector)            
+        
+        elif (node._sink == True and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
+            
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == neighbour._id):
+                        pressureVector[entry._id] = node._initialPressure
+            
+            b.append(((len(terminalNodeList) - 1) * initialFlow * node._nodeEdgeList[0]._length) / node._nodeEdgeList[0]._conductivity[0])
+            A.append(pressureVector)       
+        
+        elif (node._sink == False and node._terminal == False):
+            pressureVector = [0] * len(nodeList)
+            
+            for entry in nodeList:
+                for neighbour in node._neighbours:
+                    if (entry._id == node._id):
+                        pressureVector[entry._id] = node._connections * node._initialPressure
+                    elif (entry._id == neighbour._id):
+                        pressureVector[entry._id] = -1 * node._initialPressure
+            
+            b.append(0)
+            A.append(pressureVector)
+    
+    return
     
 
 """_summary_
@@ -236,8 +280,11 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFl
     K = 1
     
     for k in tqdm(range(K), desc = "Inner iteration progress"):
+        A = []
+        b = []
+        
         chooseSinkAndSource(nodeList, terminalNodeList)
-    
+        calculatePressure(A, b, nodeList, terminalNodeList, initialFlow)
     
     random.shuffle(nodeList)
 
