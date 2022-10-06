@@ -26,24 +26,30 @@ def main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K):
 
     # Import graph information from JSON
     edgeList, nodeList = readGraphData(jsonFile) 
-    
-    # Setup environment
-    environment = Environment()
-    environment.createGrid(nodeList)
-    
+     
     if (image):
+        totalCost = [10000000] * 2
+        savedNetwork = None
 
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
+            # Setup environment
+            environment = Environment()
+            environment.createGrid(nodeList)
+            
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
+            totalCost[1] = physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
+            
+            if (totalCost[0] > totalCost[1]):
+                savedNetwork = environment
+                totalCost[0] = totalCost[1]
             
             if t == steps - 1:
-                plt = environment.plotGraph(t, epsilon) 
+                plt = savedNetwork.plotGraph(t, epsilon) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            epsilon = 0.0004 * t
+            # epsilon = 0.0004 * t
             
     else:
         filenames = []

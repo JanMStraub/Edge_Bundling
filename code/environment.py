@@ -178,12 +178,9 @@ class Environment:
  
     def setNodeAndEdgeWeight(self, terminalNodeList):
         for node in self._nodeList:
-            weight = 0
         
             for terminal in terminalNodeList:
-                weight += calculateDistanceBetweenPositions(node._position, terminal)
-            
-            node._weight = weight / len(terminalNodeList)
+                node._weight += calculateDistanceBetweenPositions(node._position, terminal)
             
         for edge in self._edgeList:
             edge._cost = (edge._start._weight + edge._end._weight) / len(self._edgeList)
@@ -223,7 +220,7 @@ class Environment:
         for node in self._nodeList:
             x, y, z = node._position
             G.add_node(node._id, pos = (x, y))
-            nodeLabels[node._id] = round(node._weight, 2) # [round(a, 2) for a in node._pressureVector[:3]]
+            nodeLabels[node._id] = [round(a, 2) for a in node._pressureVector[:3]]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -232,7 +229,7 @@ class Environment:
         
         for edge in self._edgeList:
             G.add_edge(edge._start._id, edge._end._id)
-            edgeLabels[edge._start._id, edge._end._id] = round(edge._cost, 2) # round(edge._cost, 4) # round(edge._conductivity[1], 4)
+            edgeLabels[edge._start._id, edge._end._id] = round(edge._conductivity[1], 4) # round(edge._cost, 4) # round(edge._conductivity[1], 4)
             edgeWidth.append(edge._radius / (len(self._edgeList) * 100))    
         
         pos = nx.get_node_attributes(G, 'pos')
@@ -258,12 +255,12 @@ class Node:
         self._id = id
         self._position = position
         self._terminalId = None
-        self._pressure = 0
+        self._initialPressure = 1
         self._connections = 0
         self._weight = 0
-        self._totalEdgeCost = 0
         self._sink = False
         self._terminal = False
+        self._pressureVector = []
         self._nodeEdgeList = []    
         self._neighbourIDs = []
         self._neighbours = []
@@ -278,13 +275,13 @@ Returns:
 """
 class Edge:
     
-    def __init__(self, id, start, end):
+    def __init__(self, id, start, end, cost = 1, length = 1, radius = 1):
         self._id = id
-        self._length = 1 
-        self._cost = 1
-        self._compositeCost = 0
-        self._radius = 1
+        self._length = length 
+        self._cost = cost
+        self._radius = radius
         self._flux = 0
+        self._compositeCost = 0
         self._alpha = 0.4
         self._start = start
         self._end = end

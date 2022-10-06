@@ -26,6 +26,7 @@ def calculateRadius(edge, viscosity):
 
 def chooseSinkAndSource(terminalNodeList):
     l = []
+    probability = []
     T = len(terminalNodeList)
     edgeCostSum = 0
     
@@ -40,7 +41,10 @@ def chooseSinkAndSource(terminalNodeList):
         
     l.sort(key = lambda terminal: terminal._totalEdgeCost)
 
-    sink = l[T - i + 1]._totalEdgeCost / edgeCostSum
+    for i in range(len(terminalNodeList)):
+        probability.append(l[T - i + 1]._totalEdgeCost / edgeCostSum)
+        
+    
     
     return
 
@@ -65,7 +69,7 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
                 if (entry._id == node._id):
                         pressureVector[entry._id] += conductivityCostSum * node._connections * 1
             
-            b.append(-1 * initialFlow)
+            b.append(initialFlow)
             A.append(pressureVector)            
         
         elif (node._sink == True and node._terminal == True):
@@ -186,4 +190,4 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFl
         
         totalEdgeCost = calculateTotalCost(edgeList)
 
-    return
+    return totalEdgeCost
