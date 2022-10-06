@@ -285,7 +285,7 @@ class Edge:
         self._compositeCost = 0
         self._radius = 1
         self._flux = 0
-        self._alpha = 1
+        self._alpha = 0.4
         self._start = start
         self._end = end
         self._conductivity = [0] * 2

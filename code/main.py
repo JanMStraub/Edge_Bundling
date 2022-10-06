@@ -95,9 +95,9 @@ if __name__ == "__main__":
     
     # Slime parameters
     viscosity = 0.5
-    initialFlow = 0.5
+    initialFlow = 1
     mu = 1
-    epsilon = 0.0004
+    epsilon = 0.001
     
     # main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K)
     test(jsonFile, steps, viscosity, initialFlow, mu, epsilon, K)
