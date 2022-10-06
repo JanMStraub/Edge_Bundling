@@ -195,7 +195,7 @@ class Environment:
         xMin, xMax, yMin, yMax = self.createGridNodes(nodeList)
         self.createGridEdges(xMin, xMax, yMin, yMax)       
         self.createTerminalNodes(nodeList)
-        # self.setNodeAndEdgeWeight(nodeList)
+        self.setNodeAndEdgeWeight(nodeList)
         
         return
 
@@ -280,6 +280,9 @@ class Edge:
         self._length = length 
         self._cost = cost
         self._radius = radius
+        self._flux = 0
+        self._compositeCost = 0
+        self._alpha = 1.2 / 0.8
         self._start = start
         self._end = end
         self._conductivity = [0] * 2

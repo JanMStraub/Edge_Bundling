@@ -96,20 +96,28 @@ def initializePressure(A, b, nodeList, terminalNodeList, initialFlow):
     return
 
 
-"""_summary_
-Calculates the conductivity (D^t+1) throught each edge using equation (6)
-"""
-def calculateConductivity(currentNode, edge, terminalNodeListLength, edgeList, sigma, rho, tau, viscosity):
-        
+def calculateCompositeCost(edge, maxNodeWeight):
+    edge._compositeCost = edge._cost - (edge._start._weight / edge._start._connections) - (edge._end._weight / edge._end._connections) + 2 * maxNodeWeight
+    
+    return 
+
+
+def calculateFlux(edge, terminalNodeListLength):
     pressureSum = 0
     for i in range(terminalNodeListLength):
         pressureSum += edge._start._pressureVector[i] - edge._end._pressureVector[i]
     
-    kappa = 1 + sigma * ((abs(pressureSum)) / edge._length) - rho * edge._cost
+    edge._flux = (edge._conductivity[0] / edge._compositeCost) * pressureSum
     
-    # print("Edge id: {} - kappa: {} - sigma * pressure: {} - rho * cost: {}".format(edge._id, kappa, sigma * ((abs(pressureSum)) / edge._length), rho * edge._cost))
+    return
+
+
+"""_summary_
+Calculates the conductivity (D^t+1) throught each edge using equation (6)
+"""
+def calculateConductivity(currentNode, edge, edgeList, mu, tau, viscosity):
     
-    edge._conductivity[1] = kappa * edge._conductivity[0]
+    edge._conductivity[1] = edge._alpha * (edge._conductivity[0] + abs(edge._flux) - mu * edge._conductivity[0])
     edge._radius = calculateRadius(edge, viscosity)
 
     # edge cutting
@@ -190,11 +198,10 @@ def updateCalculations(edgeList, nodeList, terminalNodeListLength):
 """_summary_
 Function is used to initialize the Physarium simulation by setting the initial conductivity and pressure
 """
-def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initialFlow, gamma):
+def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initialFlow):
     
     for edge in edgeList:
         initializeConductivity(edge, viscosity)
-        initializeEdgeCost(edge, terminalNodeList, gamma)
     
     for node in terminalNodeList:
         A = list()            
@@ -222,13 +229,20 @@ def initializePhysarium(edgeList, nodeList, terminalNodeList, viscosity, initial
 """_summary_
 Function is used to calculate each time step in the simulation
 """
-def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, sigma, rho, tau):
+def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, mu, tau):
     random.shuffle(nodeList)
+    maxNodeWeight = 0
+    
+    for node in nodeList:
+        if (node._weight > maxNodeWeight):
+            maxNodeWeight = node._weight 
 
     for node in nodeList:
         for edge in node._nodeEdgeList:
             if (edge._conductivity[0] == edge._conductivity[1]):
-                calculateConductivity(node, edge, len(terminalNodeList), edgeList, sigma, rho, tau, viscosity)
+                calculateCompositeCost(edge, maxNodeWeight)
+                calculateFlux(edge, len(terminalNodeList))
+                calculateConductivity(node, edge, edgeList, mu, tau, viscosity)
         
         if node._connections != 0:
             calculatePressure(node, len(terminalNodeList), initialFlow)

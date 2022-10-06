@@ -137,7 +137,7 @@ def printNodeConnections(nodeList):
 """_summary_
 Function exits only for testing purposes
 """ 
-def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):     
+def test(jsonFile, steps, viscosity, initialFlow, mu, tau):     
     
     edgeList, nodeList = readGraphData(jsonFile)
     
@@ -145,7 +145,7 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):
     environment.createGrid(nodeList)
     # environment.createTerminalEdges(nodeList, edgeList, edgeCost)    
     
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow, gamma)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
 
     # Debugging
     # printNodeConnections(environment._nodeList)
@@ -157,9 +157,7 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):
 
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
-        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-
-        print("##################################")
+        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, tau)
         
         tau = 0.0004 * t
         

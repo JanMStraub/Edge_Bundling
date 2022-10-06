@@ -22,7 +22,7 @@ from simulation import physarumAlgorithm, initializePhysarium
 from debug import test
 
 
-def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma):
+def main(jsonFile, steps, image, viscosity, initialFlow, mu, tau):
 
     # Import graph information from JSON
     edgeList, nodeList = readGraphData(jsonFile) 
@@ -32,14 +32,14 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
     environment.createGrid(nodeList)
     
     # Setup simulation
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow, gamma)
+    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, viscosity, initialFlow)
     
     if (image):
 
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, tau)
             
             if t == steps - 1:
                 plt = environment.plotGraph(t, tau) 
@@ -54,7 +54,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
         for t in tqdm(range(steps), desc = "Iteration progress"):
 
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, tau)
             
             
             if (t >= 1569) and (t <= 1598):
@@ -91,17 +91,15 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/5x5_test_graph.json" 
-    steps = 1655 # 1238 
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
+    steps = 100 # 1238 
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
-    initialFlow = 0.5
-    sigma = 0.0042
-    rho = 0.00004
+    initialFlow = 1
+    mu = 0.0042
     tau = 0.0004
-    gamma = 0.5
     
-    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
-    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma)
+    main(jsonFile, steps, image, viscosity, initialFlow, mu, tau)
+    # test(jsonFile, steps, viscosity, initialFlow, mu, tau)
