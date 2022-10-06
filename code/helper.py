@@ -28,20 +28,6 @@ def readGraphData(path):
 
 
 """_summary_
-Function calculats the horizontal edge cost from equation (12)
-"""
-def horizontalIntegrand(x2, x1, y1, y2, gamma):
-    return ((math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
-
-
-"""_summary_
-Function calculats the vertical edge cost from equation (12)
-"""
-def verticalIntegrand(y2, x1, y1, x2, gamma):
-    return ((math.sqrt((x2 - x1)**2 + (y2 - y1)**2))) * gamma
-
-
-"""_summary_
 Calculates the distance between two nodes
 """
 def calculateDistanceBetweenPositions(position1, position2):
@@ -55,16 +41,6 @@ def findNodeByPosition(nodeList, x, y, z):
     for node in nodeList:
         if node._position[0] == x and node._position[1] == y and node._position[2] == z: 
             return node
-
-        
-"""_summary_
-Function used to find the other end of an edge
-"""
-def findOtherEdgeEnd(node, edge):
-    if (edge._start._id == node._id):
-        return edge._end
-    elif (edge._end._id == node._id):
-        return edge._start
     
     
 def findEdgeBetweenNodes(edgeList, node1, node2):

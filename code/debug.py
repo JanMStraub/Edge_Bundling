@@ -137,7 +137,7 @@ def printNodeConnections(nodeList):
 """_summary_
 Function exits only for testing purposes
 """ 
-def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):     
+def test(jsonFile, steps, viscosity, initialFlow, mu, epsilon, K):     
     
     edgeList, nodeList = readGraphData(jsonFile)
     
@@ -155,9 +155,9 @@ def test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma):
 
     for t in tqdm(range(steps), desc = "Iteration progress"):
         
-        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
         
-        tau = 0.0004 * t
+        epsilon = 0.0004 * t
         
     # Debugging
     # printFlux(environment._edgeList)

@@ -22,7 +22,7 @@ from simulation import physarumAlgorithm
 from debug import test
 
 
-def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma):
+def main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K):
 
     # Import graph information from JSON
     edgeList, nodeList = readGraphData(jsonFile) 
@@ -36,14 +36,14 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
         for t in tqdm(range(steps), desc = "Iteration progress"):   
             
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
             
             if t == steps - 1:
-                plt = environment.plotGraph(t, tau) 
+                plt = environment.plotGraph(t, epsilon) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 
-            tau = 0.0004 * t
+            epsilon = 0.0004 * t
             
     else:
         filenames = []
@@ -51,7 +51,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
         for t in tqdm(range(steps), desc = "Outer iteration progress"):
 
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
+            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
             
             
             if (t >= 1569) and (t <= 1598):
@@ -64,7 +64,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
         
              
             if t == steps - 1:
-                plt = environment.plotGraph(t, tau)
+                plt = environment.plotGraph(t, epsilon)
                 filename = f'{t}.png'
                 filenames.append(filename)
                 
@@ -80,7 +80,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
                 for filename in set(filenames):
                     os.remove(filename)
             
-            tau = 0.0004 * t
+            epsilon = 0.0004 * t
             
     return
 
@@ -90,15 +90,14 @@ if __name__ == "__main__":
     # Setup parameter
     jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
     steps = 1 # 1238 
+    K = 10
     image = True # Change to False if you want a gif
     
     # Slime parameters
     viscosity = 0.5
     initialFlow = 0.5
-    sigma = 0.0042
-    rho = 0.00004
-    tau = 0.0004
-    gamma = 0.5
+    mu = 1
+    epsilon = 0.0004
     
-    # main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, gamma)
-    test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, gamma)
+    # main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K)
+    test(jsonFile, steps, viscosity, initialFlow, mu, epsilon, K)

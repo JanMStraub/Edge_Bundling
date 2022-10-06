@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import random
-
 import numpy as np
 
 from tqdm import tqdm
 
-from helper import findOtherEdgeEnd, findEdgeBetweenNodes
+from helper import findEdgeBetweenNodes
 
 
 """_summary_
@@ -26,7 +24,7 @@ def calculateRadius(edge, viscosity):
     return ((edge._conductivity[1] * 8 * viscosity) / np.pi) ** (1 / 4)
 
 
-def chooseSinkAndSource(nodeList, terminalNodeList):
+def chooseSinkAndSource(terminalNodeList):
     l = []
     T = len(terminalNodeList)
     edgeCostSum = 0
@@ -139,10 +137,19 @@ def updateConductivities(edgeList, mu):
     return
     
 
+def calculateTotalCost(edgeList):
+    totalEdgeCost = 0
+    
+    for edge in edgeList:
+        totalEdgeCost += edge._cost
+        
+    return totalEdgeCost
+
+
 """_summary_
 Function is used to calculate each time step in the simulation
 """
-def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, sigma, rho, tau, mu, epsilon):
+def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, mu, epsilon, K):
     maxNodeWeight = 0
     
     for node in nodeList:
@@ -151,18 +158,32 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFl
             
     for edge in edgeList:
         initializeConductivity(edge, viscosity)   
-    
-    K = 1
-    
+
     for k in tqdm(range(K), desc = "Inner iteration progress"):
 
-        chooseSinkAndSource(nodeList, terminalNodeList)
+        chooseSinkAndSource(terminalNodeList)
         calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList)
         calculateFlux(edgeList, maxNodeWeight)
         updateConductivities(edgeList, mu)
         
         for edge in edgeList:
-            if edge._conductivity < epsilon:
+            # edge cutting
+            if edge in edgeList and edge._conductivity[1] < epsilon:
+                
+                edge._start._nodeEdgeList.remove(edge)
+                edge._end._nodeEdgeList.remove(edge)
+                
+                edge._start._connections -= 1
+                edge._end._connections -= 1
+                
+                edge._start._neighbours.remove(edge._end)
+                edge._end._neighbours.remove(edge._start)
+                
+                edge._start._neighbourIDs.remove(edge._end._id)
+                edge._end._neighbourIDs.remove(edge._start._id)
+                
                 edgeList.remove(edge)
+        
+        totalEdgeCost = calculateTotalCost(edgeList)
 
     return
