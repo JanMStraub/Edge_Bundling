@@ -44,9 +44,13 @@ def findNodeByPosition(nodeList, x, y, z):
     
     
 def findEdgeBetweenNodes(edgeList, node1, node2):
-    
     for edge in edgeList:
+        print(edge._start._id)
+        print(edge._end._id)
+        print(node1._id)
+        print(node2._id)
+        
+        print()
+        
         if(edge._start == node1 and edge._end == node2) or (edge._start == node2 and edge._end == node1):
             return edge
-        else:
-            raise ValueError("No edge between node{} and node{}".format(node1._id, node2._id))

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+from os import terminal_size
+import random
+
 import numpy as np
 
 from tqdm import tqdm
@@ -25,9 +28,10 @@ def calculateRadius(edge, viscosity):
 
 
 def chooseSinkAndSource(terminalNodeList):
+    
     l = []
     probability = []
-    T = len(terminalNodeList)
+    T = len(terminalNodeList) - 1
     edgeCostSum = 0
     
     for terminal in terminalNodeList:
@@ -42,7 +46,7 @@ def chooseSinkAndSource(terminalNodeList):
     l.sort(key = lambda terminal: terminal._totalEdgeCost)
 
     for i in range(len(terminalNodeList)):
-        probability.append(l[T - i + 1]._totalEdgeCost / edgeCostSum)
+        probability.append(l[T - i]._totalEdgeCost / edgeCostSum)
         
     
     
@@ -60,14 +64,15 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
             conductivityCostSum = 0
 
             for entry in nodeList:
-                for neighbour in node._neighbours:
-                    edge = findEdgeBetweenNodes(edgeList, entry, neighbour)
+                for neighbour in entry._neighbours:
+                    edge = findEdgeBetweenNodes(entry._nodeEdgeList, entry, neighbour)
+                    print(edge)
                     conductivityCostSum += edge._conductivity[0] / edge._compositeCost
                     if (entry._id == neighbour._id):
                         pressureVector[entry._id] = -1 * edge._conductivity[0] / edge._compositeCost
                 
                 if (entry._id == node._id):
-                        pressureVector[entry._id] += conductivityCostSum * node._connections * 1
+                    pressureVector[entry._id] += conductivityCostSum * node._connections * 1
             
             b.append(initialFlow)
             A.append(pressureVector)            
@@ -118,6 +123,8 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
 
 def calculateCompositeCost(edge, maxNodeWeight):
     edge._compositeCost = edge._cost - (edge._start._weight / edge._start._connections) - (edge._end._weight / edge._end._connections) + 2 * maxNodeWeight
+    
+    print("compositeCost: {}".format(edge._compositeCost))
     
     return 
 

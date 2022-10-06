@@ -281,7 +281,7 @@ class Edge:
         self._cost = cost
         self._radius = radius
         self._flux = 0
-        self._compositeCost = 0
+        self._compositeCost = 1
         self._alpha = 0.4
         self._start = start
         self._end = end

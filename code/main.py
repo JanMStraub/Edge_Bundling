@@ -31,7 +31,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K):
         totalCost = [10000000] * 2
         savedNetwork = None
 
-        for t in tqdm(range(steps), desc = "Iteration progress"):   
+        for t in tqdm(range(steps), desc = "Outer iteration progress"):   
             
             # Setup environment
             environment = Environment()
