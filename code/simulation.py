@@ -64,9 +64,8 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
             conductivityCostSum = 0
 
             for entry in nodeList:
-                for neighbour in entry._neighbours:
-                    edge = findEdgeBetweenNodes(entry._nodeEdgeList, entry, neighbour)
-                    print(edge)
+                for neighbour in node._neighbours:
+                    edge = findEdgeBetweenNodes(node._nodeEdgeList, node, neighbour)
                     conductivityCostSum += edge._conductivity[0] / edge._compositeCost
                     if (entry._id == neighbour._id):
                         pressureVector[entry._id] = -1 * edge._conductivity[0] / edge._compositeCost
@@ -83,7 +82,7 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
 
             for entry in nodeList:
                 for neighbour in node._neighbours:
-                    edge = findEdgeBetweenNodes(edgeList, entry, neighbour)
+                    edge = findEdgeBetweenNodes(edgeList, node, neighbour)
                     conductivityCostSum += edge._conductivity[0] / edge._compositeCost
                     if (entry._id == neighbour._id):
                         pressureVector[entry._id] = -1 * edge._conductivity[0] / edge._compositeCost
@@ -100,7 +99,7 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
 
             for entry in nodeList:
                 for neighbour in node._neighbours:
-                    edge = findEdgeBetweenNodes(edgeList, entry, neighbour)
+                    edge = findEdgeBetweenNodes(edgeList, node, neighbour)
                     conductivityCostSum += edge._conductivity[0] / edge._compositeCost
                     if (entry._id == neighbour._id):
                         pressureVector[entry._id] = -1 * edge._conductivity[0] / edge._compositeCost
@@ -113,6 +112,13 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
             
     A = np.array(A)
     b = np.array(b)
+    
+    print("########################################")
+    for entry in A:
+        print(entry)
+    print("--------------------------------------")
+    print(b)
+    print("########################################")
     x = np.linalg.solve(A, b)
 
     for i in range(len(nodeList)):
@@ -124,7 +130,7 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow, edgeList):
 def calculateCompositeCost(edge, maxNodeWeight):
     edge._compositeCost = edge._cost - (edge._start._weight / edge._start._connections) - (edge._end._weight / edge._end._connections) + 2 * maxNodeWeight
     
-    print("compositeCost: {}".format(edge._compositeCost))
+    # print("compositeCost: {}".format(edge._compositeCost))
     
     return 
 
@@ -180,6 +186,8 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFl
         for edge in edgeList:
             # edge cutting
             if edge in edgeList and edge._conductivity[1] < epsilon:
+                
+                print("CUT")
                 
                 edge._start._nodeEdgeList.remove(edge)
                 edge._end._nodeEdgeList.remove(edge)

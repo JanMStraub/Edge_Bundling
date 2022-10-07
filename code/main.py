@@ -45,7 +45,7 @@ def main(jsonFile, steps, image, viscosity, initialFlow, mu, epsilon, K):
                 totalCost[0] = totalCost[1]
             
             if t == steps - 1:
-                plt = savedNetwork.plotGraph(t, epsilon) 
+                plt = environment.plotGraph(t, epsilon) 
                 plt.savefig("simulation_t{}.png".format(t + 1))
                 plt.clf()
                 

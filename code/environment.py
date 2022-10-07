@@ -220,7 +220,7 @@ class Environment:
         for node in self._nodeList:
             x, y, z = node._position
             G.add_node(node._id, pos = (x, y))
-            nodeLabels[node._id] = [round(a, 2) for a in node._pressureVector[:3]]
+            nodeLabels[node._id] = node._neighbourIDs # [round(a, 2) for a in node._pressureVector[:3]]
         
             if node in self._terminalNodeList:
                 colorValues.append("red")
@@ -256,6 +256,7 @@ class Node:
         self._position = position
         self._terminalId = None
         self._initialPressure = 1
+        self._pressure = 0
         self._connections = 0
         self._weight = 0
         self._sink = False
