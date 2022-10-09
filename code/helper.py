@@ -47,3 +47,13 @@ def findEdgeBetweenNodes(edgeList, node1, node2):
     for edge in edgeList:       
         if(edge._start == node1 and edge._end == node2) or (edge._start == node2 and edge._end == node1):
             return edge
+        
+
+"""_summary_
+Function used to find the other end of an edge
+"""
+def findOtherEdgeEnd(node, edge):
+    if (edge._start._id == node._id):
+        return edge._end
+    elif (edge._end._id == node._id):
+        return edge._start

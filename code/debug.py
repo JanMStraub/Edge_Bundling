@@ -72,9 +72,9 @@ Prints the pressure for each node
 def printPressure(nodeList):
     for node in nodeList:
         if node._terminal == True:
-            print("Pressure for terminal node {}: {}".format(node._id, node._pressureVector))
+            print("Pressure for terminal node {}: {}".format(node._id, node._pressure))
         else:
-            print("Pressure for node {}:          {}".format(node._id, node._pressureVector))  
+            print("Pressure for node {}:          {}".format(node._id, node._pressure))  
         
     print("\n####################################################################\n")
     
@@ -132,12 +132,19 @@ def printNodeConnections(nodeList):
         print("Node ID: {} - connections: {}".format(node._id, node._connections))
     
     print("\n####################################################################\n")
-
+    
+    
+def printNodeWeight(nodeList):
+    for node in nodeList:
+        print("Node ID: {} - weight: {}".format(node._id, node._weight))
+    
+    print("\n####################################################################\n")
+    
 
 """_summary_
 Function exits only for testing purposes
 """ 
-def test(jsonFile, steps, viscosity, initialFlow, mu, epsilon, K):     
+def test(jsonFile, N, viscosity, initialFlow, mu, epsilon, K, alpha):     
     
     edgeList, nodeList = readGraphData(jsonFile)
     
@@ -152,16 +159,17 @@ def test(jsonFile, steps, viscosity, initialFlow, mu, epsilon, K):
     # printEdgeCost(environment._edgeList)
     # printInitialConductivity(environment._edgeList)
     # printInitialPressure(environment._nodeList)
+    # printNodeWeight(environment._nodeList)
 
-    for t in tqdm(range(steps), desc = "Iteration progress"):
+    for n in tqdm(range(N), desc = "Outer iteration progress"):
         
-        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K)
+        physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K, alpha)
         
-        epsilon = 0.0004 * t
+        # epsilon = 0.0004 * n
         
     # Debugging
-    # printFlux(environment._edgeList)
-    # printConductivity(environment._edgeList)
+    printFlux(environment._edgeList)
+    printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)
     # printNodeConnections(environment._nodeList)
