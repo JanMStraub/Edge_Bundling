@@ -168,7 +168,7 @@ def test(jsonFile, N, viscosity, initialFlow, mu, epsilon, K, alpha):
         # epsilon = 0.0004 * n
         
     # Debugging
-    printFlux(environment._edgeList)
+    # printFlux(environment._edgeList)
     printConductivity(environment._edgeList)
     # printEdgeRadius(environment._edgeList)
     # printPressure(environment._nodeList)

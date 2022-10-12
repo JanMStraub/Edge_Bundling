@@ -31,21 +31,21 @@ def main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha):
         totalCost = [10000000] * 2
         savedNetwork = None
 
-        for t in tqdm(range(N), desc = "Outer iteration progress"):   
+        for n in tqdm(range(N), desc = "Outer iteration progress"):   
             
             # Setup environment
             environment = Environment()
             environment.createGrid(nodeList)
             
             # Start simulation
-            # totalCost[1] = physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K, alpha)
+            totalCost[1] = physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, mu, epsilon, K, alpha)
             
             if (totalCost[0] > totalCost[1]):
                 savedNetwork = environment
                 totalCost[0] = totalCost[1]
             
             if n == N - 1:
-                plt = environment.plotGraph(t, epsilon) 
+                plt = savedNetwork.plotGraph(n, epsilon) 
                 plt.savefig("simulation_t{}.png".format(n + 1))
                 plt.clf()
                 
@@ -85,7 +85,7 @@ def main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha):
                 for filename in set(filenames):
                     os.remove(filename)
             
-            epsilon = 0.0004 * n
+            # epsilon = 0.0004 * n
             
     return
 
@@ -93,9 +93,9 @@ def main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha):
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/3x3_test_graph.json" 
-    N = 1 # 1238 
-    K = 15
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
+    N = 1
+    K = 10 # 137
     image = True # Change to False if you want a gif
     
     # Slime parameters

@@ -8,7 +8,7 @@ import numpy as np
 
 from tqdm import tqdm
 
-from helper import findEdgeBetweenNodes, findOtherEdgeEnd
+from helper import findOtherEdgeEnd
 
 
 """_summary_
@@ -55,7 +55,7 @@ def chooseSinkAndSource(terminalNodeList):
     for i in range(len(probability)):
         if (probability[i] < sinkSelector and probability[i + 1] >= sinkSelector):
             l[i]._sink = True   
-            print("SINK node: {}".format(l[i]._id))         
+            print("SINK node: {}".format(l[i]._id))    
 
     return
 
@@ -63,69 +63,51 @@ def chooseSinkAndSource(terminalNodeList):
 def calculatePressure(nodeList, terminalNodeList, initialFlow):
     A = list()            
     b = list()
-    removedNodes = []
-    
+
     for node in nodeList:
-        if node._connections == 0:
-            removedNodes.append(node)
-    
-    for node in nodeList:
-        print("Node id: {}".format(node._id))
-        if node._connections != 0:
-            if (node._sink == False and node._terminal == True):
-                pressureVector = [0] * len(nodeList)
-                nodeFactor = 0
-                for edge in node._nodeEdgeList:
-                    neighbour = findOtherEdgeEnd(node, edge)
-                    neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                    nodeFactor -= neighbourFactor
-                    pressureVector[neighbour._id] = neighbourFactor
-                pressureVector[node._id] = nodeFactor     
+        if (node._sink == False and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
+            nodeFactor = 0
+            for edge in node._nodeEdgeList:
+                neighbour = findOtherEdgeEnd(node, edge)
+                neighbourFactor = edge._conductivity[0] / edge._compositeCost
+                nodeFactor -= neighbourFactor
+                pressureVector[neighbour._id] = neighbourFactor
+            pressureVector[node._id] = nodeFactor     
                 
-                for removedNode in removedNodes:
-                    pressureVector.pop(removedNode._id)
-                  
-                b.append(-1 * initialFlow)
-                A.append(pressureVector)             
+            b.append(-1 * initialFlow)
+            A.append(pressureVector)             
+        
+        elif (node._sink == True and node._terminal == True):
+            pressureVector = [0] * len(nodeList)
+            nodeFactor = 0
+            for edge in node._nodeEdgeList:
+                neighbour = findOtherEdgeEnd(node, edge)
+                neighbourFactor = edge._conductivity[0] / edge._compositeCost
+                nodeFactor -= neighbourFactor
+                pressureVector[neighbour._id] = neighbourFactor
+            pressureVector[node._id] = nodeFactor       
+            b.append((len(terminalNodeList) - 1) * initialFlow)
             
-            elif (node._sink == True and node._terminal == True):
-                pressureVector = [0] * len(nodeList)
-                nodeFactor = 0
-                for edge in node._nodeEdgeList:
-                    neighbour = findOtherEdgeEnd(node, edge)
-                    neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                    nodeFactor -= neighbourFactor
-                    pressureVector[neighbour._id] = neighbourFactor
-                pressureVector[node._id] = nodeFactor       
-                b.append((len(terminalNodeList) - 1) * initialFlow)
-                
-                for removedNode in removedNodes:
-                    pressureVector.pop(removedNode._id)
-                
-                A.append(pressureVector)
-                node._sink = False
+            A.append(pressureVector)
+            node._sink = False
+        
+        elif (node._sink == False and node._terminal == False):
+            pressureVector = [0] * len(nodeList)
+            nodeFactor = 0
+            for edge in node._nodeEdgeList:
+                neighbour = findOtherEdgeEnd(node, edge)
+                neighbourFactor = edge._conductivity[0] / edge._compositeCost
+                nodeFactor -= neighbourFactor
+                pressureVector[neighbour._id] = neighbourFactor
+            pressureVector[node._id] = nodeFactor       
             
-            elif (node._sink == False and node._terminal == False):
-                pressureVector = [0] * len(nodeList)
-                nodeFactor = 0
-                for edge in node._nodeEdgeList:
-                    neighbour = findOtherEdgeEnd(node, edge)
-                    neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                    nodeFactor -= neighbourFactor
-                    pressureVector[neighbour._id] = neighbourFactor
-                pressureVector[node._id] =nodeFactor       
-                
-                for removedNode in removedNodes:
-                    pressureVector.pop(removedNode._id)
-                
-                b.append(0)
-                A.append(pressureVector)
-            
-            else:
-                raise ValueError("Something went wrong with the grid creation")
+            b.append(0)
+            A.append(pressureVector)
+        
         else:
-            print("REMOVED")
-            
+            raise ValueError("Something went wrong with the grid creation")
+          
     for entry in A:
         print(entry)
     print(b)
@@ -133,6 +115,7 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow):
     
     A = np.array(A)
     b = np.array(b)
+
     x = np.linalg.solve(A, b)
     
     for i in range(len(nodeList)):
@@ -143,8 +126,6 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow):
 
 def calculateCompositeCost(edge, maxNodeWeight):
     edge._compositeCost = edge._cost - (edge._start._weight / edge._start._connections) - (edge._end._weight / edge._end._connections) + 2 * maxNodeWeight
-    
-    # print("Edge id: {} - compositeCost: {}".format(edge._id, edge._compositeCost))
     
     return 
 
@@ -164,9 +145,6 @@ def f(x, alpha):
 def updateConductivities(edgeList, mu, alpha):
     for edge in edgeList:
         edge._conductivity[1] = edge._alpha * (edge._conductivity[0] + f(abs(edge._flux), alpha) - mu * edge._conductivity[0])
-        if edge._id == 0:
-            print(edge._alpha)
-            print(edge._flux)
         
     return
     
@@ -185,27 +163,27 @@ Function is used to calculate each time step in the simulation
 """
 def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFlow, mu, epsilon, K, alpha):
     maxNodeWeight = 0
+       
+    for node in nodeList:
+        if (node._weight > maxNodeWeight):
+            maxNodeWeight = node._weight 
             
     for edge in edgeList:
         initializeConductivity(edge, viscosity)  
         calculateCompositeCost(edge, maxNodeWeight) 
-        # print("Edge id: {} - conductivity: {}".format(edge._id, edge._conductivity[0]))
 
     for k in tqdm(range(K), desc = "Inner iteration progress"):
 
         chooseSinkAndSource(terminalNodeList)
-        calculatePressure(nodeList, terminalNodeList, initialFlow)
-        
-        for node in nodeList:
-            if (node._weight > maxNodeWeight):
-                maxNodeWeight = node._weight 
-        
+        calculatePressure(nodeList, terminalNodeList, initialFlow)        
         calculateFlux(edgeList, maxNodeWeight)
         updateConductivities(edgeList, mu, alpha)
         
         for edge in edgeList:
             # edge cutting
             if edge in edgeList and edge._conductivity[1] < epsilon:
+                
+                print("REMOVED Edge: {}".format(edge._id))
                 
                 edge._start._nodeEdgeList.remove(edge)
                 edge._end._nodeEdgeList.remove(edge)
