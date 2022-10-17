@@ -46,7 +46,7 @@ def main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha):
             
             if n == N - 1:
                 plt = savedNetwork.plotGraph(n, epsilon) 
-                plt.savefig("simulation_t{}.png".format(n + 1))
+                plt.savefig("simulation_N{}-K{}.png".format(N, K))
                 plt.clf()
                 
             # epsilon = 0.0004 * n
@@ -93,9 +93,9 @@ def main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha):
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
-    N = 1
-    K = 10 # 137
+    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/real_paper_graph.json" 
+    N = 100
+    K = 1000  # 137
     image = True # Change to False if you want a gif
     
     # Slime parameters
@@ -105,5 +105,5 @@ if __name__ == "__main__":
     epsilon = 0.001
     alpha = 0.4
     
-    # main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha)
-    test(jsonFile, N, viscosity, initialFlow, mu, epsilon, K, alpha)
+    main(jsonFile, N, image, viscosity, initialFlow, mu, epsilon, K, alpha)
+    # test(jsonFile, N, viscosity, initialFlow, mu, epsilon, K, alpha)

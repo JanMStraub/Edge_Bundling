@@ -74,7 +74,7 @@ def printPressure(nodeList):
         if node._terminal == True:
             print("Pressure for terminal node {}: {}".format(node._id, node._pressure))
         else:
-            print("Pressure for node {}:          {}".format(node._id, node._pressure))  
+            print("Pressure for          node {}: {}".format(node._id, node._pressure))  
         
     print("\n####################################################################\n")
     

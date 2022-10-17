@@ -7,6 +7,7 @@ import random
 import numpy as np
 
 from tqdm import tqdm
+from scipy import linalg
 
 from helper import findOtherEdgeEnd
 
@@ -54,8 +55,7 @@ def chooseSinkAndSource(terminalNodeList):
 
     for i in range(len(probability)):
         if (probability[i] < sinkSelector and probability[i + 1] >= sinkSelector):
-            l[i]._sink = True   
-            print("SINK node: {}".format(l[i]._id))    
+            l[i]._sink = True     
 
     return
 
@@ -63,6 +63,12 @@ def chooseSinkAndSource(terminalNodeList):
 def calculatePressure(nodeList, terminalNodeList, initialFlow):
     A = list()            
     b = list()
+    
+    sinkID = 0
+    
+    for node in nodeList:
+        if node._sink == True:
+            sinkID = node._id
 
     for node in nodeList:
         if (node._sink == False and node._terminal == True):
@@ -71,9 +77,9 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow):
             for edge in node._nodeEdgeList:
                 neighbour = findOtherEdgeEnd(node, edge)
                 neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                nodeFactor -= neighbourFactor
+                nodeFactor += neighbourFactor
                 pressureVector[neighbour._id] = neighbourFactor
-            pressureVector[node._id] = nodeFactor     
+            pressureVector[node._id] = -1 * nodeFactor     
                 
             b.append(-1 * initialFlow)
             A.append(pressureVector)             
@@ -84,11 +90,11 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow):
             for edge in node._nodeEdgeList:
                 neighbour = findOtherEdgeEnd(node, edge)
                 neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                nodeFactor -= neighbourFactor
+                nodeFactor += neighbourFactor
                 pressureVector[neighbour._id] = neighbourFactor
-            pressureVector[node._id] = nodeFactor       
+            pressureVector[node._id] = -1 * nodeFactor     
+              
             b.append((len(terminalNodeList) - 1) * initialFlow)
-            
             A.append(pressureVector)
             node._sink = False
         
@@ -98,29 +104,28 @@ def calculatePressure(nodeList, terminalNodeList, initialFlow):
             for edge in node._nodeEdgeList:
                 neighbour = findOtherEdgeEnd(node, edge)
                 neighbourFactor = edge._conductivity[0] / edge._compositeCost
-                nodeFactor -= neighbourFactor
+                nodeFactor += neighbourFactor
                 pressureVector[neighbour._id] = neighbourFactor
-            pressureVector[node._id] = nodeFactor       
+            pressureVector[node._id] = -1 * nodeFactor       
             
             b.append(0)
             A.append(pressureVector)
         
         else:
             raise ValueError("Something went wrong with the grid creation")
-          
+        
+        
     for entry in A:
-        print(entry)
-    print(b)
-    print("###################################")
+        entry[sinkID] = 0
     
     A = np.array(A)
     b = np.array(b)
-
-    x = np.linalg.solve(A, b)
+ 
+    x = linalg.lstsq(A, b)[0]
     
     for i in range(len(nodeList)):
         nodeList[i]._pressure = x[i]
-
+    
     return
         
 
@@ -182,8 +187,6 @@ def physarumAlgorithm(nodeList, terminalNodeList, edgeList, viscosity, initialFl
         for edge in edgeList:
             # edge cutting
             if edge in edgeList and edge._conductivity[1] < epsilon:
-                
-                print("REMOVED Edge: {}".format(edge._id))
                 
                 edge._start._nodeEdgeList.remove(edge)
                 edge._end._nodeEdgeList.remove(edge)
