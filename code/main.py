@@ -1,130 +1,232 @@
 # -*- coding: utf-8 -*-
 
 """
-PolyCenterephalum simulation
-Based on the work of:
-* Jeff Jones, UWE https://uwe-repository.worktribe.com/output/980579
-* Sage Jensen https://sagejenson.com/physarum
-* Amitav Mitra https://github.com/ammitra/Physarum
-* Liang Liu https://www.researchgate.net/publication/272393174_Physarum_Optimization_A_Biology-Inspired_Algorithm_for_the_Steiner_Tree_Problem_in_Networks
+Edge bundling algorithm with Physarum polycephalum approximations of Steiner trees
 @author: Jan Straub
 """
 
 # Imports
-import os
-import imageio
+from os import remove
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from multiprocessing import cpu_count
+from pickle import dump, load
+from imageio import imread, get_writer
 
-from tqdm import tqdm
+import matplotlib.pyplot as plt
 
-from environment import Environment
-from helper import readGraphData
-from simulation import physarumAlgorithm, initializePhysarium
-from debug import test
+from environment import ENVIRONMENT
+from helper import read_graph_data, get_min_max_values, minimum_spanning_tree_length
+from simulation import physarum_algorithm
+from output import plot_graph
 
 
-def main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensorNodeList):
+def start(nodeList, xMin, xMax, yMin, yMax,
+        viscosity, initialFlow, mu, epsilon,
+        innerIteration, alpha, edgeAlpha):
+    """_summary_
+        Start function for multiprocessing
+    Args:
+        nodeList (list): List of node objects
+        xMin (float): Minimal x value of original nodes
+        xMax (float): Maximum x value of original nodes
+        yMin (float): Minimal y value of original nodes
+        yMax (float): Maximum y value of original nodes
+        viscosity (float): The viscosity of the fluid inside the network
+        initialFlow (int): The initial flow of the fluid
+        mu (int): A constant
+        epsilon (float): Coductivity threshold
+        innerIteration (int): Number of inner iterations
+        alpha (float): A positiv constant
+        edgeAlpha (float): A positiv constant for each edge
+
+    Returns:
+        totalEdgeCost (float): Total cost of the network
+        steinerConnections (bool): If only Steiner connections are present
+        environment (object): Network object
+    """
+
+    # Setup environment
+    environment = ENVIRONMENT(nodeList, xMin, xMax, yMin, yMax,
+                              viscosity)
+
+    # Start simulation
+    totalCost, steinerConnections = physarum_algorithm(
+        environment.environmentNodeList,
+        environment.environmentTerminalNodeList,
+        environment.environmentEdgeList,
+        initialFlow, mu, epsilon, innerIteration,
+        alpha, edgeAlpha)
+
+    return totalCost, steinerConnections, environment
+
+
+def main(path, jsonFile, plotSelection, postProcessingSelection,
+         viscosity, initialFlow, mu, epsilon,
+         alpha, edgeAlpha, smoothing):
+
+    """_summary_
+        This is the main function of the algorithm
+    Args:
+        path (string): The path where the code is based
+        jsonFile (string): Path to json file
+        plotSelection (int): What mode the algorithm should run
+            0 new calculation - 1 plot saved network - 2 plot gif
+        postProcessingSelection (int): Selection which postprocessing should be used
+            0 Steiner tree - 1 Bezier curve - 2 cubic spline
+        viscosity (float): The viscosity of the fluid inside the network
+        initialFlow (int): The initial flow of the fluid
+        mu (int): A constant
+        epsilon (float): Coductivity threshold
+        alpha (float): A positiv constant
+        edgeAlpha (float): A positiv constant for each edge
+        smoothing (int): A smoothing parameter for the Bezier curve bundling
+    """
 
     # Import graph information from JSON
-    edgeList, nodeList = readGraphData(jsonFile) 
-    
-    # Setup environment
-    environment = Environment()
-    environment.createGrid(nodeList)
-    environment.createTerminalNodes(nodeList) 
-    environment.createSensorNodes(sensorNodeList)
-    
-    # Setup simulation
-    initializePhysarium(environment._edgeList, environment._nodeList, environment._terminalNodeList, environment._sensorNodeList, viscosity, initialFlow)
-    
-    if (image):
+    nodeList, pathList = read_graph_data(jsonFile)
+    xMin, xMax, yMin, yMax = get_min_max_values(nodeList)
+    bestCostList = [minimum_spanning_tree_length(nodeList, pathList)]
+    xAxis, yAxis = int((xMax - xMin) + 1), int((yMax - yMin) + 1)
 
-        for t in tqdm(range(steps), desc = "Iteration progress"):   
-            
-            # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-            
-            if t == steps - 1:
-                plt = environment.plotGraph(t) 
-                
-                xList = []
-                yList = []
-                
-                for sensor in environment._sensorNodeList:
-                    x, y, z = sensor
-                    xList.append(x)
-                    yList.append(y)
-    
-                plt.plot(xList, yList, "go")
-                plt.savefig("simulation_t{}.png".format(t + 1))
-                plt.clf()
-                
-            tau = 0.0004 * t
-            
-    else:
-        filenames = []
-        
-        for t in tqdm(range(steps), desc = "Iteration progress"):
+    # Outer and inner iteration bound
+    if xAxis >= yAxis:
+        outerIteration = xAxis * cpu_count()
+        innerIteration = xAxis ** 4
+    elif xAxis < yAxis:
+        outerIteration = yAxis * cpu_count()
+        innerIteration = yAxis ** 4
+
+    print(f"xAxis: {xAxis} - "
+          f"yAxis: {yAxis} - "
+          f"outerIteration: {outerIteration} - "
+          f"innerIteration: {innerIteration}")
+
+    if plotSelection == 0:
+        savedNetwork, results = None, None
+        currentOuterIterations = outerIteration
+
+        while savedNetwork is None:
+            with ProcessPoolExecutor() as executor:
+
+                # Start simulation
+                results = [executor.submit(start, nodeList,
+                                        xMin, xMax, yMin, yMax,
+                                        viscosity, initialFlow,
+                                        mu, epsilon, innerIteration,
+                                        alpha, edgeAlpha)
+                        for _ in range(outerIteration)]
+
+                for item in as_completed(results):
+                    totalCost, steinerConnections, environment = item.result()
+                    if bestCostList[-1] >= totalCost and steinerConnections:
+                        savedNetwork = environment
+                        bestCostList.append(totalCost)
+
+            # Saveguard if no network is found yet
+            if savedNetwork is None:
+                innerIteration = int(innerIteration * 1.5)
+                outerIteration = cpu_count()
+                currentOuterIterations += outerIteration
+
+        with open(path +
+                    f"/savedNetworks/simulation_{currentOuterIterations} - {innerIteration}.obj",
+                    mode = "wb") as fileDebug:
+            dump(savedNetwork, fileDebug)
+
+        plot_graph(path, currentOuterIterations, innerIteration,
+                    savedNetwork, pathList, smoothing, postProcessingSelection)
+
+    if plotSelection == 1:
+
+        with open(path +
+                  f"/savedNetworks/simulation_{outerIteration} - {innerIteration}.obj",
+                  mode = "rb") as fileDebug:
+            savedNetwork = load(fileDebug)
+
+        plot_graph(path, outerIteration, innerIteration,
+                   savedNetwork, pathList, smoothing, postProcessingSelection)
+
+    if plotSelection == 2:
+        bestCostList = [minimum_spanning_tree_length(nodeList, pathList)]
+        savedNetwork = None
+        n = 0
+        filenameList = []
+
+
+        for n in range(outerIteration):
+
+            # Setup environment
+            environment = ENVIRONMENT(nodeList, xMin, xMax, yMin, yMax,
+                                      viscosity)
 
             # Start simulation
-            physarumAlgorithm(environment._nodeList, environment._terminalNodeList, environment._edgeList, viscosity, initialFlow, sigma, rho, tau)
-            
-            
-            if (t > 1200):
-                plt = environment.plotGraph(t)
-                filename = f'{t}.png'
-                filenames.append(filename)
-                
+            totalCost, steinerConnections = physarum_algorithm(
+                environment.environmentNodeList,
+                environment.environmentTerminalNodeList,
+                environment.environmentEdgeList,
+                initialFlow, mu, epsilon, innerIteration,
+                alpha, edgeAlpha)
+
+            if bestCostList[-1] >= totalCost and steinerConnections:
+                savedNetwork = environment
+                bestCostList.append(totalCost)
+
+            # Saveguard if no network is found yet
+            if savedNetwork is None and n == outerIteration - 2:
+                outerIteration += 1
+
+            # Change mod for gif step size
+            if n % 10 == 0:
+                plot_graph(path, outerIteration, innerIteration,
+                           savedNetwork, pathList, smoothing,
+                           postProcessingSelection)
+
+                filename = f'{n}.png'
+                filenameList.append(filename)
+
                 plt.savefig(filename)
                 plt.close()
-        
-             
-            if t == steps - 1:
-                plt = environment.plotGraph(t)
-                filename = f'{t}.png'
-                filenames.append(filename)
-                
+
+            if n == outerIteration - 1:
+                plot_graph(path, outerIteration, innerIteration,
+                           savedNetwork, pathList, smoothing,
+                           postProcessingSelection)
+
+                filename = f'{n}.png'
+                filenameList.append(filename)
+
                 plt.savefig(filename)
                 plt.close()
-                
-                with imageio.get_writer("simulationGIF_t{}.gif".format(t + 1), mode='I') as writer:
-                    for filename in filenames:
-                        image = imageio.imread(filename)
+
+                with get_writer(path + f"/plots/simulation_t{n + 1}.gif", mode='I') as writer:
+                    for filename in filenameList:
+                        image = imread(filename)
                         writer.append_data(image)
-                    
+
                 # Remove files
-                for filename in set(filenames):
-                    os.remove(filename)
-            
-            tau = 0.0004 * t
-            
-    return
+                for filename in set(filenameList):
+                    remove(filename)
 
 
 if __name__ == "__main__":
 
     # Setup parameter
-    jsonFile = "/Users/jan/Documents/code/bachelor_thesis/code/data/2x2_test_graph.json" 
-    steps = 1200
-    image = True # Change to False if you want a gif
-    
+    PATH = "/Users/jan/Documents/code/gitlab_BA/2023-jan-straub"
+    JSON_FILE = PATH + "/data/default.json"
+    # 0 new calculation - 1 plot saved network - 2 plot gif
+    PLOT_SELECTION = 1
+    # 0 Steiner tree - 1 Bezier curve - 2 cubic spline
+    POST_PROCESSING_SELECTION = 2
+
     # Slime parameters
-    viscosity = 0.5
-    initialFlow = 0.5 
-    sigma = 0.00000375
-    rho = 0.0002
-    tau = 0.0004
-    
-    sensorNodeList = [(0.1, 0.9, 0)]
-    
-    """
-    (0.1, 0.9, 0)
-    
-    (2, 1.7, 0), (0, 1.7, 0), (2, 0.4999, 0), (0, 0.4999, 0)
-    
-    (0.75, 4.1, 0), (3.25, 4.1, 0), (2, 0.1, 0), (0.35, 2.55, 0), (3.656, 2.55, 0), (-0.3, 1.8, 0), (4.2, 1.8, 0), (-0.65, 0.6, 0), (4.7, 0.6, 0)
-    
-    (0, 12.1, 0), (0, 12.7, 0), (0.1, 13.3, 0), (1, 5.8, 0), (1.1, 18.1, 0), (1.2, 9, 0), (2.2, 11.1, 0), (2.2, 11.2, 0), (3, 16.4, 0), (3.2, 3.9, 0), (4.1, 4.9, 0), (4.3, 5.3, 0), (4.8, 15.6, 0), (4.8, 16.5, 0), (5.0, 14.1, 0), (5, 16.6, 0), (5.8, 9.1, 0), (5.7, 9.7, 0), (6.3, 8, 0), (6.2, 9.6, 0), (7, 15.1, 0), (7.2, 17, 0), (7.5, 1.4, 0), (8.8, 10.9, 0), (9.1, 16, 0), (8.9, 19.6, 0), (9.3, 6.8, 0), (10, 5.3, 0), (10.4, 2.9, 0), (10.2, 3.9, 0), (10.3, 4.8, 0), (11.1, 5, 0), (11, 8.1, 0), (11.1, 12.7, 0), (11, 16.2, 0), (13.1, 19.4, 0), (13.4, 15.6, 0), (13.7, 18.7, 0), (14.4, 7.5, 0), (14.2, 10.1, 0), (14.2, 16.8, 0), (16, 11.4, 0), (15.8, 12.7, 0), (15.4, 18.6, 0), (16.4, 17.4, 0), (17.1, 0.3, 0), (17.8, 1.2, 0), (18.2, 3.8, 0), (17.6, 6, 0), (17.6, 19.5, 0)
-    """
-    
-    main(jsonFile, steps, image, viscosity, initialFlow, sigma, rho, tau, sensorNodeList)
-    # test(jsonFile, steps, viscosity, initialFlow, sigma, rho, tau, sensorNodeList)
+    VISCOSITY = 0.5
+    INITIAL_FLOW = 1
+    MU = 1
+    EPSILON = 0.001
+    ALPHA = 0.4
+    EDGE_ALPHA = 1.5
+    SMOOTHING = 1
+
+    main(PATH, JSON_FILE, PLOT_SELECTION, POST_PROCESSING_SELECTION,
+         VISCOSITY, INITIAL_FLOW, MU, EPSILON,
+         ALPHA, EDGE_ALPHA, SMOOTHING)
