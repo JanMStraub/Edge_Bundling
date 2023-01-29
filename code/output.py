@@ -7,7 +7,7 @@ This file manages the post-processing and plotting of the graph
 
 # Imports
 from networkx import Graph
-from networkx import get_node_attributes, shortest_path, draw, draw_networkx_nodes
+from networkx import get_node_attributes, shortest_path, draw, draw_networkx_nodes, draw_networkx_edge_labels, draw_networkx_labels
 from scipy.interpolate import BPoly, splprep, splev
 from numpy import asarray, linspace, arange
 
@@ -138,7 +138,7 @@ def cubic_spline_calculation(networkxGraph, environmentNodeList,
 
     return cubicSplineList
 
-def plot_graph(path, outerIteration, innerIteration,
+def plot_graph(path, jsonFileName, outerIteration, innerIteration,
                savedNetwork, pathList, smoothing,
                postProcessingSelection):
 
@@ -146,6 +146,7 @@ def plot_graph(path, outerIteration, innerIteration,
         Plot edges and nodes in matplotlib
     Args:
         path (string): Path for plot save
+        jsonFileName (sting): Name of file
         outerIteration (int): Number of outer iterations
         innerIteration (int): Number of inner iterations
         savedNetwork (object): Network that has the lowest cost
@@ -163,28 +164,31 @@ def plot_graph(path, outerIteration, innerIteration,
 
     remove_unused_grid_nodes(environmentNodeList,
                              environmentTerminalNodeList,
-                             removeEdge, createSteinerEdge)
+                             removeEdge, createSteinerEdge,
+                             environmentEdgeList)
 
     fermat_torricelli_point_calculation(environmentNodeList)
 
     remove_nodes_within_radius(environmentNodeList, removeEdge,
                                createSteinerEdge)
 
-    networkxGraph, sizeValues = Graph(), []
+    networkxGraph, sizeValues, nodeLabels = Graph(), [], {}
 
     for node in environmentNodeList:
         x, y = node.position
         networkxGraph.add_node(node.nodeObjectId, pos = (x, y))
 
         if node in environmentTerminalNodeList:
+            nodeLabels[node.nodeObjectId] = node.nodeObjectId
             sizeValues.append(200)
         else:
-            sizeValues.append(0)
+            nodeLabels[node.nodeObjectId] = node.nodeObjectId
+            sizeValues.append(200)
 
     if postProcessingSelection == 0:
         plot = plot_steiner_graph(outerIteration, innerIteration,
                                  environmentEdgeList, networkxGraph,
-                                 sizeValues)
+                                 sizeValues, nodeLabels)
 
     elif postProcessingSelection == 1:
         plot = plot_bezier_graph(outerIteration, innerIteration,
@@ -205,13 +209,13 @@ def plot_graph(path, outerIteration, innerIteration,
         raise ValueError(f"postProcessingSelection value {postProcessingSelection} is not defined")
 
     plot.tight_layout()
-    plot.savefig(path + f"/plots/simulation_{outerIteration}-{innerIteration}.png")
+    plot.savefig(path + f"/plots/{jsonFileName}_{outerIteration}-{innerIteration}.png")
     plot.clf()
 
 
 def plot_steiner_graph(outerIteration, innerIteration,
                        environmentEdgeList, networkxGraph,
-                       sizeValues):
+                       sizeValues, nodeLabels):
 
     """_summary_
         Creates Steiner graph
@@ -221,6 +225,7 @@ def plot_steiner_graph(outerIteration, innerIteration,
         environmentEdgeList (list): List of all edge objects
         networkxGraph (object): Graph created by networkx
         sizeValues (list): List of node size values
+        nodeLabels (dict): Dict of node ids
 
     Returns:
         plt (object): Matplotlib object
@@ -236,6 +241,8 @@ def plot_steiner_graph(outerIteration, innerIteration,
 
     pos = get_node_attributes(networkxGraph, 'pos')
     draw(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_labels(networkxGraph, pos, nodeLabels)
 
     return plt
 

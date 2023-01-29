@@ -7,11 +7,10 @@ Main approximation file
 
 # Imports
 from random import uniform
-from numpy import pi
 from numpy.linalg import lstsq
 from numpy import zeros
 from numba import jit
-from tqdm import tqdm
+from time import localtime, strftime
 
 from helper import find_other_edge_end
 
@@ -46,20 +45,6 @@ def calculate_neighbour_factor(edge, compositeCost):
     """
 
     edge.neighbourFactor = edge.conductivity[0] / compositeCost
-
-
-def calculate_radius(edge, viscosity):
-
-    """_summary_
-        Calculates radius of each edge, derived from equation (2)
-    Args:
-        edge (object): Edge object
-        viscosity (float): The viscosity of the fluid inside the network
-
-    Returns:
-        radius (float): Radius of edge object
-    """
-    return ((edge.conductivity[1] * 8 * viscosity) / pi) ** (1 / 4)
 
 
 def choose_sink_and_source(terminalNodeList, terminalNodeListLength):
@@ -230,7 +215,8 @@ def update_conductivities(edge, mu, alpha, edgeAlpha,
 
 def physarum_algorithm(nodeList, terminalNodeList, edgeList,
                       initialFlow, mu, epsilon,
-                      innerIteration, alpha, edgeAlpha):
+                      innerIteration, alpha, edgeAlpha,
+                      outerIter):
 
     """_summary_
         Function controls physarium algorithm
@@ -261,7 +247,7 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
 
         calculate_neighbour_factor(edge, compositeCost)
 
-    for _ in tqdm(range(innerIteration), desc = "Inner iteration progress"):
+    for innerIter in range(innerIteration):
 
         sinkNode = choose_sink_and_source(terminalNodeList,
                                           terminalNodeListLength)
@@ -316,6 +302,9 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
                     if edge.start.connections > 3:
                         steinerConnections = False
 
+                endTime = strftime("%H:%M:%S", localtime())
+                print(f"# {outerIter}th run finished after {innerIter} iterations at {endTime}")
+
                 return totalEdgeCost, steinerConnections
 
         maxNodeWeight = 0
@@ -324,5 +313,8 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
         totalEdgeCost += edge.cost
         if edge.start.connections > 3 or edge.end.connections > 3:
             steinerConnections = False
+
+    endTime = strftime("%H:%M:%S", localtime())
+    print(f"# {outerIter}th run finished after {innerIter} iterations at {endTime}")
 
     return totalEdgeCost, steinerConnections
