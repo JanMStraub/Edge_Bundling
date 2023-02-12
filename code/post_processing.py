@@ -199,10 +199,12 @@ def remove_rest_nodes(environmentNodeList, removeEdge,
 
                 del edge
 
-            unusedNodeList.remove(node)
-            environmentNodeList.remove(node)
+            if not node.terminal:
 
-            del node
+                unusedNodeList.remove(node)
+                environmentNodeList.remove(node)
+
+                del node
 
         if all(nodeCheckList):
             iterate = False
@@ -238,8 +240,8 @@ def remove_unused_grid_nodes(environmentNodeList,
     remove_from_steiner(environmentNodeList, removeEdge,
                         createSteinerEdge, newEdgeList, steinerNodeList)
 
-    remove_rest_nodes(environmentNodeList, removeEdge, createSteinerEdge,
-                      environmentEdgeList)
+    # remove_rest_nodes(environmentNodeList, removeEdge, createSteinerEdge,
+    # environmentEdgeList)
 
 
 def fermat_torricelli_point_calculation(environmentNodeList):
@@ -253,6 +255,7 @@ def fermat_torricelli_point_calculation(environmentNodeList):
     iterate = True
 
     while iterate:
+
         oldNodeList, distanceList = [], []
 
         for node in environmentNodeList:
@@ -278,7 +281,7 @@ def fermat_torricelli_point_calculation(environmentNodeList):
             distance = calculate_distance_between_positions(
                 position, environmentNodeList[pos].position)
 
-            if distance > 0:
+            if distance > 0.1:
                 distanceList.append(False)
             else:
                 distanceList.append(True)

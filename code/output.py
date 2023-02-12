@@ -7,14 +7,14 @@ This file manages the post-processing and plotting of the graph
 
 # Imports
 from networkx import Graph
-from networkx import get_node_attributes, shortest_path, draw, draw_networkx_nodes, draw_networkx_edge_labels, draw_networkx_labels
+from networkx import get_node_attributes, shortest_path, draw, draw_networkx_nodes, draw_networkx_labels
 from scipy.interpolate import BPoly, splprep, splev
 from numpy import asarray, linspace, arange
 
 import matplotlib.pyplot as plt
 
 from post_processing import remove_unused_grid_nodes, remove_nodes_within_radius, fermat_torricelli_point_calculation
-from helper import find_path_nodes, find_node_by_id, calculate_edge_control_points, find_edge_between_nodes
+from helper import find_path_nodes, find_node_by_id, calculate_edge_control_points, find_edge_between_nodes, calculate_distance_between_positions
 
 
 def bezier_curve_calculation(networkxGraph, environmentNodeList,
@@ -33,6 +33,7 @@ def bezier_curve_calculation(networkxGraph, environmentNodeList,
     """
 
     bezierPointList = []
+    originalDistance = 0
 
     for path in pathList:
         startPoint, endPoint = path
@@ -75,7 +76,10 @@ def bezier_curve_calculation(networkxGraph, environmentNodeList,
         curvePoints = curve(linspace(0, 1, 100))
 
         bezierPointList.append(curvePoints.T)
+        for i in range(len(curvePoints) - 1):
+            originalDistance += calculate_distance_between_positions(curvePoints[i], curvePoints[i + 1])
 
+    print(f"bundles distance: {originalDistance}")
     return bezierPointList
 
 
@@ -172,38 +176,39 @@ def plot_graph(path, jsonFileName, outerIteration, innerIteration,
     remove_nodes_within_radius(environmentNodeList, removeEdge,
                                createSteinerEdge)
 
-    networkxGraph, sizeValues, nodeLabels = Graph(), [], {}
+    networkxGraph, sizeValues, nodeLabels, colorValues = Graph(), [], {}, []
 
     for node in environmentNodeList:
         x, y = node.position
         networkxGraph.add_node(node.nodeObjectId, pos = (x, y))
 
         if node in environmentTerminalNodeList:
-            nodeLabels[node.nodeObjectId] = node.nodeObjectId
-            sizeValues.append(200)
+            nodeLabels[node.nodeObjectId] = ""
+            sizeValues.append(3)
+            colorValues.append("black")
         else:
-            nodeLabels[node.nodeObjectId] = node.nodeObjectId
-            sizeValues.append(200)
+            nodeLabels[node.nodeObjectId] = ""
+            sizeValues.append(0)
+            colorValues.append("green")
 
     if postProcessingSelection == 0:
-        plot = plot_steiner_graph(outerIteration, innerIteration,
-                                 environmentEdgeList, networkxGraph,
-                                 sizeValues, nodeLabels)
+        plot = plot_steiner_graph(environmentEdgeList, networkxGraph,
+                                  sizeValues, nodeLabels, colorValues)
 
     elif postProcessingSelection == 1:
-        plot = plot_bezier_graph(outerIteration, innerIteration,
-                                environmentEdgeList,
-                                environmentNodeList,
-                                environmentTerminalNodeList,
-                                networkxGraph,
-                                pathList, smoothing, sizeValues)
+        plot = plot_bezier_graph(environmentEdgeList,
+                                 environmentNodeList,
+                                 environmentTerminalNodeList,
+                                 networkxGraph,
+                                 pathList, smoothing, sizeValues,
+                                 colorValues)
 
     elif postProcessingSelection == 2:
-        plot = plot_cubic_spline_graph(outerIteration, innerIteration,
-                                      environmentEdgeList,
-                                      environmentNodeList, environmentTerminalNodeList,
-                                      networkxGraph,
-                                      pathList, smoothing, sizeValues)
+        plot = plot_cubic_spline_graph(environmentEdgeList,
+                                       environmentNodeList, environmentTerminalNodeList,
+                                       networkxGraph,
+                                       pathList, smoothing, sizeValues,
+                                       colorValues)
 
     else:
         raise ValueError(f"postProcessingSelection value {postProcessingSelection} is not defined")
@@ -213,15 +218,12 @@ def plot_graph(path, jsonFileName, outerIteration, innerIteration,
     plot.clf()
 
 
-def plot_steiner_graph(outerIteration, innerIteration,
-                       environmentEdgeList, networkxGraph,
-                       sizeValues, nodeLabels):
+def plot_steiner_graph(environmentEdgeList, networkxGraph,
+                       sizeValues, nodeLabels, colorValues):
 
     """_summary_
         Creates Steiner graph
     Args:
-        outerIteration (int): Number of outer iterations
-        innerIteration (int): Number of inner iterations
         environmentEdgeList (list): List of all edge objects
         networkxGraph (object): Graph created by networkx
         sizeValues (list): List of node size values
@@ -236,29 +238,26 @@ def plot_steiner_graph(outerIteration, innerIteration,
 
     fig = plt.figure()
     fig = plt.figure(figsize = (10, 10))
-    subplot = fig.add_subplot(111)
-    subplot.set_title(f"Polycephalum Edge Bundling - out: {outerIteration} - in: {innerIteration}")
+    fig.patch.set_visible(False)
 
     pos = get_node_attributes(networkxGraph, 'pos')
-    draw(networkxGraph, pos, node_size = sizeValues)
+    draw(networkxGraph, pos, node_size = sizeValues, node_color = colorValues)
     draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
     draw_networkx_labels(networkxGraph, pos, nodeLabels)
 
     return plt
 
 
-def plot_bezier_graph(outerIteration, innerIteration,
-                      environmentEdgeList,
+def plot_bezier_graph(environmentEdgeList,
                       environmentNodeList,
                       environmentTerminalNodeList,
                       networkxGraph,
-                      pathList, smoothing, sizeValues):
+                      pathList, smoothing, sizeValues,
+                      colorValues):
 
     """_summary_
         Create Bezier curve plot
     Args:
-        outerIteration (int): Number of outer iterations
-        innerIteration (int): Number of inner iterations
         environmentEdgeList (list): List of all edge objects
         environmentNodeList (list): List of node objects
         environmentTerminalNodeList (list): List of terminal node objects
@@ -284,28 +283,25 @@ def plot_bezier_graph(outerIteration, innerIteration,
 
     fig = plt.figure()
     fig = plt.figure(figsize = (10, 10))
-    subplot = fig.add_subplot(111)
-    subplot.set_title(f"Polycephalum Edge Bundling - out: {outerIteration} - in: {innerIteration}")
+    fig.patch.set_visible(False)
 
     for bezierCurve in bezierPointList:
-        plt.plot(*bezierCurve, color="black")
+        plt.plot(*bezierCurve, color = "black", linewidth = 0.5)
 
     pos = get_node_attributes(networkxGraph, 'pos')
-    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues,
+                        node_color = colorValues)
 
     return plt
 
 
-def plot_cubic_spline_graph(outerIteration, innerIteration,
-                            environmentEdgeList, environmentNodeList,
+def plot_cubic_spline_graph(environmentEdgeList, environmentNodeList,
                             environmentTerminalNodeList, networkxGraph,
-                            pathList, smoothing, sizeValues):
+                            pathList, smoothing, sizeValues, colorValues):
 
     """_summary_
         Create cubic spline curve plot
     Args:
-        outerIteration (int): Number of outer iterations
-        innerIteration (int): Number of inner iterations
         environmentEdgeList (list): List of all edge objects
         environmentNodeList (list): List of node objects
         environmentTerminalNodeList (list): List of terminal node objects
@@ -331,13 +327,47 @@ def plot_cubic_spline_graph(outerIteration, innerIteration,
 
     fig = plt.figure()
     fig = plt.figure(figsize = (10, 10))
-    subplot = fig.add_subplot(111)
-    subplot.set_title(f"Polycephalum Edge Bundling - out: {outerIteration} - in: {innerIteration}")
+    fig.patch.set_visible(False)
 
     for cubicSpline in cubicSplineList:
         plt.plot(cubicSpline[0], cubicSpline[1], color = "black")
 
     pos = get_node_attributes(networkxGraph, 'pos')
-    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues,
+                        node_color = colorValues)
 
     return plt
+
+
+def plot_original_graph(path, jsonFileName, nodeList, pathList):
+    """_summary_
+
+    Args:
+        path (string): Path for plot save
+        jsonFileName (sting): Name of file
+        nodeList (list): List of node objects
+        pathList (list): List of original paths
+    """
+
+    networkxGraph, sizeValues, nodeLabels = Graph(), [], {}
+
+    for index, node in enumerate(nodeList):
+        x, y = node
+        networkxGraph.add_node(index, pos = (x, y))
+        nodeLabels[index] = index
+        sizeValues.append(200)
+
+    for edge in pathList:
+        networkxGraph.add_edge(edge[0], edge[1])
+
+    fig = plt.figure()
+    fig = plt.figure(figsize = (10, 10))
+
+    pos = get_node_attributes(networkxGraph, 'pos')
+    draw(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
+    draw_networkx_labels(networkxGraph, pos, nodeLabels)
+
+    plt.tight_layout()
+    plt.savefig(path + f"/plots/original_{jsonFileName}.png")
+    plt.clf()

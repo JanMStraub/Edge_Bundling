@@ -26,7 +26,7 @@ def create_grid_nodes(jsonNodeList,
         yMax (float): Maximum y value of original nodes
     """
 
-    nodeId, terminalId = 0, 0
+    nodeId = 0
     jsonList = []
 
     environmentNodeListAppend = environmentNodeList.append
@@ -41,9 +41,8 @@ def create_grid_nodes(jsonNodeList,
 
             if [float(x), float(y)] in jsonList:
                 node.terminal = True
-                node.terminalNodeId = terminalId
+                node.terminalNodeId = jsonList.index([float(x), float(y)])
                 enviromentTerminalNodeListAppend(node)
-                terminalId += 1
 
             environmentNodeListAppend(node)
             nodeId += 1

@@ -7,10 +7,10 @@ Main approximation file
 
 # Imports
 from random import uniform
+from time import localtime, strftime
 from numpy.linalg import lstsq
 from numpy import zeros
 from numba import jit
-from time import localtime, strftime
 
 from helper import find_other_edge_end
 
@@ -249,6 +249,8 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
 
     for innerIter in range(innerIteration):
 
+        #print(f"{outerIter}th run currently at {innerIter} iteration")
+
         sinkNode = choose_sink_and_source(terminalNodeList,
                                           terminalNodeListLength)
 
@@ -315,6 +317,6 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
             steinerConnections = False
 
     endTime = strftime("%H:%M:%S", localtime())
-    print(f"# {outerIter}th run finished after {innerIter} iterations at {endTime}")
+    print(f"# {outerIter}th run finished after {innerIter + 1} iterations at {endTime}")
 
     return totalEdgeCost, steinerConnections

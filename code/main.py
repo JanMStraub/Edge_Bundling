@@ -9,22 +9,22 @@ Edge bundling algorithm with Physarum polycephalum approximations of Steiner tre
 from os import remove
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from multiprocessing import cpu_count
+from time import localtime, strftime, time, gmtime
 from pickle import dump, load
 from imageio import imread, get_writer
-from time import localtime, strftime, time, gmtime
 
 import matplotlib.pyplot as plt
 
 from environment import ENVIRONMENT
 from helper import read_graph_data, get_min_max_values, minimum_spanning_tree_length, calculate_distance_between_positions
 from simulation import physarum_algorithm
-from output import plot_graph
+from output import plot_graph, plot_original_graph
 
 
 def start(nodeList, xMin, xMax, yMin, yMax,
-        viscosity, initialFlow, mu, epsilon,
-        innerIteration, alpha, edgeAlpha,
-        outerIter):
+          viscosity, initialFlow, mu, epsilon,
+          innerIteration, alpha, edgeAlpha,
+          outerIter):
 
     """_summary_
         Start function for multiprocessing
@@ -96,17 +96,10 @@ def main(path, jsonFilePath, jsonFileName,
     bestCostList = [minimum_spanning_tree_length(nodeList, pathList)]
     xAxis, yAxis = int((xMax - xMin) + 1), int((yMax - yMin) + 1)
     length = 0
-    
-    # Outer and inner iteration bound
-    if xAxis >= yAxis:
-        outerIteration = cpu_count() + 4
-        innerIteration = int(xAxis ** 2.5)
-    elif xAxis < yAxis:
-        outerIteration = cpu_count() + 4
-        innerIteration = int(yAxis ** 2.5)
 
-    #outerIteration = 100
-    #innerIteration = 10000
+    # Outer and inner iteration bound
+    outerIteration = cpu_count() + 4
+    innerIteration = int(len(nodeList) ** 3)
 
     print(f"File: {jsonFileName} "
           f"xAxis: {xAxis} - "
@@ -117,7 +110,7 @@ def main(path, jsonFilePath, jsonFileName,
     if plotSelection == 0:
         savedNetwork, results = None, None
         currentOuterIterations = outerIteration
-        startTime, st = strftime("%H:%M:%S", localtime()), time()
+        startTime, sTime = strftime("%H:%M:%S", localtime()), time()
 
         while savedNetwork is None:
             with ThreadPoolExecutor() as executor:
@@ -145,20 +138,17 @@ def main(path, jsonFilePath, jsonFileName,
                 currentOuterIterations += outerIteration
 
         with open(path +
-                    f"/savedNetworks/{jsonFileName}_{currentOuterIterations} - {innerIteration}.obj",
+                    f"/savedNetworks/{jsonFileName}_{currentOuterIterations}-{innerIteration}.obj",
                     mode = "wb") as fileDebug:
             dump(savedNetwork, fileDebug)
-        
+
         plot_graph(path, jsonFileName, currentOuterIterations, innerIteration,
                     savedNetwork, pathList, smoothing, postProcessingSelection)
 
         for edge in savedNetwork.environmentEdgeList:
             length += calculate_distance_between_positions(edge.start.position, edge.end.position)
-        
-        print(bestCostList)
-        print(f"length of Steiner tree: {length}")
-        
-        endTime, elapsedTime = strftime("%H:%M:%S", localtime()), strftime("%H:%M:%S", gmtime(time() - st))
+
+        endTime, elapsedTime = strftime("%H:%M:%S", localtime()), strftime("%H:%M:%S", gmtime(time() - sTime))
         print(f"The simulation run from {startTime} to {endTime}. Execution time: {elapsedTime}")
 
     if plotSelection == 1:
@@ -190,7 +180,7 @@ def main(path, jsonFilePath, jsonFileName,
                 environment.environmentTerminalNodeList,
                 environment.environmentEdgeList,
                 initialFlow, mu, epsilon, innerIteration,
-                alpha, edgeAlpha)
+                alpha, edgeAlpha, outerIteration)
 
             if bestCostList[-1] >= totalCost and steinerConnections:
                 savedNetwork = environment
@@ -232,14 +222,17 @@ def main(path, jsonFilePath, jsonFileName,
                 for filename in set(filenameList):
                     remove(filename)
 
+    if plotSelection == 3:
+        plot_original_graph(path, jsonFileName, nodeList, pathList)
+
 
 if __name__ == "__main__":
 
     # Setup parameter
-    PATH = "/Users/jan/Documents/code/gitlab_BA/2023-jan-straub/"
-    JSON_FILE_NAME = "10x10_test_graph"
+    PATH = "/Users/jan/Documents/code/gitlab_BA/2023-jan-straub"
+    JSON_FILE_NAME = "default_graph"
     JSON_FILE_PATH = PATH + "/data/" + JSON_FILE_NAME + ".json"
-    # 0 new calculation - 1 plot saved network - 2 plot gif
+    # 0 new calculation - 1 plot saved network - 2 plot gif - 3 plot original
     PLOT_SELECTION = 0
 
     # 0 Steiner tree - 1 Bezier curve - 2 cubic spline
