@@ -1,0 +1,15 @@
+%!TEX root = ../Thesis.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusion}
+\label{sec:conclusion}
+
+This work introduced a novel edge bundling technique based on a Physarium approximation of a Steiner tree. This Steiner tree is then used as a routing structure for graph paths. We evaluated and compared our algorithm using the quality metrics: ink reduction, distortion, and ambiguity. These metrics are computed on graph drawings of synthetic data we generated for testing pursues. The resulting illustrations consist of dense graphs that reduce node-edge overlaps, make reading easier, and make it more straightforward to spot areas of interest. Our algorithm has a worst-case complexity of $O\left(T_0 \cdot \left(n \cdot e + T_i\left(n^3\right)\right)\right)$ which is enough for small-scale synthetic graphs, but not enough to be used with real-world data, mainly because graph bundling becomes necessary if the graph data it too large to comprehend. 
+
+The metrics comparison showed us that our approach has a reasonable degree of bundling and outperforms the other two techniques. This, however, comes at the cost of distortion and ambiguity. Nevertheless, the excellent ink reduction value is a promising sign that with a better approximation algorithm, our approach could be used to declutter graphs and isolate regions of interest. 
+
+For us, future work could lead in two directions. The first would be to improve performance by using a GPU-based implementation to solve the matrices or abandoning the Physarium approximation and instead employ GeoSteiner \cite{winter_euclidean_1997}, or even better SCIP-Jack \cite{RehfeldtKoch2023} for a fast Steiner tree approximation. The other direction would be to utilize the Physarium-inspired approach to a Euclidean Steiner tree by Hsu \cite{hsu_physarum-inspired_2022}. With this, it should be possible to bundle real-world graph data.
+
+To conclude: Our approach suffers from significant drawbacks caused by the slow approximation calculation, which hindered us from testing real-world graph data and, in turn, evaluating the usefulness of our method. Unfortunately, we discovered too late that our optimizations could not improve the approximation enough to become functional. 
+Nevertheless, we still think it is a promising approach that could become feasible by utilizing the above-mentioned future work. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

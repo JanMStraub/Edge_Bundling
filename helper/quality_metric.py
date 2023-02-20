@@ -123,8 +123,6 @@ def get_distortion_value_wr(jsonFilePath):
                 originalDistance += calculate_distance_between_positions(oldPoint, bezierPoint)
                 oldPoint = bezierPoint
 
-        #originalDistance += calculate_distance_between_positions(start, end)
-
     print(f"Winding roads distance: {originalDistance}")
 
 

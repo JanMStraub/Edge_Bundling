@@ -98,8 +98,12 @@ def main(path, jsonFilePath, jsonFileName,
     length = 0
 
     # Outer and inner iteration bound
-    outerIteration = cpu_count() + 4
-    innerIteration = int(len(nodeList) ** 3)
+    if int(len(nodeList) ** 3) < 2000:
+        outerIteration = (cpu_count() + 4) * 2
+        innerIteration = 2000
+    else:
+        outerIteration = cpu_count() + 4
+        innerIteration = int(len(nodeList) ** 3)
 
     print(f"File: {jsonFileName} "
           f"xAxis: {xAxis} - "
@@ -154,7 +158,7 @@ def main(path, jsonFilePath, jsonFileName,
     if plotSelection == 1:
 
         with open(path +
-                  f"/savedNetworks/{jsonFileName}_{outerIteration} - {innerIteration}.obj",
+                  f"/savedNetworks/{jsonFileName}_{outerIteration}-{innerIteration}.obj",
                   mode = "rb") as fileDebug:
             savedNetwork = load(fileDebug)
 
@@ -162,67 +166,6 @@ def main(path, jsonFilePath, jsonFileName,
                    savedNetwork, pathList, smoothing, postProcessingSelection)
 
     if plotSelection == 2:
-        bestCostList = [minimum_spanning_tree_length(nodeList, pathList)]
-        savedNetwork = None
-        n = 0
-        filenameList = []
-
-
-        for n in range(outerIteration):
-
-            # Setup environment
-            environment = ENVIRONMENT(nodeList, xMin, xMax, yMin, yMax,
-                                      viscosity)
-
-            # Start simulation
-            totalCost, steinerConnections = physarum_algorithm(
-                environment.environmentNodeList,
-                environment.environmentTerminalNodeList,
-                environment.environmentEdgeList,
-                initialFlow, mu, epsilon, innerIteration,
-                alpha, edgeAlpha, outerIteration)
-
-            if bestCostList[-1] >= totalCost and steinerConnections:
-                savedNetwork = environment
-                bestCostList.append(totalCost)
-
-            # Saveguard if no network is found yet
-            if savedNetwork is None and n == outerIteration - 2:
-                outerIteration += 1
-
-            # Change mod for gif step size
-            if n % 10 == 0:
-                plot_graph(path, jsonFileName, outerIteration, innerIteration,
-                           savedNetwork, pathList, smoothing,
-                           postProcessingSelection)
-
-                filename = f'{n}.png'
-                filenameList.append(filename)
-
-                plt.savefig(filename)
-                plt.close()
-
-            if n == outerIteration - 1:
-                plot_graph(path, jsonFileName, outerIteration, innerIteration,
-                           savedNetwork, pathList, smoothing,
-                           postProcessingSelection)
-
-                filename = f'{n}.png'
-                filenameList.append(filename)
-
-                plt.savefig(filename)
-                plt.close()
-
-                with get_writer(path + f"/plots/{jsonFileName}_t{n + 1}.gif", mode='I') as writer:
-                    for filename in filenameList:
-                        image = imread(filename)
-                        writer.append_data(image)
-
-                # Remove files
-                for filename in set(filenameList):
-                    remove(filename)
-
-    if plotSelection == 3:
         plot_original_graph(path, jsonFileName, nodeList, pathList)
 
 
@@ -232,11 +175,15 @@ if __name__ == "__main__":
     PATH = "/Users/jan/Documents/code/gitlab_BA/2023-jan-straub"
     JSON_FILE_NAME = "default_graph"
     JSON_FILE_PATH = PATH + "/data/" + JSON_FILE_NAME + ".json"
-    # 0 new calculation - 1 plot saved network - 2 plot gif - 3 plot original
+    
+    # 0 new calculation - 1 plot saved network - 2 plot original
     PLOT_SELECTION = 0
 
     # 0 Steiner tree - 1 Bezier curve - 2 cubic spline
-    POST_PROCESSING_SELECTION = 0
+    POST_PROCESSING_SELECTION = 1
+    
+    # Smoothing parameter
+    SMOOTHING = 0
 
     # Slime parameters
     VISCOSITY = 0.5
@@ -245,6 +192,5 @@ if __name__ == "__main__":
     EPSILON = 0.001
     ALPHA = 0.4
     EDGE_ALPHA = 1.5
-    SMOOTHING = 0
 
     main(PATH, JSON_FILE_PATH, JSON_FILE_NAME, PLOT_SELECTION, POST_PROCESSING_SELECTION,VISCOSITY, INITIAL_FLOW, MU, EPSILON,ALPHA, EDGE_ALPHA, SMOOTHING)

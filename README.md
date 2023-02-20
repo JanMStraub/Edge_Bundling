@@ -3,7 +3,7 @@
 [Title] Local Iterative Optimization for Graph Bundling
 
 [Short abstract]
-_In this project, we want to use a polycephalum algorithm to approximate a minimal Steiner tree to bundle graphs._
+_In this thesis, we presented a novel edge bundling technique based on a Physarium approximation of a Steiner tree. This Steiner tree is then used as a routing structure for graph paths. The resulting drawings consist of densely bundled graphs that reduce node-edge overlaps and make it easier to get an overview of the graph data._
 
 [Type of Project] Bachelor thesis
 
@@ -18,91 +18,64 @@ _In this project, we want to use a polycephalum algorithm to approximate a minim
 
 </details>
 
-
-# Organisational Issues
-
 ## Status
 
-
 - [x] Registrated (20.10.2022)
-- [ ] Work submitted (DD.MM.YYYY)
-- [ ] Final presentation done (DD.MM.YYYY) 
-- [ ] Uploaded all materials (DD.MM.YYYY) 
+- [ ] Work submitted (20.02.2023)
+- [ ] Final presentation done (06.03.2023) 
+- [ ] Uploaded all materials (20.02.2023) 
 
-# PROJECT PLAN
+# Installation
 
-## Procedure
+This guide only applies to MacOS.
 
-```mermaid
-graph TD;
-A[<a href=#8>Registration</a>];
-B[<a href=#9>Interim presentation</a>];
-C[<a href=#10>Submission</a>];
-D[<a href=#11>Final presentation</a>];
-E[<a href=#12>Upload material</a>];
-F[<a href=https://vcgitlab.iwr.uni-heidelberg.de/vcg/project-templates/template-student/-/boards>Meeting documentation</a>];
-G[<a href=https://vcgitlab.iwr.uni-heidelberg.de/vcg/project-templates/template-student/-/boards>Progress documentation</a>];
-  A-->B;
-  B-->C;
-  C-->D;
-  D-->E;
-  A-->F;
-  F-->G;
-  G-->E;
-  G-->F;
-
+Make sure to have python installed and to download all required packages first, i.e. run:
+```
+pip install -r requirements.txt
 ```
 
-## Minutes of Meeting
+# Usage
 
-Minutes of meeting are a very important management tool in order to give meetings structure.They provide the following benefits:
-
-* **Structure**: They  provide  every  meeting  with  structure  and  time  itself  is  organized  in  astructured way. Minutes are organized into three parts: (1) topics discussed, (2) progress since the previous meeting, and (3) a todo list of goals for the next meeting.
-* **Continuity and Memory**: Minutes provide continuity over time. Each meeting starts out by reviewing the previous minutes of meeting. This helps attendants remember precisely what topics where discussed at the last meeting. People tend to forget what was discussed at the last meeting because they have so many other things going on.
-* **Aid in Progress**: Since each minutes has a todo list of goals before the next meeting, the progress of every project can be monitored in structured fashion. Also, larger tasks that may require months (or years) of work are broken down into smaller units of time which are much more manageable. Attendants at meetings are more-or-less forced to decide what can be done between the current and next meetings.
-
-Minutes should contain the following information:
-1. the date of the meeting, its starting time, and the ending time,
-2. the name of each person present at the meeting,
-3. a list of topics that were discussed at the meeting,
-4. a list of progress, i.e., the things that were accomplished (and not accomplished) since the last meeting,
-5. a todo list, i.e., a list of things that are to be worked on prior to the next meeting,
-6. the date and time of the next meeting.
-
-This is based on Bob Laramee's [PhD in Visualization Starter Kit](https://cs.swan.ac.uk/~csbob/research/starterKit/). A video presentation can be found [here](https://www.youtube.com/watch?v=BAKQaB-8qko&list=PLZo40sVmw_4MP_CoR5jrC-XZggCOQMdhk&index=3).
-
-## Writing the Protocol
-
-A template protocol can be found in [template.md](../../raw/master/template.md). **Within 3 hours** after each meeting, write up the protocol based on your (possibly handwritten) notes. The protocol should be named `YYYY-MM-DD.md` (e.g, on January 21, 2020, the file would be named `2020-01-21.md`) and commited to this repository. A new file can be added through the web-interface [here](../../new/master/).
-
-## Example Protocol
-
-File `2020-01-21.md`
-```markdown
-# 2020-01-21: Bob, Malim, Andy
-
-* start time: 13:30
-* end time: 15:00
-* next meeting: 2020-01-28, 13:30
-
-## Topics discussed
-
-* structure of initial 3rd year project document
-* presentation of 3rd year project
-* timeline of 3rd year projec
-
-## Progress since last meeting
-
-* Bob: 3rd project plan refined
-* Malim: initial document started
-* Andy: entry clearance to linux lab authorized
-
-## TODO for next meeting
-
-* Malim: place a copy of the minutes on the CSweb server in a folder called ‘‘minutes’’(w/in 3 hrs)
-* Malim: work on title page title page: title, author, current date
-* Malim: include table of contents
-* Bob: place copy of project guidelines on CS webserver on teaching web page
-* Andy: call Sally and ask her if she would like tojoin us at the next meeting
-
+WARNING: Change the PATH (below) before running the code.
+If you just want to test if everyting works correctly navigate to the _code_ folder and run:
 ```
+python3 main.py
+```
+In the folder _plots_ should new be a new file with the default test graph.
+
+## Data
+In the folder _data_ you will find the different JSON graph files we used.
+
+### Create own data
+If you want to create your own graph data go in the _helper_ folder.
+In the **create_graph_data.py** file you can define the number of nodes, number of edges and the size of the graph.
+After that duplicate a JSON file and paste the output in the right place.
+
+### Transfere data
+If you want to test the JSON data on other graph bundling approaches (e.g. Edge-Path Bundling) use the **transfer_json.py** file to change the format of the data and paste the output in the right place.
+
+## Parameters
+To generate own plots you have to edit the **main.py** file.
+At the end of it you find the all parameters that can be changes.
+
+### Path
+Change the PATH variable to your path
+### JSON_FILE_NAME
+Change the JSON_FILE_NAME to the name of the JSON data you want to use
+### PLOT_SELECTION
+Choose the mode in which the algorithm should run.
+  * 0: The algorithm calculates a new graph from the JSON data
+  * 1: If you already calculated a graph with the selected JSON data and just want to try a different post processing method, you can use this option. The algorithm selects the saved network from the folder _savedNetworks_
+  * 2: Allows you to plot the unbundled graph
+### POST_PROCESSING_SELECTION
+Choose the look of the result
+  * 0: Plot the underlying Steiner tree structure
+  * 1: Plot the Bezier curve bundling (default)
+  * 2: Plot the cubic spline bundling
+### SMOOTHING
+Allows you to choose a different smoothing factor. Is unstable for values above 2.
+  * 0: Steiner points are the control points
+  * 1: The middle of each edge is the control point
+
+# Known issues
+  * There is an math error issue that sometimes comes up, just rerun the code.

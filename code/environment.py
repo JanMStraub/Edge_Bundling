@@ -90,7 +90,7 @@ class ENVIRONMENT:
 
         """_summary_
             Function removes edge from nodeEdgeList and edgeList,
-            removes one connections for edge start and end node and removes neighbours
+            removes one connections for edge start and end node and removes neighbors
         Args:
             edge (object): Edge object that is removed
         """
@@ -104,8 +104,8 @@ class ENVIRONMENT:
         edgeStartNode.connections -= 1
         edgeEndNode.connections -= 1
 
-        edgeStartNode.neighbours.remove(edgeEndNode)
-        edgeEndNode.neighbours.remove(edgeStartNode)
+        edgeStartNode.neighbors.remove(edgeEndNode)
+        edgeEndNode.neighbors.remove(edgeStartNode)
 
         self.environmentEdgeList.remove(edge)
         del edge
@@ -141,8 +141,8 @@ class ENVIRONMENT:
             startNode.connections += 1
             nextNode.connections += 1
 
-            startNode.neighbours.append(nextNode)
-            nextNode.neighbours.append(startNode)
+            startNode.neighbors.append(nextNode)
+            nextNode.neighbors.append(startNode)
 
             self.environmentEdgeList.append(edge)
             edge.steinerEdge = True

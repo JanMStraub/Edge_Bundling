@@ -184,7 +184,7 @@ def plot_graph(path, jsonFileName, outerIteration, innerIteration,
 
         if node in environmentTerminalNodeList:
             nodeLabels[node.nodeObjectId] = ""
-            sizeValues.append(3)
+            sizeValues.append(10)
             colorValues.append("black")
         else:
             nodeLabels[node.nodeObjectId] = ""
@@ -213,8 +213,8 @@ def plot_graph(path, jsonFileName, outerIteration, innerIteration,
     else:
         raise ValueError(f"postProcessingSelection value {postProcessingSelection} is not defined")
 
-    plot.tight_layout()
-    plot.savefig(path + f"/plots/{jsonFileName}_{outerIteration}-{innerIteration}.png")
+    plot.savefig(path + f"/plots/{jsonFileName}_{outerIteration}-{innerIteration}.png", dpi = 300)
+    plot.savefig(path + f"/plots/{jsonFileName}_{outerIteration}-{innerIteration}.pdf")
     plot.clf()
 
 
@@ -368,6 +368,6 @@ def plot_original_graph(path, jsonFileName, nodeList, pathList):
     draw_networkx_nodes(networkxGraph, pos, node_size = sizeValues)
     draw_networkx_labels(networkxGraph, pos, nodeLabels)
 
-    plt.tight_layout()
-    plt.savefig(path + f"/plots/original_{jsonFileName}.png")
+    plt.savefig(path + f"/plots/original_{jsonFileName}.png", dpi = 300)
+    plt.savefig(path + f"/plots/original_{jsonFileName}.pdf")
     plt.clf()

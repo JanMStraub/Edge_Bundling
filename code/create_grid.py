@@ -261,7 +261,7 @@ def create_edge(node, endNode, edgeIds,
     """_summary_
         Creates edge between node and endNode,
         adds connection to each node,
-        adds node to neighbour list and adds edge to edgeList and to each nodeEdgeList
+        adds node to neighbor list and adds edge to edgeList and to each nodeEdgeList
     Args:
         node (object): Node object from which the edge begins
         endNode (object): Node object that is at the end of the edge
@@ -288,4 +288,4 @@ def create_edge(node, endNode, edgeIds,
         nodeEdgeListAppend(edgeIds.get(edgeId))
 
     node.connections += 1
-    node.neighbours.append(endNode)
+    node.neighbors.append(endNode)

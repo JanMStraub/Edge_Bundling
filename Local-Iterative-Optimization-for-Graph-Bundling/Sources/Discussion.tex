@@ -1,0 +1,14 @@
+%!TEX root = ../Thesis.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Discussion and Limitations}
+\label{sec:discussion}
+
+Our Physarium Steiner bundling can bundle a graph very aggressively to reveal its overall structure and deduce what region might be of particular interest. A side effect of this aggressive bundling is that some parts of the graph become more ambiguous, particularly parts where the Steiner tree only has one connecting edge. On the other hand, the area around each outer node has a low ambiguity, and it is possible to distinguish each path. To mitigate those issues, a technique like Edgelens \cite{wong_edgelens_2003} could be used in those high-density regions. 
+
+The mathematical structure of our approach makes it easy to anticipate the outcome, as paths can only follow the predetermined route. This might help with anticipating choke points where specific paths connect. These use cases are currently only theoretical, as we only have very little data to test our algorithm. As we already mentioned in \autoref{sec:distortion}, an increase in the distortion value is linked to a larger graph size. This could become a problem if we bundled real-world graphs, as they are many times larger. The distortion might be so severe that it would be impossible to distinguish paths. A possible solution would be to relax the bundling strength, as currently, all paths have to use the Steiner points. Instead, orthogonal to the Steiner points, other points could be created and subsequently used as alternative routing points. This would reduce the path density at the Steiner point. 
+
+Larger graph data might also impact the ambiguity value, as more paths would be routed along the Steiner points. This could lead to significant edge-edge overlaps. However, our limited test data shows that the ambiguity does not change in the same way as the distortion changes when the size of the graph increases. It, therefore, remains to be seen how this algorithm performs for large graphs. 
+
+Another significant shortcoming of this method is most definitely the performance. Despite the considerable time spent optimizing our algorithm, we could not improve the performance to a point where large, real-world datasets could be calculated. That not only limits the usefulness of a graph bundling algorithm but also severely limits the credibility of our comparison. Potential solutions for this problem are debated below.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

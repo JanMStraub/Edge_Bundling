@@ -22,7 +22,7 @@ class NODE:
         self.nodeObjectId, self.position = nodeId, position
         self.pressure, self.connections, self.totalEdgeCost, self.weight, self.terminalNodeId = 0, 0, 0, 0, 0
         self.sink, self.terminal, self.steinerPoint = False, False, False
-        self.nodeEdgeList, self.neighbours = [], []
+        self.nodeEdgeList, self.neighbors = [], []
 
 ################################################################################
 
@@ -46,6 +46,6 @@ class EDGE:
         """
 
         self.edgeObjectId, self.start, self.end, self.length = edgeId, start, end, length
-        self.cost, self.compositeCost, self.neighbourFactor, self.radius = 0, 1, 0, 1
+        self.cost, self.compositeCost, self.neighborFactor, self.radius = 0, 1, 0, 1
         self.conductivity, self.edgeControlPointsList = [piFactor / (8 * viscosity)] * 2, []
         self.steinerEdge = False

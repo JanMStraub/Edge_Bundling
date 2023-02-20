@@ -192,7 +192,7 @@ def remove_rest_nodes(environmentNodeList, removeEdge,
 
         for node in reversed(unusedNodeList):
 
-            createSteinerEdge(node.neighbours[0], node.neighbours[1])
+            createSteinerEdge(node.neighbors[0], node.neighbors[1])
 
             for edge in reversed(node.nodeEdgeList):
                 removeEdge(edge)
@@ -265,8 +265,8 @@ def fermat_torricelli_point_calculation(environmentNodeList):
 
                 A, B, C = [], [], []
 
-                for pos, neighbour in enumerate(node.neighbours):
-                    x, y = neighbour.position
+                for pos, neighbor in enumerate(node.neighbors):
+                    x, y = neighbor.position
 
                     if pos == 0:
                         A = [x, y]
@@ -304,10 +304,10 @@ def remove_nodes_within_radius(environmentNodeList, removeEdge,
         if not node.terminal and node.steinerPoint:
             terminal = None
             for edge in reversed(node.nodeEdgeList):
-                neighbour = find_other_edge_end(node, edge)
+                neighbor = find_other_edge_end(node, edge)
                 if calculate_distance_between_positions(
-                    node.position, neighbour.position) < 0.1 and neighbour.terminal is True:
-                    terminal = neighbour
+                    node.position, neighbor.position) < 0.1 and neighbor.terminal is True:
+                    terminal = neighbor
                     removeEdge(edge)
             if terminal is not None:
                 for edge in reversed(node.nodeEdgeList):

@@ -1,0 +1,18 @@
+%!TEX root = ../Thesis.tex
+
+\begin{center}
+  \textsc{Zusammenfassung}
+\end{center}
+%
+\selectlanguage{ngerman}
+\noindent 
+
+Diese Arbeit stellt einen neuen edge bundling Ansatz vor, welcher die Approximierung von Steinerbäumen mittels einer Physariumapproximierung durchführt. Der Steinerbaum wird dann als Struktur für das Routing von den ursprünglichen Graph Pfaden benutzt. Die resultierenden Darstellungen bestehen aus dichten Graphen, deren Knoten-Kanten Überschneidungen reduziert wurden und es dadurch einfacher ist, sich einen Überblick über die Daten zu verschaffen.
+
+Für die Physariumapproximierung nutzten wir die Netzwerk-Poisson-Gleichung, um einen Fluss von Flüssigkeit im Graph zu simulieren. Sobald die Leitfähigkeit einer Kante zu gering wird, wird diese gelöscht. Dies führt dazu, dass der Graph sich immer weiter zusammenzieht, bis am Ende ein Steinerbaum übrigbleibt. Um den Prozess zu optimieren, haben wir für die Berechnungen Multithreading benutzt und die optimalen Iterationsgrenzen gefunden, welche trotzdem noch eine zufriedenstellende Approximation erreichen.
+Um die ursprünglichen Graph Pfade darzustellen, suchen wir den besten Weg durch den Steinerbaum und stellen diesen dann mit Hilfe einer Bezierkurve dar.
+
+Für die Evaluierung unserer Methode nutzen wir die Qualitätsmerkmale: Tintenreduzierung, Verzerrung und Mehrdeutigkeit. Die Ergebnisse vergleichen wir mit zwei anderen Ansätzen, um unseren Ansatz einordnen zu können und seinen Nutzen zu verstehen. Außerdem besprechen wir die Einschränkungen unserer Idee und schlagen möglichen Verbesserungen vor.
+
+\selectlanguage{english}
+\cleardoublepage

@@ -35,16 +35,16 @@ def initialize_composite_cost(edge, maxNodeWeight):
     return compositeCost
 
 
-def calculate_neighbour_factor(edge, compositeCost):
+def calculate_neighbor_factor(edge, compositeCost):
 
     """_summary_
-        Calculate neighbour factor
+        Calculate neighbor factor
     Args:
         edge (object): Edge object
         compositeCost (float): The composite cost of the node
     """
 
-    edge.neighbourFactor = edge.conductivity[0] / compositeCost
+    edge.neighborFactor = edge.conductivity[0] / compositeCost
 
 
 def choose_sink_and_source(terminalNodeList, terminalNodeListLength):
@@ -169,10 +169,10 @@ def build_pressure_vector(nodeListLength,
     nodeFactor = 0
 
     for edge in node.nodeEdgeList:
-        neighbour = find_other_edge_end(node, edge)
-        neighbourIndex = nodeList.index(neighbour)
-        nodeFactor += edge.neighbourFactor
-        pressureVector[neighbourIndex] = edge.neighbourFactor
+        neighbor = find_other_edge_end(node, edge)
+        neighborIndex = nodeList.index(neighbor)
+        nodeFactor += edge.neighborFactor
+        pressureVector[neighborIndex] = edge.neighborFactor
 
     if pos != nodeList.index(sinkNode):
         pressureVector[pos] = -1 * nodeFactor
@@ -245,7 +245,7 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
     for edge in edgeList:
         compositeCost = initialize_composite_cost(edge, maxNodeWeight)
 
-        calculate_neighbour_factor(edge, compositeCost)
+        calculate_neighbor_factor(edge, compositeCost)
 
     for innerIter in range(innerIteration):
 
@@ -275,15 +275,15 @@ def physarum_algorithm(nodeList, terminalNodeList, edgeList,
                 edge.start.connections -= 1
                 edge.end.connections -= 1
 
-                edge.start.neighbours.remove(edge.end)
-                edge.end.neighbours.remove(edge.start)
+                edge.start.neighbors.remove(edge.end)
+                edge.end.neighbors.remove(edge.start)
 
                 modifiableEdgeList.remove(edge)
                 del edge
 
             else:
                 edge.conductivity[0] = edge.conductivity[1]
-                calculate_neighbour_factor(edge, edge.compositeCost)
+                calculate_neighbor_factor(edge, edge.compositeCost)
 
         if len(edgeList) == edgeListLength:
             breakCounter += 1
