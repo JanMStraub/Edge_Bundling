@@ -21,9 +21,9 @@ _In this thesis, we presented a novel edge bundling technique based on a Physari
 ## Status
 
 - [x] Registrated (20.10.2022)
-- [ ] Work submitted (20.02.2023)
-- [ ] Final presentation done (06.03.2023) 
-- [ ] Uploaded all materials (20.02.2023) 
+- [x] Work submitted (20.02.2023)
+- [x] Final presentation done (13.03.2023) 
+- [x] Uploaded all materials (13.03.2023) 
 
 # Installation
 
